@@ -1,0 +1,34 @@
+name: workflow
+
+on: push
+
+jobs:
+  CI:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          architecture: x64
+
+      - name: Instalar pipenv
+        run: pip install pipenv
+
+      - name: Instalar dependências
+        run: pipenv sync --dev
+
+      - name: Checar vulnerabilidades
+        run: pipenv check
+
+      - name: Rodar flake8
+        run: pipenv run flake8
+
+      - name: Setup env
+        run: cp contrib/env-sample .env
+
+#      - name: Rodar testes automáticos
+#        run: pipenv run pytest
