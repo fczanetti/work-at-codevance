@@ -1,0 +1,13 @@
+services:
+  database:
+    container_name: work_at_codev_db
+    image: postgres
+    restart: no
+    volumes:
+      - ./.pgdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: dbpass
+      POSTGRES_USER: dbuser
+      POSTGRES_DB: codevance_db
+    ports:
+      - 5437:5432
