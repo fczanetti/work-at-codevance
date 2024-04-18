@@ -1,11 +1,13 @@
-from django.db import models
+from django.db import models, transaction
 from django.contrib import auth
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
-from django.contrib.auth.models import PermissionsMixin
+from django.contrib.auth.models import PermissionsMixin, Group
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 from django.core.mail import send_mail
 from django.contrib.auth.hashers import make_password
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class UserManager(BaseUserManager):
@@ -41,7 +43,7 @@ class UserManager(BaseUserManager):
         return self._create_user(email, password, **extra_fields)
 
     def with_perm(
-        self, perm, is_active=True, include_superusers=True, backend=None, obj=None
+            self, perm, is_active=True, include_superusers=True, backend=None, obj=None
     ):
         if backend is None:
             backends = auth._get_backends(return_tuples=True)
@@ -78,6 +80,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     first_name = models.CharField(_("first name"), max_length=150, blank=True)
     email = models.EmailField(_("email address"), unique=True)
+    is_operator = models.BooleanField(verbose_name='Operador', default=False, help_text='Adiciona permissões de '
+                                                                                        'operador ao usuário')
     is_staff = models.BooleanField(
         _("staff status"),
         default=False,
@@ -121,3 +125,23 @@ class User(AbstractBaseUser, PermissionsMixin):
     def email_user(self, subject, message, from_email=None, **kwargs):
         """Send an email to this user."""
         send_mail(subject, message, from_email, [self.email], **kwargs)
+
+
+@receiver(post_save, sender=User)
+def add_or_remove_operators_group(sender, instance, **kwargs):
+    """
+    Executada sempre que um modelo de User é salvo.
+    """
+    if instance.is_operator:
+        operators = Group.objects.get_or_create(name='Operators')[0]
+        transaction.on_commit(lambda: add_group(operators))
+    else:
+        if Group.objects.filter(name='Operators').exists():
+            if instance.groups.filter(name='Operators').exists():
+                transaction.on_commit(lambda: remove_group(Group.objects.get(name='Operators')))
+
+    def add_group(g):
+        return instance.groups.add(g)
+
+    def remove_group(g):
+        return instance.groups.remove(g)
