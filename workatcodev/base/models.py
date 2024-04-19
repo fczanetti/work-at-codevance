@@ -130,15 +130,18 @@ class User(AbstractBaseUser, PermissionsMixin):
 @receiver(post_save, sender=User)
 def add_or_remove_operators_group(sender, instance, **kwargs):
     """
-    Executada sempre que um modelo de User é salvo.
+    Executed when any User model is saved. When this function starts executing there's still a database
+    transaction open (BEGIN), and it has to be closed (COMMIT) before we add a group to our instance/User.
+    If the transaction is not closed and we add the group, it will be removed later when the transaction
+    finishes (because we didn't select any groups in the user's admin page). That's why we used
+    'transaction.on_commit()', this method will call our add_group function after the transaction is closed/finished.
     """
+    operators_group, _ = Group.objects.get_or_create(name='Operators')
     if instance.is_operator:
-        operators = Group.objects.get_or_create(name='Operators')[0]
-        transaction.on_commit(lambda: add_group(operators))
+        transaction.on_commit(lambda: add_group(operators_group))
     else:
-        if Group.objects.filter(name='Operators').exists():
-            if instance.groups.filter(name='Operators').exists():
-                transaction.on_commit(lambda: remove_group(Group.objects.get(name='Operators')))
+        if instance.groups.filter(name=operators_group.name).exists():
+            transaction.on_commit(lambda: remove_group(operators_group))
 
     def add_group(g):
         return instance.groups.add(g)
