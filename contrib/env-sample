@@ -1,3 +1,5 @@
 SECRET_KEY=secret
 DEBUG=
 ALLOWED_HOSTS=localhost, 127.0.0.1,
+
+DATABASE_URL=postgres://userworkflow:passworkflow@localhost:5432/postgres
