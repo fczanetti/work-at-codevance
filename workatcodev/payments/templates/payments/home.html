@@ -1,1 +1,15 @@
-<h1>Pagamentos</h1>
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'payments/css/home.css' %}">
+{% endblock css %}
+
+{% block title %}
+    <title>Pagamentos - Home</title>
+{% endblock title %}
+
+{% block maincontent %}
+    <section id="main-content-home">
+    </section>
+{% endblock maincontent %}
