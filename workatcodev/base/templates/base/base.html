@@ -1,0 +1,37 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport"
+              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="stylesheet" href="{% static 'base/css/base.css' %}">
+
+        {% block css %}{% endblock css %}
+
+        {% block title %}{% endblock title %}
+
+    </head>
+    <body id="body">
+
+        <header id="navbar">
+            <nav id="navbar-links">
+                <a class="navbar-link" href="">Início</a>
+                <a class="navbar-link" href="">Liberação pendente</a>
+                <a class="navbar-link" href="">Aprovados</a>
+                <a class="navbar-link" href="">Negados</a>
+                <a class="navbar-link" href="">Histórico</a>
+            </nav>
+        </header>
+
+        <section id="main-content">
+            {% block maincontent %}{% endblock %}
+        </section>
+
+        <footer id="footer">
+            <hr>
+        </footer>
+
+    </body>
+</html>
