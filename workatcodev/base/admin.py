@@ -19,6 +19,7 @@ from django.utils.translation import gettext
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
+from django.contrib.auth.models import Group
 
 from workatcodev.base.models import User
 
@@ -215,3 +216,18 @@ class UserAdmin(admin.ModelAdmin):
             request.POST = request.POST.copy()
             request.POST["_continue"] = 1
         return super().response_add(request, obj, post_url_continue)
+
+    def save_related(self, request, form, formsets, change):
+        """
+        This function is overriding the original save_related from admin.ModelAdmin in order to
+        add the extra behavior of creating a group called 'Operators' if it doesn't exist, and also
+        adding this group to the User being saved. It also removes the group from the user, and
+        removing or adding will depend on the option selected at the time of creating/editing a User.
+        """
+        super().save_related(request, form, formsets, change)
+        obj = form.instance
+        operators_group, _ = Group.objects.get_or_create(name='Operators')
+        if obj.is_operator:
+            obj.groups.add(operators_group)
+        else:
+            obj.groups.remove(operators_group)
