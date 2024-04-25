@@ -14,6 +14,8 @@ django-extensions = "*"
 [dev-packages]
 flake8 = "*"
 model-bakery = "*"
+pytest-cov = "*"
+codecov = "*"
 
 [requires]
 python_version = "3.11"
