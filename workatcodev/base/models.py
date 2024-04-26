@@ -123,26 +123,3 @@ class User(AbstractBaseUser, PermissionsMixin):
     def email_user(self, subject, message, from_email=None, **kwargs):
         """Send an email to this user."""
         send_mail(subject, message, from_email, [self.email], **kwargs)
-
-
-# @receiver(post_save, sender=User)
-# def add_or_remove_operators_group(sender, instance, **kwargs):
-#     """
-#     Executed when any User model is saved. When this function starts executing there's still a database
-#     transaction open (BEGIN), and it has to be closed (COMMIT) before we add a group to our instance/User.
-#     If the transaction is not closed and we add the group, it will be removed later when the transaction
-#     finishes (because we didn't select any groups in the user's admin page). That's why we used
-#     'transaction.on_commit()', this method will call our add_group function after the transaction is closed/finished.
-#     """
-#     operators_group, _ = Group.objects.get_or_create(name='Operators')
-#     if instance.is_operator:
-#         transaction.on_commit(lambda: add_group(operators_group))
-#     else:
-#         if instance.groups.filter(name=operators_group.name).exists():
-#             transaction.on_commit(lambda: remove_group(operators_group))
-#
-#     def add_group(g):
-#         return instance.groups.add(g)
-#
-#     def remove_group(g):
-#         return instance.groups.remove(g)
