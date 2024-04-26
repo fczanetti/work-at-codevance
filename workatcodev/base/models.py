@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib import auth
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
-from django.contrib.auth.models import PermissionsMixin
+from django.contrib.auth.models import PermissionsMixin, Group
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 from django.core.mail import send_mail
@@ -123,3 +123,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     def email_user(self, subject, message, from_email=None, **kwargs):
         """Send an email to this user."""
         send_mail(subject, message, from_email, [self.email], **kwargs)
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        obj = self
+        operators_group, _ = Group.objects.get_or_create(name='Operators')
+        if obj.is_operator:
+            obj.groups.add(operators_group)
+        else:
+            obj.groups.remove(operators_group)
