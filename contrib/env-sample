@@ -3,3 +3,7 @@ DEBUG=
 ALLOWED_HOSTS=localhost, 127.0.0.1,
 
 DATABASE_URL=postgres://userworkflow:passworkflow@localhost:5432/postgres
+
+# This is the interest rate to be applied when calculating the discount in an Anticipation. It
+# has to be a float number, for example: 3% / month --> 0.03
+INTEREST_RATE=0.03
