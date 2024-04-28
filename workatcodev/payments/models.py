@@ -1,8 +1,7 @@
 from datetime import date
-
 from django.db import models
 from django.contrib.auth import get_user_model
-from workatcodev.payments import facade
+from workatcodev import settings
 
 
 class Supplier(models.Model):
@@ -29,12 +28,22 @@ class Payment(models.Model):
     def __str__(self):
         return f'{self.supplier} - R${self.value:.2f}'
 
+    def check_payment_due_date(self):
+        """
+        This function receives an instance of Payment and verify if its due date is equal or
+        earlier than today's date. If so, the payment's status will be changed to Unavailable (U).
+        """
+        due_date_str = str(self.due_date)
+        if date.fromisoformat(due_date_str) <= date.today():
+            self.status = 'U'
+        return
+
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         """
         The function check_payment_due_date() is used to make sure the payment status is not saved
         with status='A' (Available) if it is created with due_date equal to today's date.
         """
-        facade.check_payment_due_date(self)
+        self.check_payment_due_date()
         super().save(force_insert=False, force_update=False, using=None, update_fields=None)
 
 
@@ -63,18 +72,24 @@ class Anticipation(models.Model):
         if self.payment.status != 'A':
             raise ValueError('An anticipation can not be created from an unavailable payment.')
 
+    def new_payment_value(self):
+        """
+        Calculates the new value for the payment based on the new date of payment.
+        """
+        i_rate = settings.INTEREST_RATE
+        orig_date = date.fromisoformat(str(self.payment.due_date))
+        new_date = date.fromisoformat(str(self.new_due_date))
+        n_days = (orig_date - new_date).days
+        new_value = self.payment.value - (self.payment.value * (i_rate / 30) * n_days)
+        return new_value
+
     def clean(self):
         """
         If no exceptions are raised from self.check_date_and_availability() the new value for
         a payment will be calculated and provided for the field self.new_value.
         """
         self.check_date_and_availability()
-        orig_date = self.payment.due_date
-        new_due_date = self.new_due_date
-        orig_value = self.payment.value
-        new_value = facade.new_payment_value(orig_date=orig_date,
-                                             new_date=new_due_date,
-                                             orig_value=orig_value)
+        new_value = self.new_payment_value()
         self.new_value = new_value
 
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
