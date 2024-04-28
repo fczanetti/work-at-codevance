@@ -1,0 +1,42 @@
+#main-content-title {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+}
+
+.payment-titles {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+    font-size: 1.1rem;
+}
+
+.payment-item {
+    background-color: var(--lightgray-color);
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    border-radius: 10px;
+    font-size: 1.1rem;
+}
+
+.payment-item:hover {
+    background-color: lightgray;
+}
+
+.payment-infos {
+    min-width: 25%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.payment-value {
+    margin-left: 10px;
+}
+
+@media screen and (max-width: 550px) {
+    .payment-infos {
+        display: block;
+        margin-right: 5px;
+    }
+}
