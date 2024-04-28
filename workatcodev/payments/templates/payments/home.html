@@ -11,5 +11,15 @@
 
 {% block maincontent %}
     <section id="main-content-home">
+        {% for payment in available_payments %}
+            <div class="payment-item">
+                {{ payment.supplier }}
+                {{ payment.due_date|date:"d/m/Y" }}
+                {{ payment.value }}
+                {{ payment.status }}
+            </div>
+        {% empty %}
+            <div>Não há pagamentos cadastrados.</div>
+        {% endfor %}
     </section>
 {% endblock maincontent %}
