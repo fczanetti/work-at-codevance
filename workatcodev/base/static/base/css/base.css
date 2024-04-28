@@ -1,6 +1,7 @@
 :root {
     --dark-color: #3E3D3D;
     --gray-color: gray;
+    --lightgray-color: #EDEDED;
 }
 
 * {
@@ -99,6 +100,10 @@
 }
 
 @media screen and (max-width: 850px) {
+    #main-content {
+        padding: 2% 3%;
+    }
+
     #navbar {
         flex-direction: column;
     }

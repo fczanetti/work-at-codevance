@@ -11,12 +11,23 @@
 
 {% block maincontent %}
     <section id="main-content-home">
+        <h1 id="main-content-title">Pagamentos disponíveis para antecipação</h1>
+        {% if available_payments %}
+            <div class="payment-titles">
+                <div>Fornecedor</div>
+                <div class="payment-infos">
+                    <div class="payment-due-date">Vencimento</div>
+                    <div class="payment-value">Valor (R$)</div>
+                </div>
+            </div>
+        {% endif %}
         {% for payment in available_payments %}
             <div class="payment-item">
-                {{ payment.supplier }}
-                {{ payment.due_date|date:"d/m/Y" }}
-                {{ payment.value }}
-                {{ payment.status }}
+                <div>{{ payment.supplier }}</div>
+                <div class="payment-infos">
+                    <div class="payment-due-date">{{ payment.due_date|date:"d/m/Y" }}</div>
+                    <div class="payment-value">{{ payment.value|floatformat:"2g" }}</div>
+                </div>
             </div>
         {% empty %}
             <div>Não há pagamentos cadastrados.</div>
