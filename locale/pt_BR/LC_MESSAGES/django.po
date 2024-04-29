@@ -1,0 +1,122 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-04-29 13:52-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+#: workatcodev/base/admin.py:35
+msgid "Personal info"
+msgstr ""
+
+#: workatcodev/base/admin.py:37
+msgid "Permissions"
+msgstr ""
+
+#: workatcodev/base/admin.py:48
+msgid "Important dates"
+msgstr ""
+
+#: workatcodev/base/admin.py:144
+#, python-format
+msgid "%(name)s object with primary key %(key)r does not exist."
+msgstr ""
+
+#: workatcodev/base/admin.py:156
+msgid "Password changed successfully."
+msgstr ""
+
+#: workatcodev/base/admin.py:177
+#, python-format
+msgid "Change password: %s"
+msgstr ""
+
+#: workatcodev/base/models.py:79
+msgid "first name"
+msgstr ""
+
+#: workatcodev/base/models.py:80
+msgid "email address"
+msgstr ""
+
+#: workatcodev/base/models.py:84
+msgid "staff status"
+msgstr ""
+
+#: workatcodev/base/models.py:86
+msgid "Designates whether the user can log into this admin site."
+msgstr ""
+
+#: workatcodev/base/models.py:89
+msgid "active"
+msgstr ""
+
+#: workatcodev/base/models.py:92
+msgid ""
+"Designates whether this user should be treated as active. Unselect this "
+"instead of deleting accounts."
+msgstr ""
+
+#: workatcodev/base/models.py:96
+msgid "date joined"
+msgstr ""
+
+#: workatcodev/base/models.py:105
+msgid "user"
+msgstr ""
+
+#: workatcodev/base/models.py:106
+msgid "users"
+msgstr ""
+
+#: workatcodev/payments/views.py:9
+msgid "Available for anticipation"
+msgstr "Disponíveis para antecipação"
+
+#: workatcodev/payments/views.py:10
+msgid "Unavailable for anticipation"
+msgstr "Indisponíveis para antecipação"
+
+#: workatcodev/payments/views.py:11
+msgid "Pending anticipation confirmation"
+msgstr "Confirmação de antecipação pendente"
+
+#: workatcodev/payments/views.py:12
+msgid "Anticipated payments"
+msgstr "Pagamentos antecipados"
+
+#: workatcodev/payments/views.py:13
+msgid "Denied anticipation"
+msgstr "Antecipação negada"
+
+#: workatcodev/settings.py:129
+msgid "Available"
+msgstr "Disponível"
+
+#: workatcodev/settings.py:130
+msgid "Unavailable"
+msgstr "Indisponível"
+
+#: workatcodev/settings.py:131
+msgid "Pending confirmation"
+msgstr "Confirmação pendente"
+
+#: workatcodev/settings.py:132
+msgid "Anticipated"
+msgstr "Antecipado"
+
+#: workatcodev/settings.py:133
+msgid "Denied"
+msgstr "Negado"
