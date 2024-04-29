@@ -23,3 +23,7 @@ def home(request):
     form = FilterStatusForm()
     context = {'payments': payments, 'form': form, 'title': TITLES[status]}
     return render(request, 'payments/home.html', context=context)
+
+
+def anticipation(request, id):
+    return render(request, 'payments/anticipation.html')
