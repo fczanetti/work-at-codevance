@@ -11,8 +11,14 @@
 
 {% block maincontent %}
     <section id="main-content-home">
-        <h1 id="main-content-title">Pagamentos disponíveis para antecipação</h1>
-        {% if available_payments %}
+        <h1 id="main-content-title">{{ title }}</h1>
+        <form id="filter_form" action="" method="POST">
+            {% csrf_token %}
+            {{ form.status.label_tag }} {{ form.status }}
+            <button id="filter_button" type="submit">Filtrar</button>
+            {{ form.status.errors }}
+        </form>
+        {% if payments %}
             <div class="payment-titles">
                 <div>Fornecedor</div>
                 <div class="payment-infos">
@@ -21,7 +27,7 @@
                 </div>
             </div>
         {% endif %}
-        {% for payment in available_payments %}
+        {% for payment in payments %}
             <div class="payment-item">
                 <div>{{ payment.supplier }}</div>
                 <div class="payment-infos">

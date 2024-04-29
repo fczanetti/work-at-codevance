@@ -14,16 +14,12 @@ class Supplier(models.Model):
 
 
 class Payment(models.Model):
-    STATUS_CHOICES = {'U': 'Unavailable',
-                      'A': 'Available',
-                      'PC': 'Pending confirmation',
-                      'AN': 'Anticipated',
-                      'D': 'Denied'}
     supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE, verbose_name='Fornecedor')
     creation_date = models.DateField(auto_now_add=True, verbose_name='Criação')
     due_date = models.DateField(verbose_name='Vencimento')
     value = models.PositiveIntegerField(verbose_name='Valor')
-    status = models.CharField(choices=STATUS_CHOICES, verbose_name='Status', default='A', editable=False)
+    status = models.CharField(choices=settings.PAYMENT_STATUS_CHOICES,
+                              verbose_name='Status', default='A', editable=False)
 
     def __str__(self):
         return f'{self.supplier} - R${self.value:.2f}'

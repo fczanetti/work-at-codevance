@@ -3,6 +3,26 @@
     margin-bottom: 2rem;
 }
 
+#filter_form {
+    margin-bottom: 1rem;
+}
+
+label {
+    font-size: 1.1rem;
+}
+
+#id_status {
+    font-size: 1.1rem;
+    padding: 3px;
+    border-radius: 5px;
+}
+
+#filter_button {
+    font-size: 1.1rem;
+    padding: 3px;
+    border-radius: 5px;
+}
+
 .payment-titles {
     display: flex;
     justify-content: space-between;

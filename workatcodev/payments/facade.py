@@ -1,9 +1,9 @@
 from workatcodev.payments.models import Payment
 
 
-def get_available_payments():
+def get_payments(status):
     """
-    Returns a list containing all available payments from database.
+    Returns a list containing all payments from database based on the status chosen.
     """
-    available_payments = Payment.objects.filter(status='A')
-    return list(available_payments)
+    payments = Payment.objects.filter(status=status)
+    return list(payments)
