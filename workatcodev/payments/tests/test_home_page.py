@@ -63,31 +63,3 @@ def test_filter_form_home_page_exists(resp_home_page_logged_user):
     assert_contains(resp_home_page_logged_user, '<label for="id_status">Status:</label>')
     assert_contains(resp_home_page_logged_user, '<select name="status" id="id_status">')
     assert_contains(resp_home_page_logged_user, '<button id="filter_button" type="submit">Filtrar</button>')
-
-
-# def test_filter_form_home_page(db, logged_client):
-#     """
-#     Filter each payment per status once and guarantees that only the
-#     filtered payment appears on the page/response. Also confirms that
-#     the title is correct.
-#     """
-#     av_status = ['A', 'U', 'PC', 'AN', 'D']
-#     TITLES = {'A': _('Available for anticipation'),
-#               'U': _('Unavailable for anticipation'),
-#               'PC': _('Pending anticipation confirmation'),
-#               'AN': _('Anticipated payments'),
-#               'D': _('Denied anticipation')}
-#     payments = []
-#     due_date = date.today() + timedelta(days=3)
-#     for s in av_status:
-#         payments.append(baker.make(Payment, due_date=due_date, status=s))
-#     for s in av_status:
-#         curr_payment = payments.pop(0)
-#         resp = logged_client.post(reverse('payments:home'), {'status': s})
-#         assert_contains(resp, curr_payment.supplier)
-#         assert_contains(resp, TITLES[s])
-#         assert_not_contains(resp, payments[0].supplier)
-#         assert_not_contains(resp, payments[1].supplier)
-#         assert_not_contains(resp, payments[2].supplier)
-#         assert_not_contains(resp, payments[3].supplier)
-#         payments.insert(4, curr_payment)

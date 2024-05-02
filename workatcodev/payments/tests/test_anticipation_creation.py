@@ -40,3 +40,12 @@ def test_attempt_creation_antic_for_date_earlier_than_today(db, payment):
     new_due_date = str(date.today() - timedelta(days=1))
     with pytest.raises(ValueError):
         baker.make(Anticipation, payment=payment, new_due_date=new_due_date)
+
+
+def test_anticipation_already_created(db, payment):
+    """
+    Certifies that no more than one anticipation is created for the same payment.
+    """
+    baker.make(Anticipation, payment=payment)
+    with pytest.raises(ValueError):
+        baker.make(Anticipation, payment=payment)
