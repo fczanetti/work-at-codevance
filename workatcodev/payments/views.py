@@ -6,20 +6,23 @@ from django.utils.translation import gettext_lazy as _
 
 
 def home(request):
-    TITLES = {'A': _('Available for anticipation'),
-              'U': _('Unavailable for anticipation'),
-              'PC': _('Pending anticipation confirmation'),
-              'AN': _('Anticipated payments'),
-              'D': _('Denied anticipation')}
+    TITLES = {'A': _('Available for anticipation')}
+    # 'U': _('Unavailable for anticipation'),
+    # 'PC': _('Pending anticipation confirmation'),
+    # 'AN': _('Anticipated payments'),
+    # 'D': _('Denied anticipation')}
+    GET_PAYM_FUNC = {'A': facade.get_available_payments}
     if request.method == 'POST':
         form = FilterStatusForm(request.POST)
         if form.is_valid():
             status = form.cleaned_data['status']
-            payments = facade.get_payments(status)
+            function = GET_PAYM_FUNC[status]
+            payments = function(request.user)
             context = {'payments': payments, 'form': form, 'title': TITLES[status]}
             return render(request, 'payments/home.html', context=context)
     status = 'A'
-    payments = facade.get_payments(status=status)
+    function = GET_PAYM_FUNC[status]
+    payments = function(request.user)
     form = FilterStatusForm()
     context = {'payments': payments, 'form': form, 'title': TITLES[status]}
     return render(request, 'payments/home.html', context=context)

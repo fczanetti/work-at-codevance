@@ -126,8 +126,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 INTEREST_RATE = config('INTEREST_RATE', cast=float)
 
-PAYMENT_STATUS_CHOICES = {'A': _('Available'),
-                          'U': _('Unavailable'),
-                          'PC': _('Pending confirmation'),
-                          'AN': _('Anticipated'),
-                          'D': _('Denied')}
+PAYMENT_STATUS_CHOICES = {'A': _('Available')}
+# 'U': _('Unavailable'),
+# 'PC': _('Pending confirmation'),
+# 'AN': _('Anticipated'),
+# 'D': _('Denied')}
