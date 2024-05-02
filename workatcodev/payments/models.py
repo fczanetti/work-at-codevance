@@ -26,18 +26,18 @@ class Payment(models.Model):
 
     def check_payment_due_date(self):
         """
-        This function receives an instance of Payment and verify if its due date is equal or
-        earlier than today's date. If so, the payment's status will be changed to Unavailable (U).
+        This function makes sure no payments are created with due_date earlier
+        than the day of creation.
         """
         due_date_str = str(self.due_date)
-        if date.fromisoformat(due_date_str) <= date.today():
-            self.status = 'U'
+        if date.fromisoformat(due_date_str) < date.today():
+            raise ValueError('Due date must be today or some day after.')
         return
 
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         """
         The function check_payment_due_date() is used to make sure the payment status is not saved
-        with status='A' (Available) if it is created with due_date equal to today's date.
+        if it is created with due_date earlier than today's date.
         """
         self.check_payment_due_date()
         super().save(force_insert=False, force_update=False, using=None, update_fields=None)
@@ -65,7 +65,7 @@ class Anticipation(models.Model):
         new_due_date = self.new_due_date
         if date.fromisoformat(str(new_due_date)) < date.today():
             raise ValueError('The new payment date must be today or some day after.')
-        if self.payment.status != 'A':
+        if date.fromisoformat(str(self.payment.due_date)) <= date.today():
             raise ValueError('An anticipation can not be created from an unavailable payment.')
 
     def new_payment_value(self):
@@ -79,11 +79,20 @@ class Anticipation(models.Model):
         new_value = self.payment.value - (self.payment.value * (i_rate / 30) * n_days)
         return new_value
 
+    def check_anticipation_existence(self):
+        """
+        Makes sure no more than one anticipation is created for the same payment.
+        """
+        if Anticipation.objects.filter(payment=self.payment):
+            raise ValueError('An anticipation was already created for this payment.')
+
     def clean(self):
         """
-        If no exceptions are raised from self.check_date_and_availability() the new value for
-        a payment will be calculated and provided for the field self.new_value.
+        If no exceptions are raised from self.check_anticipation_existence() or
+        self.check_date_and_availability() the new value for a payment will be
+        calculated and provided for the field self.new_value.
         """
+        self.check_anticipation_existence()
         self.check_date_and_availability()
         new_value = self.new_payment_value()
         self.new_value = new_value
