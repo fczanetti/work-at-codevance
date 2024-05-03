@@ -100,15 +100,50 @@ def unavailable_payments_user_01_due_date(db, supplier_01):
 
 
 @pytest.fixture
-def unavailable_payment_user_01_anticipation_created(db, supplier_01):
+def unavailable_payments_user_02_due_date(db, supplier_02):
     """
-    Creates and returns an unavailable payment due to anticipation related. This payment
-    will have a $1.00 value to diferentiate from others.
+    Creates and returns unavailable payments due to due_date.
+    """
+    due_date = date.today()
+    payment = baker.make(Payment, due_date=due_date, _quantity=2, supplier=supplier_02)
+    return payment
+
+
+@pytest.fixture
+def payment_user_01_anticipation_created(db, supplier_01):
+    """
+    Creates and returns a payment with anticipation related.
     """
     due_date = date.today() + timedelta(days=5)
     new_due_date = str(date.today() + timedelta(days=1))
-    payment_ant = baker.make(Payment, due_date=due_date, supplier=supplier_01, value=1)
+    payment_ant = baker.make(Payment, due_date=due_date, supplier=supplier_01)
     baker.make(Anticipation, payment=payment_ant, new_due_date=new_due_date)
+    return payment_ant
+
+
+@pytest.fixture
+def payment_user_01_anticipation_related_status_a(db, supplier_01):
+    """
+    Creates and returns a payment with anticipation related. The status of this
+    anticipation is 'A' (Approved).
+    """
+    due_date = date.today() + timedelta(days=5)
+    new_due_date = str(date.today() + timedelta(days=1))
+    payment_ant = baker.make(Payment, due_date=due_date, supplier=supplier_01)
+    baker.make(Anticipation, payment=payment_ant, new_due_date=new_due_date, status='A')
+    return payment_ant
+
+
+@pytest.fixture
+def payment_user_01_anticipation_related_status_d(db, supplier_01):
+    """
+    Creates and returns a payment with anticipation related. The status of this
+    anticipation is 'D' (Denied).
+    """
+    due_date = date.today() + timedelta(days=5)
+    new_due_date = str(date.today() + timedelta(days=1))
+    payment_ant = baker.make(Payment, due_date=due_date, supplier=supplier_01, value=2)
+    baker.make(Anticipation, payment=payment_ant, new_due_date=new_due_date, status='D')
     return payment_ant
 
 
