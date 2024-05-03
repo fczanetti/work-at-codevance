@@ -8,7 +8,7 @@ from workatcodev.django_assertions import assert_contains, assert_not_contains
 @pytest.fixture
 def resp_filter_available_user_01(client_logged_supplier_01, available_payments_user_01,
                                   unavailable_payments_user_01_due_date,
-                                  unavailable_payment_user_01_anticipation_created,
+                                  payment_user_01_anticipation_created,
                                   available_payments_user_02):
     """
     Filter available payments for supplier_01 and returns its response.
@@ -40,13 +40,13 @@ def test_unavailable_payments_not_shown_due_date(resp_filter_available_user_01, 
 
 
 def test_unavailable_payments_not_shown_anticipation_created(
-        resp_filter_available_user_01, unavailable_payment_user_01_anticipation_created):
+        resp_filter_available_user_01, payment_user_01_anticipation_created):
     """
     Certifies that payments with anticipation created and related are not
     shown when filtering available payments.
     """
     assert_not_contains(resp_filter_available_user_01,
-                        f"""<div class="payment-value">{unavailable_payment_user_01_anticipation_created.value:_.2f}"""
+                        f"""<div class="payment-value">{payment_user_01_anticipation_created.value:_.2f}"""
                         .replace('.', ',').replace('_', '.'))
 
 
