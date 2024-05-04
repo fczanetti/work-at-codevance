@@ -83,7 +83,9 @@ class Anticipation(models.Model):
         """
         Makes sure no more than one anticipation is created for the same payment.
         """
-        if Anticipation.objects.filter(payment=self.payment):
+        if Anticipation.objects.filter(payment=self.payment).exists():
+            if Anticipation.objects.filter(payment=self.payment)[0] == self:
+                return
             raise ValueError('An anticipation was already created for this payment.')
 
     def clean(self):

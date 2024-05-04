@@ -49,3 +49,15 @@ def test_anticipation_already_created(db, payment):
     baker.make(Anticipation, payment=payment)
     with pytest.raises(ValueError):
         baker.make(Anticipation, payment=payment)
+
+
+def test_anticipation_update(db, payment):
+    """
+    Certifies that an anticipation can be changed.
+    """
+    d = date.today()
+    d2 = d + timedelta(days=1)
+    ant = baker.make(Anticipation, payment=payment, new_due_date=d)
+    ant.new_due_date = d2
+    ant.save()
+    assert ant.new_due_date == d2
