@@ -142,7 +142,7 @@ def payment_user_01_anticipation_related_status_d(db, supplier_01):
     """
     due_date = date.today() + timedelta(days=5)
     new_due_date = str(date.today() + timedelta(days=1))
-    payment_ant = baker.make(Payment, due_date=due_date, supplier=supplier_01, value=2)
+    payment_ant = baker.make(Payment, due_date=due_date, supplier=supplier_01)
     baker.make(Anticipation, payment=payment_ant, new_due_date=new_due_date, status='D')
     return payment_ant
 

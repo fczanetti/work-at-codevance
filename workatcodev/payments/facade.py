@@ -40,3 +40,24 @@ def get_unavailable_payments(user):
     if supplier:
         payments = payments.filter(supplier=supplier.id)
     return list(payments)
+
+
+def get_pend_conf_payments(user):
+    """
+    Returns all payments for which were created an anticipation,
+    and the anticipations have to have status = 'PC' (pending
+    confirmation). Also, the original due_date of the payment
+    can not have been reached. If a specific supplier is requesting,
+    only its payments will be shown.
+    """
+    supplier = None
+    try:
+        supplier = Supplier.objects.get(user=user)
+    except ObjectDoesNotExist:
+        pass
+    today = date.today()
+    q1 = Payment.objects.prefetch_related('anticipation_set').exclude(anticipation=None)
+    payments = q1.filter(anticipation__status='PC').filter(due_date__gt=today)
+    if supplier:
+        payments = payments.filter(supplier=supplier.id)
+    return list(payments)
