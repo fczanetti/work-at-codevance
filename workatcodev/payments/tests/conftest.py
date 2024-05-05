@@ -20,7 +20,7 @@ def user_01(db):
     """
     Creates and returns a user.
     """
-    user_01 = baker.make(get_user_model(), email='supplier01_email.com')
+    user_01 = baker.make(get_user_model(), email='supplier01@email.com')
     return user_01
 
 
@@ -29,7 +29,7 @@ def user_02(db):
     """
     Creates and returns a user.
     """
-    user_02 = baker.make(get_user_model(), email='supplier02_email.com')
+    user_02 = baker.make(get_user_model(), email='supplier02@email.com')
     return user_02
 
 
