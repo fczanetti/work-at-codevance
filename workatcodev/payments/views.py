@@ -8,12 +8,13 @@ from django.utils.translation import gettext_lazy as _
 def home(request):
     TITLES = {'A': _('Available for anticipation'),
               'U': _('Unavailable for anticipation'),
-              'PC': _('Pending anticipation confirmation')}
-    # 'AN': _('Anticipated payments'),
+              'PC': _('Pending anticipation confirmation'),
+              'AN': _('Anticipated payments')}
     # 'D': _('Denied anticipation')}
     GET_PAYM_FUNC = {'A': facade.get_available_payments,
                      'U': facade.get_unavailable_payments,
-                     'PC': facade.get_pend_conf_payments}
+                     'PC': facade.get_pend_conf_payments,
+                     'AN': facade.get_approved_payments}
     if request.method == 'POST':
         form = FilterStatusForm(request.POST)
         if form.is_valid():
