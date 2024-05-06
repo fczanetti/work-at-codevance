@@ -45,7 +45,7 @@ class Anticipation(models.Model):
     STATUS_CHOICES = {'A': 'Approved',
                       'PC': 'Pending confirmation',
                       'D': 'Denied'}
-    payment = models.ForeignKey(Payment, on_delete=models.CASCADE, verbose_name='Pagamento')
+    payment = models.OneToOneField(Payment, on_delete=models.CASCADE, verbose_name='Pagamento')
     creation_date = models.DateField(auto_now_add=True, verbose_name='Data da solicitação')
     new_due_date = models.DateField(verbose_name='Novo vencimento')
     new_value = models.FloatField(verbose_name='Valor com desconto', editable=False)
@@ -77,22 +77,12 @@ class Anticipation(models.Model):
         new_value = self.payment.value - (self.payment.value * (i_rate / 30) * n_days)
         return new_value
 
-    def check_anticipation_existence(self):
-        """
-        Makes sure no more than one anticipation is created for the same payment.
-        """
-        if Anticipation.objects.filter(payment=self.payment).exists():
-            if Anticipation.objects.filter(payment=self.payment)[0] == self:
-                return
-            raise ValueError('An anticipation was already created for this payment.')
-
     def clean(self):
         """
         If no exceptions are raised from self.check_anticipation_existence() or
         self.check_date_and_availability() the new value for a payment will be
         calculated and provided for the field self.new_value.
         """
-        self.check_anticipation_existence()
         self.check_date_and_availability()
         new_value = self.new_payment_value()
         self.new_value = new_value
