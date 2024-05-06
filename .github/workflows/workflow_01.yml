@@ -41,12 +41,6 @@ jobs:
       - name: Rodar flake8
         run: pipenv run flake8
 
-      - name: Criar mensagens (traduções)
-        run: python manage.py makemessages
-
-      - name: Compilar mensagens (traduções)
-        run: python manage.py compilemessages
-
       - name: Setup env
         run: cp contrib/env-sample .env
 

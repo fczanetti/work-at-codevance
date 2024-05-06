@@ -3,6 +3,7 @@ from django.urls import reverse
 from model_bakery import baker
 from workatcodev.django_assertions import assert_contains, assert_not_contains
 from workatcodev.payments.models import Anticipation
+from django.utils.translation import gettext_lazy as _
 
 
 @pytest.fixture
@@ -66,4 +67,4 @@ def test_title_approved_payments(resp_filter_approved_user_01):
     Certifies that the title for approved payments
     is present.
     """
-    assert_contains(resp_filter_approved_user_01, 'Pagamentos antecipados')
+    assert_contains(resp_filter_approved_user_01, _('Anticipated payments'))

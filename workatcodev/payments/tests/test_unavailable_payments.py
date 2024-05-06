@@ -4,6 +4,7 @@ import pytest
 from django.urls import reverse
 
 from workatcodev.django_assertions import assert_contains, assert_not_contains
+from django.utils.translation import gettext_lazy as _
 
 
 @pytest.fixture
@@ -66,4 +67,4 @@ def test_title_unavailable_payments(resp_filter_unavailable_user_01):
     Certifies that the title for unavailable payments
     is present.
     """
-    assert_contains(resp_filter_unavailable_user_01, 'Indisponíveis para antecipação')
+    assert_contains(resp_filter_unavailable_user_01, _('Unavailable for anticipation'))
