@@ -4,6 +4,7 @@ import pytest
 from django.urls import reverse
 
 from workatcodev.django_assertions import assert_contains, assert_not_contains
+from django.utils.translation import gettext_lazy as _
 
 
 @pytest.fixture
@@ -59,3 +60,11 @@ def test_unavailable_payments_from_supplier_02_not_shown(resp_filter_unavailable
         assert_not_contains(resp_filter_unavailable_user_01,
                             f"""<div class="payment-value">{payment.value:_.2f}"""
                             .replace('.', ',').replace('_', '.'))
+
+
+def test_title_unavailable_payments(resp_filter_unavailable_user_01):
+    """
+    Certifies that the title for unavailable payments
+    is present.
+    """
+    assert_contains(resp_filter_unavailable_user_01, _('Unavailable for anticipation'))

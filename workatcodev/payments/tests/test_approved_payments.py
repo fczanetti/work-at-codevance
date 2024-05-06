@@ -3,6 +3,7 @@ from django.urls import reverse
 from model_bakery import baker
 from workatcodev.django_assertions import assert_contains, assert_not_contains
 from workatcodev.payments.models import Anticipation
+from django.utils.translation import gettext_lazy as _
 
 
 @pytest.fixture
@@ -59,3 +60,11 @@ def test_approved_payments_supplier_02_not_shown(client_logged_supplier_01, supp
     baker.make(Anticipation, payment=payment, status='AN')
     resp = client_logged_supplier_01.post(reverse('payments:home'), {'status': 'AN'})
     assert_not_contains(resp, f'{payment.value:_.2f}'.replace('.', ',').replace('_', '.'))
+
+
+def test_title_approved_payments(resp_filter_approved_user_01):
+    """
+    Certifies that the title for approved payments
+    is present.
+    """
+    assert_contains(resp_filter_approved_user_01, _('Anticipated payments'))
