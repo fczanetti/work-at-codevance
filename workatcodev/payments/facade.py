@@ -78,3 +78,20 @@ def get_approved_payments(user):
     if supplier:
         payments = payments.filter(supplier=supplier.id)
     return list(payments)
+
+
+def get_denied_payments(user):
+    """
+    Returns all payments for which an anticipation was
+    created but denied.
+    """
+    supplier = None
+    try:
+        supplier = Supplier.objects.get(user=user)
+    except ObjectDoesNotExist:
+        pass
+    q1 = Payment.objects.prefetch_related('anticipation_set').exclude(anticipation=None)
+    payments = q1.filter(anticipation__status='D')
+    if supplier:
+        payments = payments.filter(supplier=supplier.id)
+    return list(payments)
