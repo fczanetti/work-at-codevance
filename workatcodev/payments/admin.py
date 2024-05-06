@@ -13,7 +13,7 @@ class SupplierAdmin(admin.ModelAdmin):
 
 @admin.register(Payment)
 class PaymentAdmin(admin.ModelAdmin):
-    list_display = ['supplier', 'creation_date', 'due_date', 'status', 'value']
+    list_display = ['supplier', 'creation_date', 'due_date', 'value']
 
 
 @admin.register(Anticipation)
