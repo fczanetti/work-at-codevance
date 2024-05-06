@@ -91,3 +91,11 @@ def test_pend_conf_supplier_02_not_shown(resp_filter_pending_conf_user_01, pendi
     assert_not_contains(resp_filter_pending_conf_user_01,
                         f'{pending_confirm_payment_user_02.value:_.2f}'
                         .replace('.', ',').replace('_', '.'))
+
+
+def test_title_pend_confirm_payments(resp_filter_pending_conf_user_01):
+    """
+    Certifies that the title for pending confirmation payments
+    is present.
+    """
+    assert_contains(resp_filter_pending_conf_user_01, 'Confirmação de antecipação pendente')

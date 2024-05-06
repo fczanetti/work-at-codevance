@@ -59,3 +59,11 @@ def test_available_payments_from_supplier_02_not_shown(resp_filter_available_use
         assert_not_contains(resp_filter_available_user_01, payment.supplier)
         assert_not_contains(resp_filter_available_user_01, f'{payment.value: _.2f}'
                             .replace('.', ',').replace('_', '.'))
+
+
+def test_title_available_payments(resp_filter_available_user_01):
+    """
+    Certifies that the title for available payments
+    is present.
+    """
+    assert_contains(resp_filter_available_user_01, 'Disponíveis para antecipação')

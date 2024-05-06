@@ -58,3 +58,11 @@ def test_denied_payments_supplier_02_not_shown(client_logged_supplier_01, suppli
     baker.make(Anticipation, payment=payment, status='D')
     resp = client_logged_supplier_01.post(reverse('payments:home'), {'status': 'D'})
     assert_not_contains(resp, f'{payment.value:_.2f}'.replace('.', ',').replace('_', '.'))
+
+
+def test_title_approved_payments(resp_filter_denied_user_01):
+    """
+    Certifies that the title for denied payments
+    is present.
+    """
+    assert_contains(resp_filter_denied_user_01, 'Antecipação negada')
