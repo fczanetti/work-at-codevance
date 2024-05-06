@@ -129,5 +129,5 @@ INTEREST_RATE = config('INTEREST_RATE', cast=float)
 PAYMENT_STATUS_CHOICES = {'A': _('Available'),
                           'U': _('Unavailable'),
                           'PC': _('Pending confirmation'),
-                          'AN': _('Anticipated')}
-# 'D': _('Denied')}
+                          'AN': _('Anticipated'),
+                          'D': _('Denied')}
