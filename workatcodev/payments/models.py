@@ -17,9 +17,7 @@ class Payment(models.Model):
     supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE, verbose_name='Fornecedor')
     creation_date = models.DateField(auto_now_add=True, verbose_name='Criação')
     due_date = models.DateField(verbose_name='Vencimento')
-    value = models.PositiveIntegerField(verbose_name='Valor')
-    status = models.CharField(choices=settings.PAYMENT_STATUS_CHOICES,
-                              verbose_name='Status', default='A', editable=False)
+    value = models.FloatField(verbose_name='Valor')
 
     def __str__(self):
         return f'{self.supplier} - R${self.value:.2f}'
@@ -50,7 +48,7 @@ class Anticipation(models.Model):
     payment = models.ForeignKey(Payment, on_delete=models.CASCADE, verbose_name='Pagamento')
     creation_date = models.DateField(auto_now_add=True, verbose_name='Data da solicitação')
     new_due_date = models.DateField(verbose_name='Novo vencimento')
-    new_value = models.PositiveIntegerField(verbose_name='Valor com desconto', editable=False)
+    new_value = models.FloatField(verbose_name='Valor com desconto', editable=False)
     update = models.DateField(auto_now=True, verbose_name='Atualização')
     status = models.CharField(choices=STATUS_CHOICES, verbose_name='Status', default='PC', editable=False)
 
