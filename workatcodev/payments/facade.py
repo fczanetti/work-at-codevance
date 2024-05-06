@@ -35,7 +35,7 @@ def get_unavailable_payments(user):
     except ObjectDoesNotExist:
         pass
     today = date.today()
-    q1 = Payment.objects.prefetch_related('anticipation_set').filter(due_date__lte=today)
+    q1 = Payment.objects.prefetch_related('anticipation').filter(due_date__lte=today)
     payments = q1.exclude(anticipation__status='A').exclude(anticipation__status='D')
     if supplier:
         payments = payments.filter(supplier=supplier.id)
@@ -56,7 +56,7 @@ def get_pend_conf_payments(user):
     except ObjectDoesNotExist:
         pass
     today = date.today()
-    q1 = Payment.objects.prefetch_related('anticipation_set').exclude(anticipation=None)
+    q1 = Payment.objects.prefetch_related('anticipation').exclude(anticipation=None)
     payments = q1.filter(anticipation__status='PC').filter(due_date__gt=today)
     if supplier:
         payments = payments.filter(supplier=supplier.id)
@@ -73,7 +73,7 @@ def get_approved_payments(user):
         supplier = Supplier.objects.get(user=user)
     except ObjectDoesNotExist:
         pass
-    q1 = Payment.objects.prefetch_related('anticipation_set').exclude(anticipation=None)
+    q1 = Payment.objects.prefetch_related('anticipation').exclude(anticipation=None)
     payments = q1.filter(anticipation__status='A')
     if supplier:
         payments = payments.filter(supplier=supplier.id)
@@ -90,7 +90,7 @@ def get_denied_payments(user):
         supplier = Supplier.objects.get(user=user)
     except ObjectDoesNotExist:
         pass
-    q1 = Payment.objects.prefetch_related('anticipation_set').exclude(anticipation=None)
+    q1 = Payment.objects.prefetch_related('anticipation').exclude(anticipation=None)
     payments = q1.filter(anticipation__status='D')
     if supplier:
         payments = payments.filter(supplier=supplier.id)
