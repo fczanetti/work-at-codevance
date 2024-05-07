@@ -1,0 +1,59 @@
+#main-content-title {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+}
+
+h2 {
+    margin-bottom: 1rem;
+}
+
+form {
+    margin-top: 1rem;
+}
+
+#id_new_due_date {
+    font-size: 1.1rem;
+    padding: 0.1rem 0.5rem;
+    border-radius: 5px;
+    text-align: center;
+    width: 20%;
+}
+
+label {
+    font-size: 1.1rem;
+}
+
+#conf-antic-button {
+    font-size: 1.1rem;
+    padding: 0.2rem 1rem;
+    border-radius: 5px;
+    background-color: green;
+    color: white;
+    cursor: pointer;
+    margin-top: 1rem;
+}
+
+#canc-antic-button {
+    font-size: 1.1rem;
+    padding: 0.2rem 1rem;
+    border-radius: 5px;
+    background-color: red;
+}
+
+#canc-antic-button a {
+    text-decoration: none;
+    color: white;
+}
+
+@media screen and (max-width: 1000px) {
+    #id_new_due_date {
+        width: 30%;
+    }
+
+}
+
+@media screen and (max-width: 550px) {
+        #id_new_due_date {
+            width: 50%;
+        }
+}
