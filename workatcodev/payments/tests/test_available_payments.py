@@ -68,3 +68,12 @@ def test_title_available_payments(resp_filter_available_user_01):
     is present.
     """
     assert_contains(resp_filter_available_user_01, _('Available for anticipation'))
+
+
+def test_link_anticipation(resp_filter_available_user_01,
+                           available_payments_user_01):
+    """
+    Certifies that the links for creating anticipation are present.
+    """
+    for payment in available_payments_user_01:
+        assert_contains(resp_filter_available_user_01, payment.create_anticipation())

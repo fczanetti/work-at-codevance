@@ -2,6 +2,7 @@ from datetime import date
 from django.db import models
 from django.contrib.auth import get_user_model
 from workatcodev import settings
+from django.urls import reverse
 
 
 class Supplier(models.Model):
@@ -21,6 +22,12 @@ class Payment(models.Model):
 
     def __str__(self):
         return f'{self.supplier} - R${self.value:.2f}'
+
+    def create_anticipation(self):
+        """
+        Returns a link to anticipation creation page.
+        """
+        return f'{reverse("payments:anticipation", args=(self.pk,))}'
 
     def check_payment_due_date(self):
         """

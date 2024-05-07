@@ -44,14 +44,12 @@ label {
     background-color: lightgray;
 }
 
-.payment-infos {
-    /*min-width: 25%;*/
+.supplier {
     display: flex;
-    /*justify-content: space-between;*/
 }
 
-.payment-value {
-    /*margin-left: 10px;*/
+.payment-infos {
+    display: flex;
 }
 
 span {
@@ -59,9 +57,31 @@ span {
     margin: 0 10px;
 }
 
-@media screen and (max-width: 550px) {
-    .payment-infos {
-        display: block;
-        margin-right: 5px;
+.anticipation-link {
+    max-width: fit-content;
+    margin-left: 1rem;
+    text-decoration: none;
+    color: white;
+    background-color: green;
+    padding: 1px 4px;
+    border-radius: 4px;
+}
+
+@media screen and (max-width: 1000px) {
+    .supplier {
+        flex-direction: column;
+        margin-right: 1rem;
     }
+
+    .anticipation-link {
+        margin: 0.5rem 0 0 0;
+    }
+
+}
+
+@media screen and (max-width: 550px) {
+        .payment-infos {
+            display: block;
+            margin-right: 5px;
+        }
 }

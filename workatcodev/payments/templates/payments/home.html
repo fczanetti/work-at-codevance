@@ -38,13 +38,18 @@
         {% for payment in payments %}
             <div class="payment-item">
                 {% if status == 'PC' or status == 'AN' or status == 'D' %}
-                    <div>{{ payment }}</div>
+                    <div class="supplier">{{ payment }}</div>
                     <div class="payment-infos">
                         <div class="payment-due-date">{{ payment.anticipation.new_due_date|date:"d/m/Y" }}<span>/</span></div>
                         <div class="payment-value">{{ payment.anticipation.new_value|floatformat:"2g" }}</div>
                     </div>
                 {% else %}
-                    <div>{{ payment.supplier }}</div>
+                    <div class="supplier">
+                        <div>{{ payment.supplier }}</div>
+                        {% if status == 'A' %}
+                            <a class="anticipation-link" href="{{ payment.create_anticipation }}">Antecipar</a>
+                        {% endif %}
+                    </div>
                     <div class="payment-infos">
                         <div class="payment-due-date">{{ payment.due_date|date:"d/m/Y" }}<span>/</span></div>
                         <div class="payment-value">{{ payment.value|floatformat:"2g" }}</div>
