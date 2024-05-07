@@ -3,7 +3,7 @@ from django.urls import reverse
 from model_bakery import baker
 from django.contrib.auth import get_user_model
 
-from workatcodev.django_assertions import assert_contains
+from workatcodev.django_assertions import assert_contains, assert_not_contains
 
 
 @pytest.fixture
@@ -63,3 +63,23 @@ def test_filter_form_home_page_exists(resp_home_page_logged_user):
     assert_contains(resp_home_page_logged_user, '<label for="id_status">Status:</label>')
     assert_contains(resp_home_page_logged_user, '<select name="status" id="id_status">')
     assert_contains(resp_home_page_logged_user, '<button id="filter_button" type="submit">Filtrar</button>')
+
+
+def test_title_payment_infos_present(available_payments_user_01, resp_home_page_logged_user):
+    """
+    Certifies that the titles of payment infos are present
+    when there is at least one payment listed.
+    """
+    assert_contains(resp_home_page_logged_user, '<div>Fornecedor</div>')
+    assert_contains(resp_home_page_logged_user, '<div class="payment-due-date">Vencimento<span>/</span></div>')
+    assert_contains(resp_home_page_logged_user, '<div class="payment-value">Valor (R$)</div>')
+
+
+def test_title_payment_infos_not_present(resp_home_page_logged_user):
+    """
+    Certifies that the titles of payment infos are not present
+    when there are no payments listed.
+    """
+    assert_not_contains(resp_home_page_logged_user, '<div>Fornecedor</div>')
+    assert_not_contains(resp_home_page_logged_user, '<div class="payment-due-date">Vencimento</div>')
+    assert_not_contains(resp_home_page_logged_user, '<div class="payment-value">Valor (R$)</div>')

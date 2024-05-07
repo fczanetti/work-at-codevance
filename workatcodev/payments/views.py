@@ -22,13 +22,13 @@ def home(request):
             status = form.cleaned_data['status']
             function = GET_PAYM_FUNC[status]
             payments = function(request.user)
-            context = {'payments': payments, 'form': form, 'title': TITLES[status]}
+            context = {'payments': payments, 'form': form, 'title': TITLES[status], 'status': status}
             return render(request, 'payments/home.html', context=context)
     status = 'A'
     function = GET_PAYM_FUNC[status]
     payments = function(request.user)
     form = FilterStatusForm()
-    context = {'payments': payments, 'form': form, 'title': TITLES[status]}
+    context = {'payments': payments, 'form': form, 'title': TITLES[status], 'status': status}
     return render(request, 'payments/home.html', context=context)
 
 

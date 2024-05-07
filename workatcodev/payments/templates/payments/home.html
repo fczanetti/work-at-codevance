@@ -20,20 +20,36 @@
         </form>
         {% if payments %}
             <div class="payment-titles">
-                <div>Fornecedor</div>
-                <div class="payment-infos">
-                    <div class="payment-due-date">Vencimento</div>
-                    <div class="payment-value">Valor (R$)</div>
-                </div>
+                {% if status == 'PC' or status == 'AN' or status == 'D' %}
+                    <div>Fornecedor - Valor orig.</div>
+                    <div class="payment-infos">
+                        <div class="payment-due-date">Novo vencimento<span>/</span></div>
+                        <div class="payment-value">Novo valor (R$)</div>
+                    </div>
+                {% else %}
+                    <div>Fornecedor</div>
+                    <div class="payment-infos">
+                        <div class="payment-due-date">Vencimento<span>/</span></div>
+                        <div class="payment-value">Valor (R$)</div>
+                    </div>
+                {% endif %}
             </div>
         {% endif %}
         {% for payment in payments %}
             <div class="payment-item">
-                <div>{{ payment.supplier }}</div>
-                <div class="payment-infos">
-                    <div class="payment-due-date">{{ payment.due_date|date:"d/m/Y" }}</div>
-                    <div class="payment-value">{{ payment.value|floatformat:"2g" }}</div>
-                </div>
+                {% if status == 'PC' or status == 'AN' or status == 'D' %}
+                    <div>{{ payment }}</div>
+                    <div class="payment-infos">
+                        <div class="payment-due-date">{{ payment.anticipation.new_due_date|date:"d/m/Y" }}<span>/</span></div>
+                        <div class="payment-value">{{ payment.anticipation.new_value|floatformat:"2g" }}</div>
+                    </div>
+                {% else %}
+                    <div>{{ payment.supplier }}</div>
+                    <div class="payment-infos">
+                        <div class="payment-due-date">{{ payment.due_date|date:"d/m/Y" }}<span>/</span></div>
+                        <div class="payment-value">{{ payment.value|floatformat:"2g" }}</div>
+                    </div>
+                {% endif %}
             </div>
         {% empty %}
             <div>Não há pagamentos cadastrados.</div>
