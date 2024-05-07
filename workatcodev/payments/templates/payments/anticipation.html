@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block css %}
+    <link rel="stylesheet" href="{% static 'payments/css/anticipation.css' %}">
 {% endblock css %}
 
 {% block title %}
@@ -10,6 +11,15 @@
 
 {% block maincontent %}
     <section id="main-content-anticipation">
-
+        <h1 id="main-content-title">Antecipação de pagamento</h1>
+        <h2>{{ payment }}</h2>
+        <h3>Vencimento: {{ payment.due_date|date:"d/m/Y" }}</h3>
+        <form action="" method="POST">
+            {% csrf_token %}
+            {{ form.new_due_date.label_tag }} {{ form.new_due_date }}
+            <p class="errornote">{{ form.new_due_date.errors }}</p>
+            <button id="canc-antic-button"><a href="{% url 'payments:home' %}">Cancelar</a></button>
+            <button type="submit" id="conf-antic-button">Confirmar</button>
+        </form>
     </section>
 {% endblock maincontent %}

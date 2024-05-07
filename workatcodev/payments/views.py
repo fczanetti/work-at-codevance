@@ -1,8 +1,10 @@
 from django.shortcuts import render
 
 from workatcodev.payments import facade
-from workatcodev.payments.forms import FilterStatusForm
+from workatcodev.payments.forms import FilterStatusForm, AnticipationForm
 from django.utils.translation import gettext_lazy as _
+
+from workatcodev.payments.models import Payment
 
 
 def home(request):
@@ -33,4 +35,6 @@ def home(request):
 
 
 def anticipation(request, id):
-    return render(request, 'payments/anticipation.html')
+    payment = Payment.objects.get(id=id)
+    form = AnticipationForm(initial={'payment': payment})
+    return render(request, 'payments/anticipation.html', {'form': form, 'payment': payment})
