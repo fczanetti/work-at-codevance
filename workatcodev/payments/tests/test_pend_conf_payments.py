@@ -1,4 +1,4 @@
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
 
 import pytest
 from django.urls import reverse
@@ -35,18 +35,14 @@ def resp_filter_pending_conf_user_01(client_logged_supplier_01,
     return resp
 
 
-def test_filter_pending_confirmation_supplier_01(resp_filter_pending_conf_user_01,
-                                                 payment_user_01_anticipation_created):
-    """
-    Certifies that pending confirmation payments are shown when
-    filtered.
-    """
-    due_date = date.strftime(payment_user_01_anticipation_created.due_date, '%d/%m/%Y')
-    assert_contains(resp_filter_pending_conf_user_01, payment_user_01_anticipation_created.supplier)
-    assert_contains(resp_filter_pending_conf_user_01, due_date)
-    assert_contains(resp_filter_pending_conf_user_01,
-                    f'{payment_user_01_anticipation_created.value:_.2f}'.replace('.', ',').
-                    replace('_', '.'))
+# def test_filter_pending_confirmation_supplier_01(resp_filter_pending_conf_user_01,
+#                                                  payment_user_01_anticipation_created):
+#     """
+#     Certifies that pending confirmation payments are shown when
+#     filtered.
+#     """
+#     due_date = date.strftime(payment_user_01_anticipation_created.due_date, '%d/%m/%Y')
+#     assert_contains(resp_filter_pending_conf_user_01, payment_user_01_anticipation_created.supplier)
 
 
 def test_filter_pend_conf_supplier_01_status_a(resp_filter_pending_conf_user_01,
@@ -56,8 +52,8 @@ def test_filter_pend_conf_supplier_01_status_a(resp_filter_pending_conf_user_01,
     related and this anticipation has status = 'A' (Approved).
     """
     assert_not_contains(resp_filter_pending_conf_user_01,
-                        f'{payment_user_01_anticipation_related_status_a.value:_.2f}'.replace('.', ',').
-                        replace('_', '.'))
+                        f'{payment_user_01_anticipation_related_status_a.anticipation.new_value:_.2f}'
+                        .replace('.', ',').replace('_', '.'))
 
 
 def test_filter_pend_conf_supplier_01_status_d(resp_filter_pending_conf_user_01,
@@ -67,8 +63,8 @@ def test_filter_pend_conf_supplier_01_status_d(resp_filter_pending_conf_user_01,
     related and this anticipation has status = 'D' (Denied).
     """
     assert_not_contains(resp_filter_pending_conf_user_01,
-                        f'{payment_user_01_anticipation_related_status_d.value:_.2f}'.replace('.', ',').
-                        replace('_', '.'))
+                        f'{payment_user_01_anticipation_related_status_d.anticipation.new_value:_.2f}'
+                        .replace('.', ',').replace('_', '.'))
 
 
 def test_filter_pend_conf_supplier_01_orig_due_date_reached(db, payment, supplier_01, client_logged_supplier_01):
@@ -100,3 +96,30 @@ def test_title_pend_confirm_payments(resp_filter_pending_conf_user_01):
     is present.
     """
     assert_contains(resp_filter_pending_conf_user_01, _('Pending anticipation confirmation'))
+
+
+def test_new_value_titles_pend_conf(resp_filter_pending_conf_user_01):
+    """
+    Certifies that new value title is present when
+    filtering pending confirmation payments.
+    """
+    assert_contains(resp_filter_pending_conf_user_01, '<div class="payment-value">Novo valor (R$)</div>')
+    assert_contains(resp_filter_pending_conf_user_01, '<div>Fornecedor - Valor orig.</div>')
+    assert_contains(resp_filter_pending_conf_user_01, '<div class="payment-due-date">Novo '
+                                                      'vencimento<span>/</span></div>')
+
+
+def test_new_infos_pend_conf_filter(resp_filter_pending_conf_user_01,
+                                    payment_user_01_anticipation_created):
+    """
+    Certifies that the new payment infos are shown when
+    filtering pending confirmation payments.
+    """
+    new_due_date = (datetime
+                    .strptime(payment_user_01_anticipation_created.anticipation.new_due_date, '%Y-%m-%d')
+                    .strftime('%d/%m/%Y'))
+    assert_contains(resp_filter_pending_conf_user_01,
+                    f'{payment_user_01_anticipation_created.anticipation.new_value:_.2f}'
+                    .replace('.', ',').replace('_', '.'))
+    assert_contains(resp_filter_pending_conf_user_01, payment_user_01_anticipation_created)
+    assert_contains(resp_filter_pending_conf_user_01, new_due_date)

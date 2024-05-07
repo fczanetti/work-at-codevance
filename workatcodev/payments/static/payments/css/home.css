@@ -45,13 +45,18 @@ label {
 }
 
 .payment-infos {
-    min-width: 25%;
+    /*min-width: 25%;*/
     display: flex;
-    justify-content: space-between;
+    /*justify-content: space-between;*/
 }
 
 .payment-value {
-    margin-left: 10px;
+    /*margin-left: 10px;*/
+}
+
+span {
+    font-weight: bold;
+    margin: 0 10px;
 }
 
 @media screen and (max-width: 550px) {

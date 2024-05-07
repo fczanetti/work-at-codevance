@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import pytest
 from django.urls import reverse
 from model_bakery import baker
@@ -26,7 +28,7 @@ def test_supplier_01_approved_payments(resp_filter_approved_user_01,
     when filtered.
     """
     assert_contains(resp_filter_approved_user_01,
-                    f'{payment_user_01_anticipation_related_status_a.value:_.2f}'
+                    f'{payment_user_01_anticipation_related_status_a.anticipation.new_value:_.2f}'
                     .replace('.', ',').replace('_', '.'))
 
 
@@ -68,3 +70,30 @@ def test_title_approved_payments(resp_filter_approved_user_01):
     is present.
     """
     assert_contains(resp_filter_approved_user_01, _('Anticipated payments'))
+
+
+def test_new_value_titles_approved(resp_filter_approved_user_01):
+    """
+    Certifies that new value title is present when
+    filtering approved payments.
+    """
+    assert_contains(resp_filter_approved_user_01, '<div class="payment-value">Novo valor (R$)</div>')
+    assert_contains(resp_filter_approved_user_01, '<div>Fornecedor - Valor orig.</div>')
+    assert_contains(resp_filter_approved_user_01, '<div class="payment-due-date">Novo '
+                                                  'vencimento<span>/</span></div>')
+
+
+def test_new_infos_approved_filter(resp_filter_approved_user_01,
+                                   payment_user_01_anticipation_related_status_a):
+    """
+    Certifies that the new payment infos are shown when
+    filtering approved payments.
+    """
+    new_due_date = (datetime
+                    .strptime(payment_user_01_anticipation_related_status_a.anticipation.new_due_date, '%Y-%m-%d')
+                    .strftime('%d/%m/%Y'))
+    assert_contains(resp_filter_approved_user_01,
+                    f'{payment_user_01_anticipation_related_status_a.anticipation.new_value:_.2f}'
+                    .replace('.', ',').replace('_', '.'))
+    assert_contains(resp_filter_approved_user_01, payment_user_01_anticipation_related_status_a)
+    assert_contains(resp_filter_approved_user_01, new_due_date)
