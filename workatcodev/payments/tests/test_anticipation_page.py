@@ -52,7 +52,7 @@ def test_form_fields_are_present(resp_anticip_page_logged_supplier_01):
     Certifies that the form fields and buttons are present.
     """
     assert_contains(resp_anticip_page_logged_supplier_01, '<label for="id_new_due_date">Novo vencimento:</label>')
-    assert_contains(resp_anticip_page_logged_supplier_01, '<input type="text" name="new_due_date" required '
+    assert_contains(resp_anticip_page_logged_supplier_01, '<input type="date" name="new_due_date" required '
                                                           'id="id_new_due_date"')
     assert_contains(resp_anticip_page_logged_supplier_01, '<button type="submit" '
                                                           'id="conf-antic-button">Confirmar</button>')

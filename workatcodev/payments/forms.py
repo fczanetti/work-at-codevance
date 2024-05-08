@@ -11,4 +11,5 @@ class FilterStatusForm(forms.Form):
 class AnticipationForm(forms.ModelForm):
     class Meta:
         model = Anticipation
-        fields = ['new_due_date']
+        fields = ['payment', 'new_due_date']
+        widgets = {'new_due_date': forms.DateInput(attrs={'type': 'date'})}
