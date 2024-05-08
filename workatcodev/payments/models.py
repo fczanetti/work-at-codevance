@@ -86,9 +86,9 @@ class Anticipation(models.Model):
 
     def clean(self):
         """
-        If no exceptions are raised from self.check_anticipation_existence() or
-        self.check_date_and_availability() the new value for a payment will be
-        calculated and provided for the field self.new_value.
+        If no exceptions are raised from self.check_date_and_availability()
+        the new value for a payment will be calculated and provided for the
+        field self.new_value.
         """
         self.check_date_and_availability()
         new_value = self.new_payment_value()

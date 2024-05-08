@@ -3,6 +3,7 @@ from datetime import date, timedelta
 from model_bakery import baker
 
 from workatcodev.payments.models import Anticipation, Payment
+from django.urls import reverse
 
 
 @pytest.fixture
@@ -15,6 +16,18 @@ def anticipation(db):
     payment = baker.make(Payment, value=1000, due_date=due_date)
     an = baker.make(Anticipation, payment=payment, new_due_date=new_due_date)
     return an
+
+
+@pytest.fixture
+def resp_anticipation_creation(payment, supplier_01, client_logged_supplier_01):
+    """
+    Creates a request creating an anticipation from
+    anticipation page and returns the response.
+    """
+    payment.supplier = supplier_01
+    resp = client_logged_supplier_01.post(reverse('payments:anticipation', args=(payment.pk,)),
+                                          {'new_due_date': date.today(), 'payment': payment.pk})
+    return resp
 
 
 def test_anticipation_value(anticipation):
@@ -52,3 +65,10 @@ def test_anticipation_update(db, payment):
     ant.new_due_date = d2
     ant.save()
     assert ant.new_due_date == d2
+
+
+def test_anticipation_created_via_form(resp_anticipation_creation, payment):
+    """
+    Certifies that an anticipation was created.
+    """
+    assert Anticipation.objects.filter(payment=payment).exists() is True

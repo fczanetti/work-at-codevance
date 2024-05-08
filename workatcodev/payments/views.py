@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, reverse
 
 from workatcodev.payments import facade
 from workatcodev.payments.forms import FilterStatusForm, AnticipationForm
@@ -36,5 +36,13 @@ def home(request):
 
 def anticipation(request, id):
     payment = Payment.objects.get(id=id)
-    form = AnticipationForm(initial={'payment': payment})
+    if request.method == 'POST':
+        data = {'payment': f'{payment.pk}', 'new_due_date': request.POST['new_due_date']}
+        form = AnticipationForm(data)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('payments:home'))
+        else:
+            return render(request, 'payments/anticipation.html', {'form': form, 'payment': payment})
+    form = AnticipationForm()
     return render(request, 'payments/anticipation.html', {'form': form, 'payment': payment})
