@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-29 13:52-0300\n"
+"POT-Creation-Date: 2024-05-08 20:04-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
 #: workatcodev/base/admin.py:35
 msgid "Personal info"
 msgstr ""
@@ -81,25 +82,48 @@ msgstr ""
 msgid "users"
 msgstr ""
 
-#: workatcodev/payments/views.py:9
-msgid "Available for anticipation"
-msgstr "Disponíveis para antecipação"
+#: workatcodev/payments/forms.py:23
+#: workatcodev/payments/tests/test_anticipation_creation.py:58
+msgid "The new payment date must be today or some day after."
+msgstr "A nova data do pagamento deve ser hoje ou alguma data posterior."
 
-#: workatcodev/payments/views.py:10
-msgid "Unavailable for anticipation"
-msgstr "Indisponíveis para antecipação"
+#: workatcodev/payments/models.py:39
+msgid "Due date must be today or some day after."
+msgstr "A data de vencimento deve ser hoje ou algum dia posterior."
 
-#: workatcodev/payments/views.py:11
-msgid "Pending anticipation confirmation"
-msgstr "Confirmação de antecipação pendente"
+#: workatcodev/payments/models.py:81
+msgid "An anticipation can not be created from an unavailable payment."
+msgstr "Uma antecipação não pode ser criada a partir de um pagamento indisponível."
 
-#: workatcodev/payments/views.py:12
+#: workatcodev/payments/tests/test_approved_payments.py:72
+#: workatcodev/payments/views.py:15
 msgid "Anticipated payments"
 msgstr "Pagamentos antecipados"
 
-#: workatcodev/payments/views.py:13
+#: workatcodev/payments/tests/test_available_payments.py:70
+#: workatcodev/payments/views.py:12
+msgid "Available for anticipation"
+msgstr "Disponíveis para antecipação"
+
+#: workatcodev/payments/tests/test_denied_payments.py:71
+#: workatcodev/payments/views.py:16
 msgid "Denied anticipation"
 msgstr "Antecipação negada"
+
+#: workatcodev/payments/tests/test_pend_conf_payments.py:98
+#: workatcodev/payments/views.py:14
+msgid "Pending anticipation confirmation"
+msgstr "Confirmação de antecipação pendente"
+
+#: workatcodev/payments/tests/test_unavailable_payments.py:70
+#: workatcodev/payments/views.py:13
+msgid "Unavailable for anticipation"
+msgstr "Indisponíveis para antecipação"
+
+#: workatcodev/payments/views.py:41
+#: msgid "Unavailable for anticipation"
+msgid "Unavailable payments can not be anticipated."
+msgstr "Pagamentos indisponíveis não podem ser antecipados."
 
 #: workatcodev/settings.py:129
 msgid "Available"

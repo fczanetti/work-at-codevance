@@ -36,8 +36,12 @@ def home(request):
 
 def anticipation(request, id):
     payment = Payment.objects.get(id=id)
+    if not payment.is_available():
+        raise ValueError(_('Unavailable payments can not be anticipated.'))
     if request.method == 'POST':
-        data = {'payment': f'{payment.pk}', 'new_due_date': request.POST['new_due_date']}
+        new_due_date = request.POST['new_due_date']
+        new_value = facade.new_payment_value(payment, new_due_date)
+        data = {'payment': f'{payment.pk}', 'new_due_date': request.POST['new_due_date'], 'new_value': new_value}
         form = AnticipationForm(data)
         if form.is_valid():
             form.save()
