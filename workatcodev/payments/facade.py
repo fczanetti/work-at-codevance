@@ -1,5 +1,6 @@
 from datetime import date
 
+from workatcodev import settings
 from workatcodev.payments.models import Payment, Supplier
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -95,3 +96,15 @@ def get_denied_payments(user):
     if supplier:
         payments = payments.filter(supplier=supplier.id)
     return list(payments)
+
+
+def new_payment_value(payment, new_due_date):
+    """
+    Calculates the new value for the payment based on the new date of payment.
+    """
+    i_rate = settings.INTEREST_RATE
+    orig_date = date.fromisoformat(str(payment.due_date))
+    new_date = date.fromisoformat(str(new_due_date))
+    n_days = (orig_date - new_date).days
+    new_value = payment.value - (payment.value * (i_rate / 30) * n_days)
+    return new_value

@@ -56,7 +56,8 @@ def payment_supplier_01(supplier_01):
     """
     Creates and returns a payment related to supplier_01.
     """
-    payment_01 = baker.make(Payment, supplier=supplier_01)
+    due_date = date.today() + timedelta(days=1)
+    payment_01 = baker.make(Payment, supplier=supplier_01, due_date=due_date)
     return payment_01
 
 
