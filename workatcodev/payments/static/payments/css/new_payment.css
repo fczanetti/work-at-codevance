@@ -2,3 +2,29 @@
     font-size: 2rem;
     margin-bottom: 2rem;
 }
+
+#id_supplier, #id_due_date, #id_value {
+    font-size: 1.1rem;
+    padding: 0.1rem 0.5rem;
+    border-radius: 5px;
+    text-align: center;
+    width: 50%;
+    margin-bottom: 1rem;
+
+}
+
+@media screen and (max-width: 1000px) {
+    #id_supplier,
+    #id_due_date,
+    #id_value {
+        width: 70%;
+    }
+}
+
+@media screen and (max-width: 550px) {
+        #id_supplier,
+        #id_due_date,
+        #id_value {
+            width: 100%;
+        }
+}

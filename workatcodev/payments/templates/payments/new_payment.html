@@ -3,6 +3,7 @@
 
 {% block css %}
     <link rel="stylesheet" href="{% static 'payments/css/new_payment.css' %}">
+    <link rel="stylesheet" href="{% static 'payments/css/common_settings.css' %}">
 {% endblock css %}
 
 {% block title %}
@@ -12,5 +13,18 @@
 {% block maincontent %}
     <section id="main-content-new-payment">
         <h1 id="main-content-title">Novo pagamento</h1>
+        <form action="" method="POST">
+            {% csrf_token %}
+            <div id="form-fields">
+                {{ form.supplier.label_tag }} {{ form.supplier }}
+                <p class="errornote">{{ form.supplier.errors }}</p>
+                {{ form.due_date.label_tag }} {{ form.due_date }}
+                <p class="errornote">{{ form.due_date.errors }}</p>
+                {{ form.value.label_tag }} {{ form.value }}
+                <p class="errornote">{{ form.value.errors }}</p>
+            </div>
+            <a href="{% url 'payments:home' %}" id="canc-button">Cancelar</a>
+            <button type="submit" id="conf-button">Confirmar</button>
+        </form>
     </section>
 {% endblock maincontent %}
