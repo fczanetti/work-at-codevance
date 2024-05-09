@@ -3,6 +3,11 @@
     margin-bottom: 2rem;
 }
 
+.errorlist {
+    color: red;
+    margin-bottom: 1.5rem;
+}
+
 #form-fields {
     display: flex;
     flex-direction: column;

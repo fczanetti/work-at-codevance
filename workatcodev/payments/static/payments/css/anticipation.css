@@ -12,6 +12,7 @@ form {
     border-radius: 5px;
     text-align: center;
     width: 25%;
+    margin-bottom: 1rem;
 }
 
 @media screen and (max-width: 1000px) {

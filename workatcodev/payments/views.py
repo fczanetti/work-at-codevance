@@ -53,5 +53,12 @@ def anticipation(request, id):
 
 
 def new_payment(request):
+    if request.method == 'POST':
+        form = NewPaymentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('payments:home'))
+        else:
+            return render(request, 'payments/new_payment.html', {'form': form})
     form = NewPaymentForm()
     return render(request, 'payments/new_payment.html', {'form': form})

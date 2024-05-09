@@ -36,7 +36,7 @@ def test_form_items_new_payment_page(resp_payment_creation_page_supplier_01):
     assert_contains(resp_payment_creation_page_supplier_01, '<label for="id_supplier">Fornecedor:</label>')
     assert_contains(resp_payment_creation_page_supplier_01, '<select name="supplier" required id="id_supplier">')
     assert_contains(resp_payment_creation_page_supplier_01, '<label for="id_due_date">Vencimento:</label>')
-    assert_contains(resp_payment_creation_page_supplier_01, '<input type="text" name="due_date" '
+    assert_contains(resp_payment_creation_page_supplier_01, '<input type="date" name="due_date" '
                                                             'required id="id_due_date">')
     assert_contains(resp_payment_creation_page_supplier_01, '<label for="id_value">Valor:</label>')
     assert_contains(resp_payment_creation_page_supplier_01, '<input type="number" name="value" step="any" '
