@@ -50,3 +50,7 @@ def anticipation(request, id):
             return render(request, 'payments/anticipation.html', {'form': form, 'payment': payment})
     form = AnticipationForm()
     return render(request, 'payments/anticipation.html', {'form': form, 'payment': payment})
+
+
+def new_payment(request):
+    return render(request, 'payments/new_payment.html')
