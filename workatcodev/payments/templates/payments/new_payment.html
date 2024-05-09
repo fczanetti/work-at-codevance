@@ -16,8 +16,10 @@
         <form action="" method="POST">
             {% csrf_token %}
             <div id="form-fields">
-                {{ form.supplier.label_tag }} {{ form.supplier }}
-                <p class="errornote">{{ form.supplier.errors }}</p>
+                {% if not supplier %}
+                    {{ form.supplier.label_tag }} {{ form.supplier }}
+                    <p class="errornote">{{ form.supplier.errors }}</p>
+                {% endif %}
                 {{ form.due_date.label_tag }} {{ form.due_date }}
                 <p class="errornote">{{ form.due_date.errors }}</p>
                 {{ form.value.label_tag }} {{ form.value }}

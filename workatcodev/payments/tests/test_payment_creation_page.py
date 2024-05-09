@@ -1,11 +1,11 @@
 import pytest
 from django.urls import reverse
 
-from workatcodev.django_assertions import assert_contains
+from workatcodev.django_assertions import assert_contains, assert_not_contains
 
 
 @pytest.fixture
-def resp_payment_creation_page_supplier_01(client_logged_supplier_01):
+def resp_payment_creation_page_supplier_01(supplier_01, client_logged_supplier_01):
     """
     Creates a request to payment creation page and
     returns a response.
@@ -33,8 +33,6 @@ def test_form_items_new_payment_page(resp_payment_creation_page_supplier_01):
     """
     Certifies that form items are present on the page.
     """
-    assert_contains(resp_payment_creation_page_supplier_01, '<label for="id_supplier">Fornecedor:</label>')
-    assert_contains(resp_payment_creation_page_supplier_01, '<select name="supplier" required id="id_supplier">')
     assert_contains(resp_payment_creation_page_supplier_01, '<label for="id_due_date">Vencimento:</label>')
     assert_contains(resp_payment_creation_page_supplier_01, '<input type="date" name="due_date" '
                                                             'required id="id_due_date">')
@@ -43,3 +41,12 @@ def test_form_items_new_payment_page(resp_payment_creation_page_supplier_01):
                                                             'required id="id_value">')
     assert_contains(resp_payment_creation_page_supplier_01, '<a href="/" id="canc-button">Cancelar</a>')
     assert_contains(resp_payment_creation_page_supplier_01, '<button type="submit" id="conf-button">Confirmar</button>')
+
+
+def test_supplier_select_not_present(resp_payment_creation_page_supplier_01):
+    """
+    Certifies that the possibility of selecting a supplier when
+    creating a payment is not present for a supplier.
+    """
+    assert_not_contains(resp_payment_creation_page_supplier_01, '<label for="id_supplier">Fornecedor:</label>')
+    assert_not_contains(resp_payment_creation_page_supplier_01, '<select name="supplier" required id="id_supplier">')

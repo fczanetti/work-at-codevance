@@ -157,3 +157,21 @@ def unavailable_payment(db):
     today = date.today()
     unav_paym = baker.make(Payment, due_date=today)
     return unav_paym
+
+
+@pytest.fixture
+def operator(db):
+    """
+    Creates and returns a user/operator.
+    """
+    op = baker.make(get_user_model(), email='operator01@email.com', is_operator=True)
+    return op
+
+
+@pytest.fixture
+def client_logged_operator(client, operator):
+    """
+    Creates a logged client from an operator.
+    """
+    client.force_login(operator)
+    return client
