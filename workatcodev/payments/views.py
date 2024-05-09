@@ -4,7 +4,7 @@ from workatcodev.payments import facade
 from workatcodev.payments.forms import FilterStatusForm, AnticipationForm, NewPaymentForm
 from django.utils.translation import gettext_lazy as _
 
-from workatcodev.payments.models import Payment
+from workatcodev.payments.models import Payment, Supplier
 
 
 def home(request):
@@ -53,12 +53,21 @@ def anticipation(request, id):
 
 
 def new_payment(request):
+    context = {'form': NewPaymentForm()}
+    supplier = None
+    if Supplier.objects.filter(user=request.user).exists():
+        supplier = Supplier.objects.get(user=request.user)
+        context['supplier'] = supplier
     if request.method == 'POST':
-        form = NewPaymentForm(request.POST)
+        if supplier:
+            data = {'supplier': supplier, 'due_date': request.POST['due_date'], 'value': request.POST['value']}
+            form = NewPaymentForm(data)
+        else:
+            form = NewPaymentForm(request.POST)
+        context['form'] = form
         if form.is_valid():
             form.save()
             return redirect(reverse('payments:home'))
         else:
-            return render(request, 'payments/new_payment.html', {'form': form})
-    form = NewPaymentForm()
-    return render(request, 'payments/new_payment.html', {'form': form})
+            return render(request, 'payments/new_payment.html', context=context)
+    return render(request, 'payments/new_payment.html', context=context)
