@@ -36,6 +36,9 @@ def home(request):
 
 def anticipation(request, id):
     payment = Payment.objects.get(id=id)
+    if Supplier.objects.filter(user=request.user).exists():
+        if payment.supplier.user.id != request.user.id:
+            return redirect(reverse('base:denied_access'))
     if not payment.is_available():
         raise ValueError(_('Unavailable payments can not be anticipated.'))
     if request.method == 'POST':

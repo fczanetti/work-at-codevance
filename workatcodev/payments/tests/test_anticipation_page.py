@@ -57,3 +57,27 @@ def test_form_fields_are_present(resp_anticip_page_logged_supplier_01):
     assert_contains(resp_anticip_page_logged_supplier_01, '<button type="submit" id="conf-button">Confirmar</button>')
     assert_contains(resp_anticip_page_logged_supplier_01, f'<a href="{reverse("payments:home")}" '
                                                           f'id="canc-button">Cancelar</a>')
+
+
+def test_try_access_anticip_paym_supp_02_by_supp_01(supplier_01, client_logged_supplier_01, supplier_02, payment):
+    """
+    Certifies that a supplier can not access anticipation page
+    of a payment that does not belong to him (Via URL).
+    """
+    payment.supplier = supplier_02
+    payment.save()
+    resp = client_logged_supplier_01.get(reverse('payments:anticipation', args=(payment.pk,)))
+    assert resp.status_code == 302
+    assert resp.url.startswith('/denied_access/')
+
+
+def test_operator_access_antic_page_all_suppliers(client_logged_operator, payment, supplier_02):
+    """
+    Certifies that an operator can access anticipation page and create anticipations
+    for every available payments.
+    """
+    payment.supplier = supplier_02
+    payment.save()
+    resp = client_logged_operator.get(reverse('payments:anticipation', args=(payment.pk,)))
+    assert resp.status_code == 200
+    assert resp.request['PATH_INFO'].startswith('/anticipation')

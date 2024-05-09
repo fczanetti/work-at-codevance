@@ -14,6 +14,16 @@ def resp_payment_creation_page_supplier_01(supplier_01, client_logged_supplier_0
     return resp
 
 
+@pytest.fixture
+def resp_payment_creation_page_operator(client_logged_operator):
+    """
+    Creates a request by an operator to payment creation page and
+    returns a response.
+    """
+    resp = client_logged_operator.get(reverse('payments:new_payment'))
+    return resp
+
+
 def test_status_code_paym_creat_page_supp_01(resp_payment_creation_page_supplier_01):
     """
     Certifies that payment creation page is loaded successfully.
@@ -50,3 +60,12 @@ def test_supplier_select_not_present(resp_payment_creation_page_supplier_01):
     """
     assert_not_contains(resp_payment_creation_page_supplier_01, '<label for="id_supplier">Fornecedor:</label>')
     assert_not_contains(resp_payment_creation_page_supplier_01, '<select name="supplier" required id="id_supplier">')
+
+
+def test_supplier_select_present_for_operator(resp_payment_creation_page_operator):
+    """
+    Certifies that the possibility of selecting a supplier when
+    creating a payment is present for an operator.
+    """
+    assert_contains(resp_payment_creation_page_operator, '<label for="id_supplier">Fornecedor:</label>')
+    assert_contains(resp_payment_creation_page_operator, '<select name="supplier" required id="id_supplier">')
