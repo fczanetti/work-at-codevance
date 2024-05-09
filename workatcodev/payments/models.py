@@ -1,7 +1,6 @@
 from datetime import date
 from django.db import models
 from django.contrib.auth import get_user_model
-from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
 
 
@@ -29,16 +28,6 @@ class Payment(models.Model):
         """
         return f'{reverse("payments:anticipation", args=(self.pk,))}'
 
-    def check_payment_due_date(self):
-        """
-        This function makes sure no payments are created with due_date earlier
-        than the day of creation.
-        """
-        due_date_str = str(self.due_date)
-        if date.fromisoformat(due_date_str) < date.today():
-            raise ValueError(_('Due date must be today or some day after.'))
-        return
-
     def is_available(self):
         """
         Returns True if self.due_date was not reached yet,
@@ -48,14 +37,6 @@ class Payment(models.Model):
         if date.fromisoformat(due_date_str) <= date.today():
             return False
         return True
-
-    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
-        """
-        The function check_payment_due_date() is used to make sure the payment status is not saved
-        if it is created with due_date earlier than today's date.
-        """
-        self.check_payment_due_date()
-        super().save(force_insert=False, force_update=False, using=None, update_fields=None)
 
 
 class Anticipation(models.Model):

@@ -28,3 +28,10 @@ class NewPaymentForm(forms.ModelForm):
     class Meta:
         model = Payment
         fields = ['supplier', 'due_date', 'value']
+        widgets = {'due_date': forms.DateInput(attrs={'type': 'date'})}
+
+    def clean_due_date(self):
+        d = self.cleaned_data['due_date']
+        if d < date.today():
+            raise ValidationError(_('Due date must be today or some day after.'), code='invalid')
+        return d
