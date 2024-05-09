@@ -1,0 +1,38 @@
+#main-content-title {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+}
+
+#form-fields {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-size: 1.1rem;
+}
+
+#conf-button {
+    font-size: 1.1rem;
+    padding: 0.2rem 1rem;
+    border-radius: 5px;
+    background-color: green;
+    color: white;
+    cursor: pointer;
+    margin-top: 1rem;
+    border: none;
+}
+
+#canc-button {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1rem;
+    padding: 0.2rem 1rem;
+    border-radius: 5px;
+    background-color: red;
+}
+
+#canc-button a {
+    text-decoration: none;
+    color: white;
+}

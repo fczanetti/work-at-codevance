@@ -54,7 +54,6 @@ def test_form_fields_are_present(resp_anticip_page_logged_supplier_01):
     assert_contains(resp_anticip_page_logged_supplier_01, '<label for="id_new_due_date">Novo vencimento:</label>')
     assert_contains(resp_anticip_page_logged_supplier_01, '<input type="date" name="new_due_date" required '
                                                           'id="id_new_due_date"')
-    assert_contains(resp_anticip_page_logged_supplier_01, '<button type="submit" '
-                                                          'id="conf-antic-button">Confirmar</button>')
-    assert_contains(resp_anticip_page_logged_supplier_01, f'<button id="canc-antic-button"><a '
-                                                          f'href="{reverse("payments:home")}">Cancelar</a></button>')
+    assert_contains(resp_anticip_page_logged_supplier_01, '<button type="submit" id="conf-button">Confirmar</button>')
+    assert_contains(resp_anticip_page_logged_supplier_01, f'<a href="{reverse("payments:home")}" '
+                                                          f'id="canc-button">Cancelar</a>')

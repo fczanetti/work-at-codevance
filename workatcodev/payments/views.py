@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, reverse
 
 from workatcodev.payments import facade
-from workatcodev.payments.forms import FilterStatusForm, AnticipationForm
+from workatcodev.payments.forms import FilterStatusForm, AnticipationForm, NewPaymentForm
 from django.utils.translation import gettext_lazy as _
 
 from workatcodev.payments.models import Payment
@@ -53,4 +53,5 @@ def anticipation(request, id):
 
 
 def new_payment(request):
-    return render(request, 'payments/new_payment.html')
+    form = NewPaymentForm()
+    return render(request, 'payments/new_payment.html', {'form': form})

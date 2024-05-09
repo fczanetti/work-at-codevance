@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
 from workatcodev import settings
-from workatcodev.payments.models import Anticipation
+from workatcodev.payments.models import Anticipation, Payment
 from datetime import date
 
 
@@ -22,3 +22,9 @@ class AnticipationForm(forms.ModelForm):
         if d < date.today():
             raise ValidationError(_('The new payment date must be today or some day after.'), code='invalid')
         return d
+
+
+class NewPaymentForm(forms.ModelForm):
+    class Meta:
+        model = Payment
+        fields = ['supplier', 'due_date', 'value']
