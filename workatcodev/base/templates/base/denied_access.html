@@ -1,0 +1,16 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'base/css/denied_access.css' %}">
+{% endblock css %}
+
+{% block title %}
+    <title>Pagamentos - Acesso negado</title>
+{% endblock title %}
+
+{% block maincontent %}
+    <section id="main-content-denied_content">
+        <h1 id="main-content-title">Desculpe, mas você não tem acesso a este conteúdo.</h1>
+    </section>
+{% endblock maincontent %}
