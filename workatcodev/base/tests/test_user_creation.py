@@ -41,3 +41,13 @@ def test_user_is_not_operator(user_not_operator):
     Certifies that a user created as non operator does not belong to the Operators group.
     """
     assert not user_not_operator.groups.filter(name='Operators').exists()
+
+
+def test_operator_has_permissions(user_operator):
+    """
+    Certifies that an operator, when created, has permissions
+    to create payments, create and change anticipations.
+    """
+    assert user_operator.has_perm('payments.add_payment')
+    assert user_operator.has_perm('payments.add_anticipation')
+    assert user_operator.has_perm('payments.change_anticipation')
