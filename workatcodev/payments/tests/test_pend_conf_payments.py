@@ -1,24 +1,14 @@
-from datetime import date, timedelta, datetime
+from datetime import date, datetime
 
 import pytest
 from django.urls import reverse
 from model_bakery import baker
 
 from workatcodev.django_assertions import assert_contains, assert_not_contains
-from workatcodev.payments.models import Anticipation, Payment
+from workatcodev.payments.models import Anticipation
 from django.utils.translation import gettext_lazy as _
 
-
-@pytest.fixture
-def pending_confirm_payment_user_02(db, supplier_02):
-    """
-    Creates and returns a payment with anticipation requested
-    but not approved or denied (status='PC').
-    """
-    d = date.today() + timedelta(days=5)
-    payment = baker.make(Payment, supplier=supplier_02, due_date=d)
-    baker.make(Anticipation, payment=payment)
-    return payment
+from workatcodev.utils import format_value
 
 
 @pytest.fixture
@@ -26,7 +16,8 @@ def resp_filter_pending_conf_user_01(client_logged_supplier_01,
                                      payment_user_01_anticipation_created,
                                      payment_user_01_anticipation_related_status_a,
                                      payment_user_01_anticipation_related_status_d,
-                                     pending_confirm_payment_user_02):
+                                     payment_user_02_anticipation_created,
+                                     payment_supplier_01):
     """
     Creates a request filtering payments with status = 'PC'
     (pending confirmation) and returns the response.
@@ -35,59 +26,65 @@ def resp_filter_pending_conf_user_01(client_logged_supplier_01,
     return resp
 
 
-# def test_filter_pending_confirmation_supplier_01(resp_filter_pending_conf_user_01,
-#                                                  payment_user_01_anticipation_created):
-#     """
-#     Certifies that pending confirmation payments are shown when
-#     filtered.
-#     """
-#     due_date = date.strftime(payment_user_01_anticipation_created.due_date, '%d/%m/%Y')
-#     assert_contains(resp_filter_pending_conf_user_01, payment_user_01_anticipation_created.supplier)
+@pytest.fixture
+def resp_filter_pending_conf_operator(client_logged_operator,
+                                      payment_user_01_anticipation_created,
+                                      payment_user_02_anticipation_created):
+    """
+    Creates a request by an operator filtering
+    pending confirmation payments.
+    """
+    resp = client_logged_operator.post(reverse('payments:home'), {'status': 'PC'})
+    return resp
 
 
-def test_filter_pend_conf_supplier_01_status_a(resp_filter_pending_conf_user_01,
-                                               payment_user_01_anticipation_related_status_a):
+@pytest.fixture
+def resp_filter_pending_conf_common_user(client_logged_common_user,
+                                         payment_user_01_anticipation_created,
+                                         payment_user_02_anticipation_created):
+    """
+    Creates a request by a common user filtering
+    pending confirmation payments.
+    """
+    resp = client_logged_common_user.post(reverse('payments:home'), {'status': 'PC'})
+    return resp
+
+
+def test_filter_pend_conf_supplier_01_status_a_or_d_not_shown(resp_filter_pending_conf_user_01,
+                                                              payment_user_01_anticipation_related_status_a,
+                                                              payment_user_01_anticipation_related_status_d):
     """
     Certifies that a payment is not shown if it has an anticipation
-    related and this anticipation has status = 'A' (Approved).
+    related and this anticipation has status = 'A' (Approved) or
+    'D' (Denied).
     """
-    assert_not_contains(resp_filter_pending_conf_user_01,
-                        f'{payment_user_01_anticipation_related_status_a.anticipation.new_value:_.2f}'
-                        .replace('.', ',').replace('_', '.'))
+    va = format_value(payment_user_01_anticipation_related_status_a.anticipation.new_value)
+    vd = format_value(payment_user_01_anticipation_related_status_d.anticipation.new_value)
+    assert_not_contains(resp_filter_pending_conf_user_01, va)
+    assert_not_contains(resp_filter_pending_conf_user_01, vd)
 
 
-def test_filter_pend_conf_supplier_01_status_d(resp_filter_pending_conf_user_01,
-                                               payment_user_01_anticipation_related_status_d):
+def test_filter_pend_conf_supplier_01_orig_due_date_reached(db, client_logged_supplier_01,
+                                                            payment_supplier_01):
     """
-    Certifies that a payment is not shown if it has an anticipation
-    related and this anticipation has status = 'D' (Denied).
+    Certifies that a payment is not shown if its original due date was already reached.
     """
-    assert_not_contains(resp_filter_pending_conf_user_01,
-                        f'{payment_user_01_anticipation_related_status_d.anticipation.new_value:_.2f}'
-                        .replace('.', ',').replace('_', '.'))
-
-
-def test_filter_pend_conf_supplier_01_orig_due_date_reached(db, payment, supplier_01, client_logged_supplier_01):
-    """
-    Certifies that a payment is not shown if its original due date
-    was already reached.
-    """
-    baker.make(Anticipation, payment=payment)
-    payment.due_date = date.today()
-    payment.supplier = supplier_01
-    payment.save()
+    baker.make(Anticipation, payment=payment_supplier_01)
+    payment_supplier_01.due_date = date.today()
+    payment_supplier_01.save()
+    v = format_value(payment_supplier_01.anticipation.new_value)
     resp = client_logged_supplier_01.post(reverse('payments:home'), {'status': 'PC'})
-    assert_not_contains(resp, f'{payment.value:_.2f}'.replace('.', ',').replace('_', '.'))
+    assert_not_contains(resp, v)
 
 
-def test_pend_conf_supplier_02_not_shown(resp_filter_pending_conf_user_01, pending_confirm_payment_user_02):
+def test_pend_conf_supplier_02_not_shown(resp_filter_pending_conf_user_01,
+                                         payment_user_02_anticipation_created):
     """
     Certifies that no payments from other suppliers are shown.
     """
-    assert_not_contains(resp_filter_pending_conf_user_01, pending_confirm_payment_user_02.supplier)
-    assert_not_contains(resp_filter_pending_conf_user_01,
-                        f'{pending_confirm_payment_user_02.value:_.2f}'
-                        .replace('.', ',').replace('_', '.'))
+    v = format_value(payment_user_02_anticipation_created.anticipation.new_value)
+    assert_not_contains(resp_filter_pending_conf_user_01, payment_user_02_anticipation_created.supplier)
+    assert_not_contains(resp_filter_pending_conf_user_01, v)
 
 
 def test_title_pend_confirm_payments(resp_filter_pending_conf_user_01):
@@ -115,11 +112,40 @@ def test_new_infos_pend_conf_filter(resp_filter_pending_conf_user_01,
     Certifies that the new payment infos are shown when
     filtering pending confirmation payments.
     """
-    new_due_date = (datetime
-                    .strptime(payment_user_01_anticipation_created.anticipation.new_due_date, '%Y-%m-%d')
-                    .strftime('%d/%m/%Y'))
-    assert_contains(resp_filter_pending_conf_user_01,
-                    f'{payment_user_01_anticipation_created.anticipation.new_value:_.2f}'
-                    .replace('.', ',').replace('_', '.'))
+    new_d = payment_user_01_anticipation_created.anticipation.new_due_date
+    new_due_date = (datetime.strptime(new_d, '%Y-%m-%d').strftime('%d/%m/%Y'))
+    v = format_value(payment_user_01_anticipation_created.anticipation.new_value)
+    assert_contains(resp_filter_pending_conf_user_01, v)
     assert_contains(resp_filter_pending_conf_user_01, payment_user_01_anticipation_created)
     assert_contains(resp_filter_pending_conf_user_01, new_due_date)
+
+
+def test_payment_with_no_anticipation_not_shown(resp_filter_pending_conf_user_01,
+                                                payment_supplier_01):
+    """
+    Certifies that payments with no anticipation
+    created are not shown.
+    """
+    assert_not_contains(resp_filter_pending_conf_user_01, payment_supplier_01)
+
+
+def test_operator_can_see_pend_conf_paym_from_all_supp(resp_filter_pending_conf_operator,
+                                                       payment_user_01_anticipation_created,
+                                                       payment_user_02_anticipation_created):
+    """
+    Certifies that an operator can see pending confirmation
+    payments from all suppliers.
+    """
+    assert_contains(resp_filter_pending_conf_operator, payment_user_01_anticipation_created)
+    assert_contains(resp_filter_pending_conf_operator, payment_user_02_anticipation_created)
+
+
+def test_common_user_can_see_pend_conf_paym_from_all_supp(resp_filter_pending_conf_common_user,
+                                                          payment_user_01_anticipation_created,
+                                                          payment_user_02_anticipation_created):
+    """
+    Certifies that an operator can see pending confirmation
+    payments from all suppliers.
+    """
+    assert_contains(resp_filter_pending_conf_common_user, payment_user_01_anticipation_created)
+    assert_contains(resp_filter_pending_conf_common_user, payment_user_02_anticipation_created)
