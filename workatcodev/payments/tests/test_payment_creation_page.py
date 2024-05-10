@@ -69,3 +69,13 @@ def test_supplier_select_present_for_operator(resp_payment_creation_page_operato
     """
     assert_contains(resp_payment_creation_page_operator, '<label for="id_supplier">Fornecedor:</label>')
     assert_contains(resp_payment_creation_page_operator, '<select name="supplier" required id="id_supplier">')
+
+
+def test_common_user_can_not_access_paym_creat_page(client_logged_common_user):
+    """
+    Certifies that a common user can not access
+    payment creation page.
+    """
+    resp = client_logged_common_user.get(reverse('payments:new_payment'))
+    assert resp.status_code == 302
+    assert resp.url.startswith('/denied_access')

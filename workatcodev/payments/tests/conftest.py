@@ -62,7 +62,7 @@ def payment_supplier_01(supplier_01):
 
 
 @pytest.fixture
-def client_logged_supplier_01(user_01, client):
+def client_logged_supplier_01(user_01, client, supplier_01):
     """
     Creates and returns a client logged with supplier_01 user.
     """
@@ -113,13 +113,26 @@ def unavailable_payments_user_02_due_date(db, supplier_02):
 @pytest.fixture
 def payment_user_01_anticipation_created(db, supplier_01):
     """
-    Creates and returns a payment with anticipation related.
+    Creates and returns a payment with anticipation related
+    (status='PC').
     """
     due_date = date.today() + timedelta(days=5)
     new_due_date = str(date.today() + timedelta(days=1))
     payment_ant = baker.make(Payment, due_date=due_date, supplier=supplier_01)
     baker.make(Anticipation, payment=payment_ant, new_due_date=new_due_date)
     return payment_ant
+
+
+@pytest.fixture
+def payment_user_02_anticipation_created(db, supplier_02):
+    """
+    Creates and returns a payment with anticipation requested
+    but not approved or denied (status='PC').
+    """
+    d = date.today() + timedelta(days=5)
+    payment = baker.make(Payment, supplier=supplier_02, due_date=d)
+    baker.make(Anticipation, payment=payment)
+    return payment
 
 
 @pytest.fixture
@@ -139,11 +152,24 @@ def payment_user_01_anticipation_related_status_a(db, supplier_01):
 def payment_user_01_anticipation_related_status_d(db, supplier_01):
     """
     Creates and returns a payment with anticipation related. The status of this
-    anticipation is 'D' (Denied).
+    anticipation is 'D' (Denied), and the supplier is supplier_01.
     """
     due_date = date.today() + timedelta(days=5)
     new_due_date = str(date.today() + timedelta(days=1))
     payment_ant = baker.make(Payment, due_date=due_date, supplier=supplier_01)
+    baker.make(Anticipation, payment=payment_ant, new_due_date=new_due_date, status='D')
+    return payment_ant
+
+
+@pytest.fixture
+def payment_user_02_anticipation_related_status_d(db, supplier_02):
+    """
+    Creates and returns a payment with anticipation related. The status of this
+    anticipation is 'D' (Denied), and the supplier is supplier_02.
+    """
+    due_date = date.today() + timedelta(days=5)
+    new_due_date = str(date.today() + timedelta(days=1))
+    payment_ant = baker.make(Payment, due_date=due_date, supplier=supplier_02)
     baker.make(Anticipation, payment=payment_ant, new_due_date=new_due_date, status='D')
     return payment_ant
 
@@ -174,4 +200,23 @@ def client_logged_operator(client, operator):
     Creates a logged client from an operator.
     """
     client.force_login(operator)
+    return client
+
+
+@pytest.fixture
+def common_user(db):
+    """
+    Creates a user that is neither an operator
+    nor a supplier.
+    """
+    user = baker.make(get_user_model(), email='commonuser@email.com')
+    return user
+
+
+@pytest.fixture
+def client_logged_common_user(client, common_user):
+    """
+    Creates a logged client from a common user.
+    """
+    client.force_login(common_user)
     return client

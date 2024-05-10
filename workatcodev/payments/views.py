@@ -1,10 +1,20 @@
 from django.shortcuts import render, redirect, reverse
-
+from django.contrib.auth.decorators import user_passes_test
 from workatcodev.payments import facade
 from workatcodev.payments.forms import FilterStatusForm, AnticipationForm, NewPaymentForm
 from django.utils.translation import gettext_lazy as _
 
 from workatcodev.payments.models import Payment, Supplier
+
+
+def is_supplier_or_operator(user):
+    """
+    Block access to pages if the user
+    is not superuser, operator or supplier.
+    """
+    return (user.is_superuser or
+            user.is_operator or
+            Supplier.objects.filter(user=user).exists())
 
 
 def home(request):
@@ -34,6 +44,7 @@ def home(request):
     return render(request, 'payments/home.html', context=context)
 
 
+@user_passes_test(is_supplier_or_operator, login_url='/denied_access/')
 def anticipation(request, id):
     payment = Payment.objects.get(id=id)
     if Supplier.objects.filter(user=request.user).exists():
@@ -55,6 +66,7 @@ def anticipation(request, id):
     return render(request, 'payments/anticipation.html', {'form': form, 'payment': payment})
 
 
+@user_passes_test(is_supplier_or_operator, login_url='/denied_access/')
 def new_payment(request):
     context = {'form': NewPaymentForm()}
     supplier = None

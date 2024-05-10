@@ -18,8 +18,7 @@ def resp_anticip_page_logged_supplier_01(client_logged_supplier_01, payment_supp
 
 def test_status_code_antic_page_logged_supplier_01(resp_anticip_page_logged_supplier_01):
     """
-    Certifies that anticipation page is loaded successfully with
-    logged supplier.
+    Certifies that anticipation page is loaded successfully with logged supplier.
     """
     assert resp_anticip_page_logged_supplier_01.status_code == 200
 
@@ -67,6 +66,16 @@ def test_try_access_anticip_paym_supp_02_by_supp_01(supplier_01, client_logged_s
     payment.supplier = supplier_02
     payment.save()
     resp = client_logged_supplier_01.get(reverse('payments:anticipation', args=(payment.pk,)))
+    assert resp.status_code == 302
+    assert resp.url.startswith('/denied_access/')
+
+
+def test_access_anticip_page_common_user_not_allowed(client_logged_common_user,
+                                                     payment_supplier_01):
+    """
+    Certifies that a common user can not access anticipation page.
+    """
+    resp = client_logged_common_user.get(reverse('payments:anticipation', args=(payment_supplier_01.pk,)))
     assert resp.status_code == 302
     assert resp.url.startswith('/denied_access/')
 
