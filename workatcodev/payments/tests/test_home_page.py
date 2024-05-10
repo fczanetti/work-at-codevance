@@ -91,8 +91,19 @@ def test_anticip_button_present_for_operator(client_logged_operator,
                                              available_payments_user_01):
     """
     Certifies that the button for creating anticipation
-    is shown to a operator.
+    is shown to an operator.
     """
     resp = client_logged_operator.get(reverse('payments:home'))
+    for payment in available_payments_user_01:
+        assert_contains(resp, f'<a class="anticipation-link" href="{payment.create_anticipation()}">Antecipar</a>')
+
+
+def test_anticip_button_present_for_supplier(client_logged_supplier_01,
+                                             available_payments_user_01):
+    """
+    Certifies that the button for creating anticipation
+    is shown to a supplier.
+    """
+    resp = client_logged_supplier_01.get(reverse('payments:home'))
     for payment in available_payments_user_01:
         assert_contains(resp, f'<a class="anticipation-link" href="{payment.create_anticipation()}">Antecipar</a>')

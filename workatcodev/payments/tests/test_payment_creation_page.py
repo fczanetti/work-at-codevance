@@ -5,7 +5,7 @@ from workatcodev.django_assertions import assert_contains, assert_not_contains
 
 
 @pytest.fixture
-def resp_payment_creation_page_supplier_01(supplier_01, client_logged_supplier_01):
+def resp_payment_creation_page_supplier_01(client_logged_supplier_01):
     """
     Creates a request to payment creation page and
     returns a response.
@@ -33,7 +33,8 @@ def test_operator_can_access_paym_creation_page(resp_payment_creation_page_opera
 
 def test_status_code_paym_creat_page_supp_01(resp_payment_creation_page_supplier_01):
     """
-    Certifies that payment creation page is loaded successfully.
+    Certifies that payment creation page is loaded successfully
+    when requested by a supplier.
     """
     assert resp_payment_creation_page_supplier_01.status_code == 200
 
