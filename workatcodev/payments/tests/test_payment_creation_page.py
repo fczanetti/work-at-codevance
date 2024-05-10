@@ -24,6 +24,13 @@ def resp_payment_creation_page_operator(client_logged_operator):
     return resp
 
 
+def test_operator_can_access_paym_creation_page(resp_payment_creation_page_operator):
+    """
+    Certifies that an operator can access payment creation page.
+    """
+    assert resp_payment_creation_page_operator.status_code == 200
+
+
 def test_status_code_paym_creat_page_supp_01(resp_payment_creation_page_supplier_01):
     """
     Certifies that payment creation page is loaded successfully.

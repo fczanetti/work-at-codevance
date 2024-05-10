@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 from django.urls import reverse
 from django.contrib.auth.models import Group
 from workatcodev.base.facade import add_payment_permission, add_anticipation_permission
+from workatcodev.utils import format_value
 
 
 class Supplier(models.Model):
@@ -37,7 +38,7 @@ class Payment(models.Model):
     value = models.FloatField(verbose_name='Valor')
 
     def __str__(self):
-        return f'{self.supplier} - R${self.value:.2f}'
+        return f'{self.supplier} - R${format_value(self.value)}'
 
     def create_anticipation(self):
         """
