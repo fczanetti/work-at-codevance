@@ -47,7 +47,9 @@
                     <div class="supplier">
                         <div>{{ payment.supplier }}</div>
                         {% if status == 'A' %}
-                            <a class="anticipation-link" href="{{ payment.create_anticipation }}">Antecipar</a>
+                            {% if perms.payments.add_anticipation %}
+                                <a class="anticipation-link" href="{{ payment.create_anticipation }}">Antecipar</a>
+                            {% endif %}
                         {% endif %}
                     </div>
                     <div class="payment-infos">
