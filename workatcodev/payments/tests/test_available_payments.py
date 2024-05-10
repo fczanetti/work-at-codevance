@@ -121,17 +121,6 @@ def test_common_user_can_see_avail_payments_from_all_supp(resp_filter_available_
         assert_contains(resp_filter_available_common_user, v)
 
 
-# def test_anticip_button_not_present_for_common_user(resp_filter_available_common_user,
-#                                                     available_payments_user_01):
-#     """
-#     Certifies that the button for creating anticipation
-#     is not shown to a common user.
-#     """
-#     for payment in available_payments_user_01:
-#         assert_not_contains(resp_filter_available_common_user, f'<a class="anticipation-link" '
-#                                                                f'href="{payment.create_anticipation()}">Antecipar</a>')
-
-
 def test_operator_can_see_avail_payments_from_all_supp(resp_filter_available_operator,
                                                        available_payments_user_01,
                                                        available_payments_user_02):
