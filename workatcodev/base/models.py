@@ -6,6 +6,7 @@ from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 from django.core.mail import send_mail
 from django.contrib.auth.hashers import make_password
+from workatcodev.base import facade
 
 
 class UserManager(BaseUserManager):
@@ -125,9 +126,19 @@ class User(AbstractBaseUser, PermissionsMixin):
         send_mail(subject, message, from_email, [self.email], **kwargs)
 
     def save(self, *args, **kwargs):
+        """
+        Creates a group named Operators and, if a user is
+        created with is_operator=True, it will be added to
+        this group. Also, Ii the group was created, some
+        permissions will be added to it.
+        """
         super().save(*args, **kwargs)
         obj = self
-        operators_group, _ = Group.objects.get_or_create(name='Operators')
+        operators_group, created = Group.objects.get_or_create(name='Operators')
+        if created:
+            facade.add_payment_permission(operators_group)
+            facade.add_anticipation_permission(operators_group)
+            facade.change_anticipation_permission(operators_group)
         if obj.is_operator:
             obj.groups.add(operators_group)
         else:
