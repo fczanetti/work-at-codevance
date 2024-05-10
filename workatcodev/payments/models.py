@@ -2,6 +2,8 @@ from datetime import date
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.urls import reverse
+from django.contrib.auth.models import Group
+from workatcodev.base.facade import add_payment_permission, add_anticipation_permission
 
 
 class Supplier(models.Model):
@@ -11,6 +13,21 @@ class Supplier(models.Model):
 
     def __str__(self):
         return self.corporate_name
+
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        """
+        Creates a supplier group if it does not exist
+        and add some permissions to it. To finish, add
+        the supplier being saved to the group.
+        """
+        super().save(force_insert=False, force_update=False, using=None, update_fields=None)
+        obj = self.user
+        suppliers_group, created = Group.objects.get_or_create(name='Suppliers')
+        if created:
+            # Adding permissions to supplier group.
+            add_payment_permission(suppliers_group)
+            add_anticipation_permission(suppliers_group)
+        obj.groups.add(suppliers_group)
 
 
 class Payment(models.Model):
