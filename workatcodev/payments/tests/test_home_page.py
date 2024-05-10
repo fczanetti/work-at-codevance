@@ -85,3 +85,14 @@ def test_anticip_button_not_present_for_common_user(resp_home_page_logged_user,
     for payment in available_payments_user_01:
         assert_not_contains(resp_home_page_logged_user, f'<a class="anticipation-link" '
                                                         f'href="{payment.create_anticipation()}">Antecipar</a>')
+
+
+def test_anticip_button_present_for_operator(client_logged_operator,
+                                             available_payments_user_01):
+    """
+    Certifies that the button for creating anticipation
+    is shown to a operator.
+    """
+    resp = client_logged_operator.get(reverse('payments:home'))
+    for payment in available_payments_user_01:
+        assert_contains(resp, f'<a class="anticipation-link" href="{payment.create_anticipation()}">Antecipar</a>')
