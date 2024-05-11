@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect, reverse
 from django.contrib.auth.decorators import permission_required
-
+from django.http import HttpResponseNotFound
 from workatcodev.payments import facade
 from workatcodev.payments.forms import FilterStatusForm, AnticipationForm, NewPaymentForm
 from django.utils.translation import gettext_lazy as _
-from workatcodev.utils import get_supplier_or_none
-from workatcodev.payments.models import Payment, Anticipation
+from workatcodev.utils import get_supplier_or_none, available_anticipation
+from workatcodev.payments.models import Payment
 
 
 def home(request):
@@ -124,5 +124,11 @@ def new_payment(request):
 
 @permission_required('payments.change_anticipation', login_url='/denied_access/')
 def approval(request, id):
-    anticipation = Anticipation.objects.get(id=id)
+
+    # If there is no anticipation available,
+    # None will be returned
+    anticipation = available_anticipation(id)
+    if not anticipation:
+        return HttpResponseNotFound(_('Page not found. Make sure this anticipation '
+                                      'exists and is pending confirmation.'))
     return render(request, 'payments/approval.html', {'anticipation': anticipation})
