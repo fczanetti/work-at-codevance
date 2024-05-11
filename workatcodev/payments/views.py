@@ -5,7 +5,7 @@ from workatcodev.payments import facade
 from workatcodev.payments.forms import FilterStatusForm, AnticipationForm, NewPaymentForm
 from django.utils.translation import gettext_lazy as _
 from workatcodev.utils import get_supplier_or_none
-from workatcodev.payments.models import Payment
+from workatcodev.payments.models import Payment, Anticipation
 
 
 def home(request):
@@ -124,4 +124,5 @@ def new_payment(request):
 
 @permission_required('payments.change_anticipation', login_url='/denied_access/')
 def approval(request, id):
-    return render(request, 'payments/approval.html')
+    anticipation = Anticipation.objects.get(id=id)
+    return render(request, 'payments/approval.html', {'anticipation': anticipation})
