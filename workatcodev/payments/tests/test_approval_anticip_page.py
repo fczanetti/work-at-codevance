@@ -1,5 +1,4 @@
-from datetime import date, datetime
-
+from datetime import date, datetime, timedelta
 import pytest
 from django.urls import reverse
 
@@ -87,3 +86,38 @@ def test_access_denied_common_user(client_logged_common_user,
                                                  args=(payment_user_01_anticipation_created.anticipation.pk,)))
     assert resp.status_code == 302
     assert resp.url.startswith('/denied_access')
+
+
+def test_page_not_found_for_approved_anticipation(client_logged_operator,
+                                                  payment_user_01_anticipation_related_status_a):
+    """
+    Certifies that approval page is not loaded if tried to
+    with an already approved anticipation.
+    """
+    resp = client_logged_operator.get(reverse('payments:approval',
+                                              args=(payment_user_01_anticipation_related_status_a.anticipation.pk,)))
+    assert resp.status_code == 404
+
+
+def test_page_not_found_for_denied_anticipation(client_logged_operator,
+                                                payment_user_01_anticipation_related_status_d):
+    """
+    Certifies that approval page is not loaded if tried to
+    with an already denied anticipation.
+    """
+    resp = client_logged_operator.get(reverse('payments:approval',
+                                              args=(payment_user_01_anticipation_related_status_d.anticipation.pk,)))
+    assert resp.status_code == 404
+
+
+def test_page_not_found_for_new_due_date_already_reached(client_logged_operator,
+                                                         payment_user_01_anticipation_created):
+    """
+    Certifies that approval page is not loaded if anticipation
+    new_due_date is some day before today.
+    """
+    payment_user_01_anticipation_created.anticipation.new_due_date = date.today() - timedelta(days=1)
+    payment_user_01_anticipation_created.anticipation.save()
+    resp = client_logged_operator.get(reverse('payments:approval',
+                                              args=(payment_user_01_anticipation_created.anticipation.pk,)))
+    assert resp.status_code == 404

@@ -1,4 +1,5 @@
 from django.core.exceptions import ObjectDoesNotExist
+from datetime import date
 
 
 def format_value(v):
@@ -22,3 +23,21 @@ def get_supplier_or_none(user):
     except ObjectDoesNotExist:
         return supplier
     return supplier
+
+
+def available_anticipation(id):
+    """
+    Checks if anticipation exists and confirms that it
+    meets the necessary requirements to be approved. If
+    so, the anticipation is returned.
+    The requirements are:
+    - the id must be correct for an anticipation;
+    - the anticipation status has to be equal to 'PC';
+    - finally, the new_due_date today or some day after.
+    """
+    from workatcodev.payments.models import Anticipation
+    try:
+        anticipation = Anticipation.objects.get(id=id, status='PC', new_due_date__gte=date.today())
+    except ObjectDoesNotExist:
+        return None
+    return anticipation

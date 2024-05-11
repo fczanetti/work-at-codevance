@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-08 20:04-0300\n"
+"POT-Creation-Date: 2024-05-11 13:21-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -44,86 +44,88 @@ msgstr ""
 msgid "Change password: %s"
 msgstr ""
 
-#: workatcodev/base/models.py:79
+#: workatcodev/base/models.py:80
 msgid "first name"
 msgstr ""
 
-#: workatcodev/base/models.py:80
+#: workatcodev/base/models.py:81
 msgid "email address"
 msgstr ""
 
-#: workatcodev/base/models.py:84
+#: workatcodev/base/models.py:85
 msgid "staff status"
 msgstr ""
 
-#: workatcodev/base/models.py:86
+#: workatcodev/base/models.py:87
 msgid "Designates whether the user can log into this admin site."
 msgstr ""
 
-#: workatcodev/base/models.py:89
+#: workatcodev/base/models.py:90
 msgid "active"
 msgstr ""
 
-#: workatcodev/base/models.py:92
+#: workatcodev/base/models.py:93
 msgid ""
 "Designates whether this user should be treated as active. Unselect this "
 "instead of deleting accounts."
 msgstr ""
 
-#: workatcodev/base/models.py:96
+#: workatcodev/base/models.py:97
 msgid "date joined"
 msgstr ""
 
-#: workatcodev/base/models.py:105
+#: workatcodev/base/models.py:106
 msgid "user"
 msgstr ""
 
-#: workatcodev/base/models.py:106
+#: workatcodev/base/models.py:107
 msgid "users"
 msgstr ""
 
 #: workatcodev/payments/forms.py:23
-#: workatcodev/payments/tests/test_anticipation_creation.py:58
+#: workatcodev/payments/tests/test_anticipation_creation.py:64
 msgid "The new payment date must be today or some day after."
 msgstr "A nova data do pagamento deve ser hoje ou alguma data posterior."
 
-#: workatcodev/payments/models.py:39
+#: workatcodev/payments/forms.py:36
+#: workatcodev/payments/tests/test_payment_creation.py:39
 msgid "Due date must be today or some day after."
 msgstr "A data de vencimento deve ser hoje ou algum dia posterior."
 
-#: workatcodev/payments/models.py:81
-msgid "An anticipation can not be created from an unavailable payment."
-msgstr "Uma antecipação não pode ser criada a partir de um pagamento indisponível."
-
-#: workatcodev/payments/tests/test_approved_payments.py:72
-#: workatcodev/payments/views.py:15
+#: workatcodev/payments/tests/test_approved_payments.py:78
+#: workatcodev/payments/views.py:20
 msgid "Anticipated payments"
 msgstr "Pagamentos antecipados"
 
-#: workatcodev/payments/tests/test_available_payments.py:70
-#: workatcodev/payments/views.py:12
+#: workatcodev/payments/tests/test_available_payments.py:98
+#: workatcodev/payments/views.py:17
 msgid "Available for anticipation"
 msgstr "Disponíveis para antecipação"
 
 #: workatcodev/payments/tests/test_denied_payments.py:71
-#: workatcodev/payments/views.py:16
+#: workatcodev/payments/views.py:21
 msgid "Denied anticipation"
 msgstr "Antecipação negada"
 
-#: workatcodev/payments/tests/test_pend_conf_payments.py:98
-#: workatcodev/payments/views.py:14
+#: workatcodev/payments/tests/test_pend_conf_payments.py:95
+#: workatcodev/payments/views.py:19
 msgid "Pending anticipation confirmation"
 msgstr "Confirmação de antecipação pendente"
 
-#: workatcodev/payments/tests/test_unavailable_payments.py:70
-#: workatcodev/payments/views.py:13
+#: workatcodev/payments/tests/test_unavailable_payments.py:68
+#: workatcodev/payments/views.py:18
 msgid "Unavailable for anticipation"
 msgstr "Indisponíveis para antecipação"
 
-#: workatcodev/payments/views.py:41
-#: msgid "Unavailable for anticipation"
+#: workatcodev/payments/views.py:67
 msgid "Unavailable payments can not be anticipated."
 msgstr "Pagamentos indisponíveis não podem ser antecipados."
+
+#: workatcodev/payments/views.py:135
+msgid ""
+"Page not found. Make sure this anticipation exists and is pending "
+"confirmation."
+msgstr "Página não encontrada. Certifique-se de que esta antecipação existe e está com confirmação pendente."
 
 #: workatcodev/settings.py:129
 msgid "Available"
@@ -144,3 +146,7 @@ msgstr "Antecipado"
 #: workatcodev/settings.py:133
 msgid "Denied"
 msgstr "Negado"
+
+#~ msgid "An anticipation can not be created from an unavailable payment."
+#~ msgstr ""
+#~ "Uma antecipação não pode ser criada a partir de um pagamento indisponível."
