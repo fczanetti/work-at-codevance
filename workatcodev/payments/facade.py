@@ -1,8 +1,9 @@
 from datetime import date
 
 from workatcodev import settings
-from workatcodev.payments.models import Payment, Supplier
-from django.core.exceptions import ObjectDoesNotExist
+from workatcodev.payments.models import Payment
+
+from workatcodev.utils import get_supplier_or_none
 
 
 def get_available_payments(user):
@@ -10,11 +11,7 @@ def get_available_payments(user):
     Returns all available payments for a specific user/supplier. Available payments
     must have due_date greater than today and there must be no anticipations related.
     """
-    supplier = None
-    try:
-        supplier = Supplier.objects.get(user=user)
-    except ObjectDoesNotExist:
-        pass
+    supplier = get_supplier_or_none(user)
     today_date = date.today()
     if supplier:
         payments = Payment.objects.filter(due_date__gt=today_date, anticipation=None, supplier=supplier.id)
@@ -30,11 +27,7 @@ def get_unavailable_payments(user):
     anticipation related. If there is an anticipation, its status has to be 'PC'
     (pending confirmation).
     """
-    supplier = None
-    try:
-        supplier = Supplier.objects.get(user=user)
-    except ObjectDoesNotExist:
-        pass
+    supplier = get_supplier_or_none(user)
     today = date.today()
     q1 = Payment.objects.prefetch_related('anticipation').filter(due_date__lte=today)
     payments = q1.exclude(anticipation__status='A').exclude(anticipation__status='D')
@@ -51,11 +44,7 @@ def get_pend_conf_payments(user):
     can not have been reached. If a specific supplier is requesting,
     only its payments will be shown.
     """
-    supplier = None
-    try:
-        supplier = Supplier.objects.get(user=user)
-    except ObjectDoesNotExist:
-        pass
+    supplier = get_supplier_or_none(user)
     today = date.today()
     q1 = Payment.objects.prefetch_related('anticipation').exclude(anticipation=None)
     payments = q1.filter(anticipation__status='PC').filter(due_date__gt=today)
@@ -69,11 +58,7 @@ def get_approved_payments(user):
     Returns all payments for which an anticipation was
     created and approved.
     """
-    supplier = None
-    try:
-        supplier = Supplier.objects.get(user=user)
-    except ObjectDoesNotExist:
-        pass
+    supplier = get_supplier_or_none(user)
     q1 = Payment.objects.prefetch_related('anticipation').exclude(anticipation=None)
     payments = q1.filter(anticipation__status='A')
     if supplier:
@@ -86,11 +71,7 @@ def get_denied_payments(user):
     Returns all payments for which an anticipation was
     created but denied.
     """
-    supplier = None
-    try:
-        supplier = Supplier.objects.get(user=user)
-    except ObjectDoesNotExist:
-        pass
+    supplier = get_supplier_or_none(user)
     q1 = Payment.objects.prefetch_related('anticipation').exclude(anticipation=None)
     payments = q1.filter(anticipation__status='D')
     if supplier:
