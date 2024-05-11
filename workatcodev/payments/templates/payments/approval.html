@@ -3,6 +3,7 @@
 
 {% block css %}
     <link rel="stylesheet" href="{% static 'payments/css/common_settings.css' %}">
+    <link rel="stylesheet" href="{% static 'payments/css/approval.css' %}">
 {% endblock css %}
 
 {% block title %}
@@ -11,6 +12,17 @@
 
 {% block maincontent %}
     <section id="main-content-approval">
+        <h1 id="main-content-title">Confirmar aprovação</h1>
+        <h2 id="payment">{{ anticipation.payment }} - {{ anticipation.payment.due_date|date:"d/m/Y" }}</h2>
+        <h3>Novo valor: R${{ anticipation.new_value|floatformat:"2g" }}</h3>
+        <h3>Novo vencimento: {{ anticipation.new_due_date|date:"d/m/Y" }}</h3>
+
+
+        <form action="" method="POST">
+            {% csrf_token %}
+            <a href="javascript:history.back()" id="canc-button" type="submit">Cancelar</a>
+            <button type="submit" id="conf-button">Confirmar</button>
+        </form>
 
     </section>
 {% endblock maincontent %}
