@@ -120,3 +120,8 @@ def new_payment(request):
         else:
             return render(request, 'payments/new_payment.html', context=context)
     return render(request, 'payments/new_payment.html', context=context)
+
+
+@permission_required('payments.change_anticipation', login_url='/denied_access/')
+def approval(request, id):
+    return render(request, 'payments/approval.html')
