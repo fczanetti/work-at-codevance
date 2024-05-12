@@ -11,7 +11,7 @@
 
 {% block maincontent %}
     <section id="main-content-home">
-        <h1 id="main-content-title">{{ title }}</h1>
+        <h1 class="main-content-title">{{ title }}</h1>
         <form id="filter_form" action="{% url 'payments:home' %}" method="GET">
             {{ form.status.label_tag }} {{ form.status }}
             <button id="filter_button" type="submit">Filtrar</button>
@@ -41,7 +41,10 @@
                         <div>{{ payment }}</div>
                         {% if status == 'PC' %}
                             {% if perms.payments.change_anticipation %}
-                                <a class="approval-anticip-link" href="{{ payment.anticipation.get_approval_url }}">Aprovar</a>
+                                <div id="buttons">
+                                    <a class="approval-anticip-link" href="{{ payment.anticipation.get_approval_url }}">Aprovar</a>
+                                    <a class="denial-anticip-link" href="{{ payment.anticipation.get_denial_url }}">Negar</a>
+                                </div>
                             {% endif %}
                         {% endif %}
                     </div>
@@ -54,7 +57,7 @@
                         <div>{{ payment.supplier }}</div>
                         {% if status == 'A' %}
                             {% if perms.payments.add_anticipation %}
-                                <a class="approval-anticip-link" href="{{ payment.create_anticipation }}">Antecipar</a>
+                                <a class="anticipation-link" href="{{ payment.create_anticipation }}">Antecipar</a>
                             {% endif %}
                         {% endif %}
                     </div>

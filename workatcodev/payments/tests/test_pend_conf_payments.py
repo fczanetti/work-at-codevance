@@ -151,31 +151,40 @@ def test_common_user_can_see_pend_conf_paym_from_all_supp(resp_filter_pending_co
     assert_contains(resp_filter_pending_conf_common_user, payment_user_02_anticipation_created)
 
 
-def test_approval_button_not_present_for_suppliers(resp_filter_pending_conf_user_01,
-                                                   payment_user_01_anticipation_created):
+def test_approval_or_denial_buttons_not_present_for_suppliers(resp_filter_pending_conf_user_01,
+                                                              payment_user_01_anticipation_created):
     """
-    Certifies that approval button is not present for suppliers.
+    Certifies that approval or denial buttons are not present for suppliers.
     """
     assert_not_contains(resp_filter_pending_conf_user_01,
                         f'<a class="approval-anticip-link" '
                         f'href="{payment_user_01_anticipation_created.anticipation.get_approval_url()}">Aprovar</a>')
+    assert_not_contains(resp_filter_pending_conf_user_01,
+                        f'<a class="denial-anticip-link" '
+                        f'href="{payment_user_01_anticipation_created.anticipation.get_denial_url()}">Negar</a>')
 
 
-def test_approval_button_not_present_for_common_user(resp_filter_pending_conf_common_user,
-                                                     payment_user_01_anticipation_created):
+def test_approval_or_denial_buttons_not_present_for_common_user(resp_filter_pending_conf_common_user,
+                                                                payment_user_01_anticipation_created):
     """
-    Certifies that approval button is not present for common users.
+    Certifies that approval or denial buttons are not present for common users.
     """
     assert_not_contains(resp_filter_pending_conf_common_user,
                         f'<a class="approval-anticip-link" '
                         f'href="{payment_user_01_anticipation_created.anticipation.get_approval_url()}">Aprovar</a>')
+    assert_not_contains(resp_filter_pending_conf_common_user,
+                        f'<a class="denial-anticip-link" '
+                        f'href="{payment_user_01_anticipation_created.anticipation.get_denial_url()}">Negar</a>')
 
 
-def test_approval_button_present_for_operators(resp_filter_pending_conf_operator,
-                                               payment_user_02_anticipation_created):
+def test_approval_and_denial_buttons_present_for_operators(resp_filter_pending_conf_operator,
+                                                           payment_user_02_anticipation_created):
     """
-    Certifies that approval button is present for operators.
+    Certifies that approval and denial buttons are present for operators.
     """
     assert_contains(resp_filter_pending_conf_operator,
                     f'<a class="approval-anticip-link" '
                     f'href="{payment_user_02_anticipation_created.anticipation.get_approval_url()}">Aprovar</a>')
+    assert_contains(resp_filter_pending_conf_operator,
+                    f'<a class="denial-anticip-link" '
+                    f'href="{payment_user_02_anticipation_created.anticipation.get_denial_url()}">Negar</a>')

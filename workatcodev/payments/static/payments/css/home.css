@@ -1,4 +1,4 @@
-#main-content-title {
+.main-content-title {
     font-size: 2rem;
     margin-bottom: 2rem;
 }
@@ -48,6 +48,12 @@ label {
     display: flex;
 }
 
+#buttons {
+    display: flex;
+    height: fit-content;
+    margin-right: 1rem;
+}
+
 .payment-infos {
     display: flex;
 }
@@ -57,12 +63,23 @@ span {
     margin: 0 10px;
 }
 
-.approval-anticip-link {
+.approval-anticip-link,
+.anticipation-link {
     max-width: fit-content;
     margin-left: 1rem;
     text-decoration: none;
     color: white;
     background-color: green;
+    padding: 1px 4px;
+    border-radius: 4px;
+}
+
+.denial-anticip-link {
+    max-width: fit-content;
+    margin-left: 1rem;
+    text-decoration: none;
+    color: white;
+    background-color: red;
     padding: 1px 4px;
     border-radius: 4px;
 }
@@ -74,7 +91,15 @@ span {
     }
 
     .anticipation-link {
-        margin: 0.5rem 0 0 0;
+        margin: 0.8rem 0 0 0;
+    }
+
+    .approval-anticip-link {
+        margin-left: 0;
+    }
+
+    #buttons {
+        margin: 0.8rem 0 0 0;
     }
 
 }

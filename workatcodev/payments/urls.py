@@ -1,11 +1,11 @@
 from django.urls import path
-from workatcodev.payments.views import home, anticipation, new_payment, approval
+from workatcodev.payments.views import home, anticipation, new_payment, update_antic
 
 app_name = 'payments'
 urlpatterns = [
     path('', home, name='home'),
     path('<str:status>', home, name='home'),
     path('anticipation/<int:id>', anticipation, name='anticipation'),
-    path('approval/<int:id>', approval, name='approval'),
+    path('update/<str:act>/<int:id>', update_antic, name='update_antic'),
     path('new_payment/', new_payment, name='new_payment')
 ]

@@ -95,7 +95,7 @@ def test_anticip_button_present_for_operator(client_logged_operator,
     """
     resp = client_logged_operator.get(reverse('payments:home'))
     for payment in available_payments_user_01:
-        assert_contains(resp, f'<a class="approval-anticip-link" href="{payment.create_anticipation()}">Antecipar</a>')
+        assert_contains(resp, f'<a class="anticipation-link" href="{payment.create_anticipation()}">Antecipar</a>')
 
 
 def test_anticip_button_present_for_supplier(client_logged_supplier_01,
@@ -106,4 +106,4 @@ def test_anticip_button_present_for_supplier(client_logged_supplier_01,
     """
     resp = client_logged_supplier_01.get(reverse('payments:home'))
     for payment in available_payments_user_01:
-        assert_contains(resp, f'<a class="approval-anticip-link" href="{payment.create_anticipation()}">Antecipar</a>')
+        assert_contains(resp, f'<a class="anticipation-link" href="{payment.create_anticipation()}">Antecipar</a>')
