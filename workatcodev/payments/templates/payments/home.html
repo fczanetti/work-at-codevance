@@ -38,7 +38,14 @@
         {% for payment in payments %}
             <div class="payment-item">
                 {% if status == 'PC' or status == 'AN' or status == 'D' %}
-                    <div class="supplier">{{ payment }}</div>
+                    <div class="supplier">
+                        <div>{{ payment }}</div>
+                        {% if status == 'PC' %}
+                            {% if perms.payments.change_anticipation %}
+                                <a class="approval-anticip-link" href="{{ payment.anticipation.get_approval_url }}">Aprovar</a>
+                            {% endif %}
+                        {% endif %}
+                    </div>
                     <div class="payment-infos">
                         <div class="payment-due-date">{{ payment.anticipation.new_due_date|date:"d/m/Y" }}<span>/</span></div>
                         <div class="payment-value">{{ payment.anticipation.new_value|floatformat:"2g" }}</div>
@@ -48,7 +55,7 @@
                         <div>{{ payment.supplier }}</div>
                         {% if status == 'A' %}
                             {% if perms.payments.add_anticipation %}
-                                <a class="anticipation-link" href="{{ payment.create_anticipation }}">Antecipar</a>
+                                <a class="approval-anticip-link" href="{{ payment.create_anticipation }}">Antecipar</a>
                             {% endif %}
                         {% endif %}
                     </div>
