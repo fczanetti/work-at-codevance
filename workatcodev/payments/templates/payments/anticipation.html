@@ -12,7 +12,7 @@
 
 {% block maincontent %}
     <section id="main-content-anticipation">
-        <h1 id="main-content-title">Antecipação de pagamento</h1>
+        <h1 class="main-content-title">Antecipação de pagamento</h1>
         <h2>{{ payment }}</h2>
         <h3>Vencimento: {{ payment.due_date|date:"d/m/Y" }}</h3>
         <form action="" method="POST">

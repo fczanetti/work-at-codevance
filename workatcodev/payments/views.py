@@ -114,7 +114,10 @@ def new_payment(request):
 
 
 @permission_required('payments.change_anticipation', login_url='/denied_access/')
-def approval(request, id):
+def update_antic(request, act, id):
+    if act not in 'AD':
+        return HttpResponseNotFound(_('Page not found. Make sure the URL is correct.'))
+
     # If there is no anticipation available,
     # None will be returned
     anticipation = available_anticipation(id)
@@ -122,7 +125,8 @@ def approval(request, id):
         return HttpResponseNotFound(_('Page not found. Make sure this anticipation '
                                       'exists and is pending confirmation.'))
     if request.method == 'POST':
-        anticipation.status = 'A'
+        anticipation.status = act
         anticipation.save()
         return redirect(reverse('payments:home', args=('PC',)))
-    return render(request, 'payments/approval.html', {'anticipation': anticipation})
+    context = {'anticipation': anticipation, 'act': act}
+    return render(request, 'payments/update_antic.html', context=context)

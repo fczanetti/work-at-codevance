@@ -72,7 +72,10 @@ class Anticipation(models.Model):
         return f'{self.payment}'
 
     def get_approval_url(self):
-        return reverse('payments:approval', args=(self.pk,))
+        return reverse('payments:update_antic', kwargs={'act': 'A', 'id': self.pk})
+
+    def get_denial_url(self):
+        return reverse('payments:update_antic', kwargs={'act': 'D', 'id': self.pk})
 
     def approve(self):
         """

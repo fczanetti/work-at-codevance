@@ -44,7 +44,7 @@ def test_title_new_payment_page(resp_payment_creation_page_supplier_01):
     Certifies that the titles of the page are present.
     """
     assert_contains(resp_payment_creation_page_supplier_01, '<title>Pagamentos - Novo pagamento</title>')
-    assert_contains(resp_payment_creation_page_supplier_01, '<h1 id="main-content-title">Novo pagamento</h1>')
+    assert_contains(resp_payment_creation_page_supplier_01, '<h1 class="main-content-title">Novo pagamento</h1>')
 
 
 def test_form_items_new_payment_page(resp_payment_creation_page_supplier_01):
