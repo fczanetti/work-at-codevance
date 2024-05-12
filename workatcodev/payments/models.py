@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from django.urls import reverse
 from django.contrib.auth.models import Group
 from workatcodev.base.facade import add_payment_permission, add_anticipation_permission
-from workatcodev.utils import format_value
+from workatcodev.utils import format_value, available_anticipation
 
 
 class Supplier(models.Model):
@@ -70,3 +70,16 @@ class Anticipation(models.Model):
 
     def __str__(self):
         return f'{self.payment}'
+
+    def get_approval_url(self):
+        return reverse('payments:approval', args=(self.pk,))
+
+    def approve(self):
+        """
+        Approve an anticipation.
+        """
+        if available_anticipation(self.pk):
+            self.status = 'A'
+            self.save()
+        else:
+            raise ValueError('This anticipation can not be approved or does not exist.')
