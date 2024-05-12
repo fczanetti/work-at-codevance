@@ -50,7 +50,7 @@ def test_filter_form_home_page_exists(resp_home_page_logged_user):
     """
     Certifies that there is a form for filtering payments status in the home page.
     """
-    assert_contains(resp_home_page_logged_user, '<form id="filter_form" action="" method="POST">')
+    assert_contains(resp_home_page_logged_user, '<form id="filter_form" action="/" method="GET">')
     assert_contains(resp_home_page_logged_user, '<label for="id_status">Status:</label>')
     assert_contains(resp_home_page_logged_user, '<select name="status" id="id_status">')
     assert_contains(resp_home_page_logged_user, '<button id="filter_button" type="submit">Filtrar</button>')

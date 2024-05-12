@@ -61,8 +61,8 @@ def test_form_items_are_present_approval(resp_approval_anticip_page,
     """
     Certifies that the form items are present.
     """
-    assert_contains(resp_approval_anticip_page, '<a href="javascript:history.back()" id="canc-button" '
-                                                'type="submit">Cancelar</a>')
+    assert_contains(resp_approval_anticip_page, f'<a href="{reverse("payments:home", args=("PC",))}" '
+                                                f'id="canc-button" type="submit">Cancelar</a>')
     assert_contains(resp_approval_anticip_page, '<button type="submit" id="conf-button">Confirmar</button>')
 
 

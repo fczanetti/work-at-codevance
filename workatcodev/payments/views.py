@@ -8,7 +8,7 @@ from workatcodev.utils import get_supplier_or_none, available_anticipation
 from workatcodev.payments.models import Payment
 
 
-def home(request):
+def home(request, status='A'):
     # The TITLES are the ones to be shown at home page
     # acording to what payments were filtered.
     TITLES = {'A': _('Available for anticipation'),
@@ -25,25 +25,16 @@ def home(request):
                      'AN': facade.get_approved_payments,
                      'D': facade.get_denied_payments}
 
-    if request.method == 'POST':
-        form = FilterStatusForm(request.POST)
-        if form.is_valid():
-            status = form.cleaned_data['status']
-            function = GET_PAYM_FUNC[status]
-
-            # Execute to return the payments filtered. If
-            # the user is not a supplier, payments from all
-            # suppliers will be returned.
-            payments = function(request.user)
-            context = {'payments': payments, 'form': form, 'title': TITLES[status], 'status': status}
-            return render(request, 'payments/home.html', context=context)
-
-    # When request.method = GET, the available
-    # ('A') payments will be brought.
-    status = 'A'
+    # When using the form to filter, the status must be
+    # the one chosen. If the URL is typed without chosing
+    # a specific status, it will be the standard 'A'
+    try:
+        status = request.GET['status']
+    except KeyError:
+        pass
     function = GET_PAYM_FUNC[status]
     payments = function(request.user)
-    form = FilterStatusForm()
+    form = FilterStatusForm(initial={'status': status})
     context = {'payments': payments, 'form': form, 'title': TITLES[status], 'status': status}
     return render(request, 'payments/home.html', context=context)
 
@@ -133,5 +124,5 @@ def approval(request, id):
     if request.method == 'POST':
         anticipation.status = 'A'
         anticipation.save()
-        return redirect(reverse('payments:home'))
+        return redirect(reverse('payments:home', args=('PC',)))
     return render(request, 'payments/approval.html', {'anticipation': anticipation})

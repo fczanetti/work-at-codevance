@@ -20,7 +20,7 @@ def resp_filter_denied_user_01(client_logged_supplier_01,
     Creates a request filtering payments with anticipation denied
     and returns its response.
     """
-    resp = client_logged_supplier_01.post(reverse('payments:home'), {'status': 'D'})
+    resp = client_logged_supplier_01.get(reverse('payments:home'), {'status': 'D'})
     return resp
 
 
@@ -100,7 +100,7 @@ def test_logged_common_user_can_see_paym_from_all_suppl(client_logged_common_use
     """
     v1 = format_value(payment_user_01_anticipation_related_status_d.anticipation.new_value)
     v2 = format_value(payment_user_02_anticipation_related_status_d.anticipation.new_value)
-    resp = client_logged_common_user.post(reverse('payments:home'), {'status': 'D'})
+    resp = client_logged_common_user.get(reverse('payments:home'), {'status': 'D'})
     assert_contains(resp, v1)
     assert_contains(resp, v2)
 
@@ -113,6 +113,6 @@ def test_logged_operator_can_see_paym_from_all_suppl(client_logged_operator,
     """
     v1 = format_value(payment_user_01_anticipation_related_status_d.anticipation.new_value)
     v2 = format_value(payment_user_02_anticipation_related_status_d.anticipation.new_value)
-    resp = client_logged_operator.post(reverse('payments:home'), {'status': 'D'})
+    resp = client_logged_operator.get(reverse('payments:home'), {'status': 'D'})
     assert_contains(resp, v1)
     assert_contains(resp, v2)

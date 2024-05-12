@@ -22,7 +22,7 @@ def resp_filter_pending_conf_user_01(client_logged_supplier_01,
     Creates a request filtering payments with status = 'PC'
     (pending confirmation) and returns the response.
     """
-    resp = client_logged_supplier_01.post(reverse('payments:home'), {'status': 'PC'})
+    resp = client_logged_supplier_01.get(reverse('payments:home'), {'status': 'PC'})
     return resp
 
 
@@ -34,7 +34,7 @@ def resp_filter_pending_conf_operator(client_logged_operator,
     Creates a request by an operator filtering
     pending confirmation payments.
     """
-    resp = client_logged_operator.post(reverse('payments:home'), {'status': 'PC'})
+    resp = client_logged_operator.get(reverse('payments:home'), {'status': 'PC'})
     return resp
 
 
@@ -46,7 +46,7 @@ def resp_filter_pending_conf_common_user(client_logged_common_user,
     Creates a request by a common user filtering
     pending confirmation payments.
     """
-    resp = client_logged_common_user.post(reverse('payments:home'), {'status': 'PC'})
+    resp = client_logged_common_user.get(reverse('payments:home'), {'status': 'PC'})
     return resp
 
 

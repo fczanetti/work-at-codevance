@@ -19,7 +19,7 @@ def resp_filter_approved_user_01(client_logged_supplier_01,
     Creates a request filtering payments for which the anticipations
     were approved and returns a response.
     """
-    resp = client_logged_supplier_01.post(reverse('payments:home'), {'status': 'AN'})
+    resp = client_logged_supplier_01.get(reverse('payments:home'), {'status': 'AN'})
     return resp
 
 
@@ -99,7 +99,7 @@ def test_logged_common_user_can_see_all_approved_payments(client_logged_common_u
     baker.make(Anticipation, payment=payment, status='A')
     payment.supplier = supplier_02
     payment.save()
-    resp = client_logged_common_user.post(reverse('payments:home'), {'status': 'AN'})
+    resp = client_logged_common_user.get(reverse('payments:home'), {'status': 'AN'})
     v1 = format_value(payment_user_01_anticipation_related_status_a.anticipation.new_value)
     v2 = format_value(payment.anticipation.new_value)
     assert_contains(resp, v1)
@@ -115,7 +115,7 @@ def test_logged_operator_can_see_all_approved_payments(client_logged_operator,
     baker.make(Anticipation, payment=payment, status='A')
     payment.supplier = supplier_02
     payment.save()
-    resp = client_logged_operator.post(reverse('payments:home'), {'status': 'AN'})
+    resp = client_logged_operator.get(reverse('payments:home'), {'status': 'AN'})
     v1 = format_value(payment_user_01_anticipation_related_status_a.anticipation.new_value)
     v2 = format_value(payment.anticipation.new_value)
     assert_contains(resp, v1)
