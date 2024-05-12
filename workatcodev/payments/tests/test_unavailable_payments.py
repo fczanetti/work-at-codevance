@@ -19,7 +19,7 @@ def resp_filter_unavailable_user_01(client_logged_supplier_01,
     Creates a request by user_01/supplier_01 filtering
     unavailable payments ant returns its response.
     """
-    resp = client_logged_supplier_01.post(reverse('payments:home'), {'status': 'U'})
+    resp = client_logged_supplier_01.get(reverse('payments:home'), {'status': 'U'})
     return resp
 
 
@@ -78,7 +78,7 @@ def test_supp_01_pend_conf_payments_shown_if_due_date_reached(client_logged_supp
     payment_user_01_anticipation_created.due_date = date.today()
     payment_user_01_anticipation_created.save()
     v = format_value(payment_user_01_anticipation_created.value)
-    resp = client_logged_supplier_01.post(reverse('payments:home'), {'status': 'U'})
+    resp = client_logged_supplier_01.get(reverse('payments:home'), {'status': 'U'})
     assert_contains(resp, v)
 
 
@@ -88,7 +88,7 @@ def test_common_user_can_see_unav_payments_from_all_supp(client_logged_common_us
     """
     Certifies that common user can see unavailable payments from all suppliers.
     """
-    resp = client_logged_common_user.post(reverse('payments:home'), {'status': 'U'})
+    resp = client_logged_common_user.get(reverse('payments:home'), {'status': 'U'})
     for payment in unavailable_payments_user_01_due_date:
         v = format_value(payment.value)
         assert_contains(resp, v)
@@ -103,7 +103,7 @@ def test_operator_can_see_unav_payments_from_all_supp(client_logged_operator,
     """
     Certifies that operators can see unavailable payments from all suppliers.
     """
-    resp = client_logged_operator.post(reverse('payments:home'), {'status': 'U'})
+    resp = client_logged_operator.get(reverse('payments:home'), {'status': 'U'})
     for payment in unavailable_payments_user_01_due_date:
         v = format_value(payment.value)
         assert_contains(resp, v)

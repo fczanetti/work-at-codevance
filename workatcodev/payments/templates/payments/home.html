@@ -12,8 +12,7 @@
 {% block maincontent %}
     <section id="main-content-home">
         <h1 id="main-content-title">{{ title }}</h1>
-        <form id="filter_form" action="" method="POST">
-            {% csrf_token %}
+        <form id="filter_form" action="{% url 'payments:home' %}" method="GET">
             {{ form.status.label_tag }} {{ form.status }}
             <button id="filter_button" type="submit">Filtrar</button>
             {{ form.status.errors }}

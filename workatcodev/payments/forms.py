@@ -2,13 +2,17 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
-from workatcodev import settings
 from workatcodev.payments.models import Anticipation, Payment
 from datetime import date
 
 
 class FilterStatusForm(forms.Form):
-    status = forms.ChoiceField(choices=settings.PAYMENT_STATUS_CHOICES)
+    PAYMENT_STATUS_CHOICES = {'A': _('Available'),
+                              'U': _('Unavailable'),
+                              'PC': _('Pending confirmation'),
+                              'AN': _('Anticipated'),
+                              'D': _('Denied')}
+    status = forms.ChoiceField(choices=PAYMENT_STATUS_CHOICES)
 
 
 class AnticipationForm(forms.ModelForm):
