@@ -52,8 +52,9 @@ def test_links_navbar(resp_home_page_logged_user):
     """
     Certify that navbar links are present.
     """
-    assert_contains(resp_home_page_logged_user, '<a class="navbar-link" href="">Início</a>')
-    assert_contains(resp_home_page_logged_user, '<a class="navbar-link" href="">Histórico</a>')
+    assert_contains(resp_home_page_logged_user, f'<a class="navbar-link" href="{reverse("payments:home")}">Início</a>')
+    assert_contains(resp_home_page_logged_user, f'<a class="navbar-link" '
+                                                f'href="{reverse("payments:logs")}">Histórico</a>')
 
 
 def test_filter_form_home_page_exists(resp_home_page_logged_user):
