@@ -6,6 +6,7 @@ from workatcodev.payments.forms import FilterStatusForm, AnticipationForm, NewPa
 from django.utils.translation import gettext_lazy as _
 from workatcodev.utils import get_supplier_or_none, available_anticipation
 from workatcodev.payments.models import Payment, RequestLog
+from django.core.exceptions import ObjectDoesNotExist
 
 
 def home(request, status='A'):
@@ -43,7 +44,15 @@ def home(request, status='A'):
 
 @permission_required('payments.add_anticipation', login_url='/denied_access/')
 def anticipation(request, id):
-    payment = Payment.objects.get(id=id)
+    """
+    :param id: A payment ID.
+    """
+    # If the ID informed does not belong to any
+    # payment the page is not loaded.
+    try:
+        payment = Payment.objects.get(id=id)
+    except ObjectDoesNotExist:
+        return HttpResponseNotFound(_('Page not found. Make sure the URL is correct.'))
 
     # If there is a supplier related to current user
     # it will be brought, otherwise None will return
