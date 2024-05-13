@@ -150,4 +150,5 @@ def update_antic(request, act, id):
 
 
 def logs(request):
-    return render(request, 'payments/logs.html')
+    logs = RequestLog.objects.all().order_by('-created_at')
+    return render(request, 'payments/logs.html', {'logs': logs})

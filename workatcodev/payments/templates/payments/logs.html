@@ -13,6 +13,27 @@
 {% block maincontent %}
     <section id="main-content-logs">
         <h1 class="main-content-title">Registros</h1>
-
+        {% if logs %}
+            <div id="titles">
+                <div>Antecipação</div>
+                <div id="infos-title">
+                    <div class="item-date">Registrado em<span>/</span></div>
+                    <div class="item-user">Usuário<span>/</span></div>
+                    <div class="item-action">Ação</div>
+                </div>
+            </div>
+        {% endif %}
+        {% for log in logs %}
+            <div class="log-item">
+                <div class="log-anticipation">{{ log.anticipation }}</div>
+                <div class="log-infos">
+                    <div>{{ log.created_at|date:"d/m/Y" }}<span>/</span></div>
+                    <div>{{ log.user }}<span>/</span></div>
+                    <div>{{ log.get_action_display }}</div>
+                </div>
+            </div>
+        {% empty %}
+            <div>Não há registros.</div>
+        {% endfor %}
     </section>
 {% endblock maincontent %}
