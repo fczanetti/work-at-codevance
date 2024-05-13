@@ -90,3 +90,13 @@ def test_operator_access_antic_page_all_suppliers(client_logged_operator, paymen
     resp = client_logged_operator.get(reverse('payments:anticipation', args=(payment.pk,)))
     assert resp.status_code == 200
     assert resp.request['PATH_INFO'].startswith('/anticipation')
+
+
+def test_access_anticip_page_incorrect_id(client_logged_operator):
+    """
+    Certifies that a 404 error is raised if a user tries to
+    use an incorrect ID in the URL (an ID that does not belong
+    to any payment).
+    """
+    resp = client_logged_operator.get(reverse('payments:anticipation', args=(12345,)))
+    assert resp.status_code == 404
