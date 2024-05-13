@@ -86,3 +86,14 @@ class Anticipation(models.Model):
             self.save()
         else:
             raise ValueError('This anticipation can not be approved or does not exist.')
+
+
+class RequestLog(models.Model):
+    ACTION_CHOICES = {'A': 'Approval', 'D': 'Denial', 'R': 'Request'}
+    anticipation = models.ForeignKey(Anticipation, on_delete=models.CASCADE, verbose_name='Antecipação')
+    created_at = models.DateField(auto_now_add=True, verbose_name='Registrado em')
+    user = models.ForeignKey(get_user_model(), verbose_name='Usuário', on_delete=models.CASCADE)
+    action = models.CharField(choices=ACTION_CHOICES, verbose_name='Ação', max_length=8)
+
+    def __str__(self):
+        return f'{self.anticipation} / {self.action}'

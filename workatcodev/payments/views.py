@@ -5,7 +5,7 @@ from workatcodev.payments import facade
 from workatcodev.payments.forms import FilterStatusForm, AnticipationForm, NewPaymentForm
 from django.utils.translation import gettext_lazy as _
 from workatcodev.utils import get_supplier_or_none, available_anticipation
-from workatcodev.payments.models import Payment
+from workatcodev.payments.models import Payment, RequestLog
 
 
 def home(request, status='A'):
@@ -16,6 +16,8 @@ def home(request, status='A'):
               'PC': _('Pending anticipation confirmation'),
               'AN': _('Anticipated payments'),
               'D': _('Denied anticipation')}
+    if status not in TITLES:
+        return HttpResponseNotFound(_('Page not found. Make sure the URL is correct.'))
 
     # Select what function to execute based on what
     # payments were filtered.
@@ -68,6 +70,7 @@ def anticipation(request, id):
         form = AnticipationForm(data)
         if form.is_valid():
             form.save()
+            RequestLog.objects.create(anticipation=payment.anticipation, user=request.user, action='R')
             return redirect(reverse('payments:home'))
         else:
             return render(request, 'payments/anticipation.html',
@@ -115,6 +118,10 @@ def new_payment(request):
 
 @permission_required('payments.change_anticipation', login_url='/denied_access/')
 def update_antic(request, act, id):
+    """
+    :param act: The action to execute in the anticipation, Approve or Deny
+    :param id: The anticipation ID
+    """
     if act not in 'AD':
         return HttpResponseNotFound(_('Page not found. Make sure the URL is correct.'))
 
@@ -127,6 +134,7 @@ def update_antic(request, act, id):
     if request.method == 'POST':
         anticipation.status = act
         anticipation.save()
+        RequestLog.objects.create(anticipation=anticipation, user=request.user, action=act)
         return redirect(reverse('payments:home', args=('PC',)))
     context = {'anticipation': anticipation, 'act': act}
     return render(request, 'payments/update_antic.html', context=context)
