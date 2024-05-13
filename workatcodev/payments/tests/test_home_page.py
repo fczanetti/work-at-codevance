@@ -24,6 +24,16 @@ def resp_home_page_logged_user_no_payments_available(client_logged_common_user):
     return resp
 
 
+def test_invalid_param_url(client_logged_common_user):
+    """
+    Certifies that if an invalid parameter is tried in
+    the URL a 404 error is raised. Valid parameters are
+    the filtering options ('A', 'U', 'PC', 'AN', 'D').
+    """
+    resp = client_logged_common_user.get(reverse('payments:home', args=('B',)))
+    assert resp.status_code == 404
+
+
 def test_home_page_logged_user(resp_home_page_logged_user):
     """
     Certify that home page is loaded successfully.

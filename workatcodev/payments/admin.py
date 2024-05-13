@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from workatcodev.payments import facade
-from workatcodev.payments.models import Supplier, Payment, Anticipation
+from workatcodev.payments.models import Supplier, Payment, Anticipation, RequestLog
 
 
 def email(obj):
@@ -29,3 +29,8 @@ class AnticipationAdmin(admin.ModelAdmin):
         new_value = facade.new_payment_value(obj.payment, obj.new_due_date)
         obj.new_value = new_value
         super().save_model(request, obj, form, change)
+
+
+@admin.register(RequestLog)
+class RequestLogAdmin(admin.ModelAdmin):
+    list_display = ['anticipation', 'created_at', 'user', 'action']
