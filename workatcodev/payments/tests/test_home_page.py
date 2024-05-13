@@ -54,7 +54,7 @@ def test_links_navbar(resp_home_page_logged_user):
     """
     assert_contains(resp_home_page_logged_user, f'<a class="navbar-link" href="{reverse("payments:home")}">Início</a>')
     assert_contains(resp_home_page_logged_user, f'<a class="navbar-link" '
-                                                f'href="{reverse("payments:logs")}">Histórico</a>')
+                                                f'href="{reverse("payments:logs")}">Registros</a>')
 
 
 def test_filter_form_home_page_exists(resp_home_page_logged_user):
