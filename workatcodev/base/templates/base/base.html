@@ -19,8 +19,8 @@
         <header id="navbar">
             <div id="logo">Pagamentos</div>
             <nav id="nav-links" class="navbar-links">
-                <a class="navbar-link" href="">Início</a>
-                <a class="navbar-link" href="">Histórico</a>
+                <a class="navbar-link" href="{% url 'payments:home' %}">Início</a>
+                <a class="navbar-link" href="{% url 'payments:logs' %}">Histórico</a>
             </nav>
             <div id="toggle-button">
                 <div class="toggle-bar"></div>

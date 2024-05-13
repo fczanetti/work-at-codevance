@@ -147,3 +147,7 @@ def update_antic(request, act, id):
         return redirect(reverse('payments:home', args=('PC',)))
     context = {'anticipation': anticipation, 'act': act}
     return render(request, 'payments/update_antic.html', context=context)
+
+
+def logs(request):
+    return render(request, 'payments/logs.html')
