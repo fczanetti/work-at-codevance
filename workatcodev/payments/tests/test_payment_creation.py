@@ -50,3 +50,15 @@ def test_payment_creation_not_informing_supplier(client_logged_supplier_01, supp
     client_logged_supplier_01.post(reverse('payments:new_payment'), {'due_date': today,
                                                                      'value': 25})
     assert Payment.objects.filter(value=25).filter(supplier=supplier_01).exists() is True
+
+
+def test_payment_not_created_with_value_smaller_than_or_equal_zero(client_logged_operator, supplier_01):
+    """
+    Certifies that no payments are created with value smaller than or equal zero.
+    """
+    d = date.today() - timedelta(days=1)
+    resp = client_logged_operator.post(reverse('payments:new_payment'), {'supplier': supplier_01.pk,
+                                                                         'due_date': d,
+                                                                         'value': 0})
+    assert_contains(resp, _('The value must be bigger than zero.'))
+    assert Payment.objects.filter(value=0).filter(due_date=d).exists() is False

@@ -39,3 +39,9 @@ class NewPaymentForm(forms.ModelForm):
         if d < date.today():
             raise ValidationError(_('Due date must be today or some day after.'), code='invalid')
         return d
+
+    def clean_value(self):
+        v = self.cleaned_data['value']
+        if v <= 0:
+            raise ValidationError(_('The value must be bigger than zero.'))
+        return v
