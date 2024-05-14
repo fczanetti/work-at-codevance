@@ -1,5 +1,6 @@
 {% extends 'base/base.html' %}
 {% load static %}
+{% load i18n %}
 
 {% block css %}
     <link rel="stylesheet" href="{% static 'payments/css/logs.css' %}">
@@ -7,19 +8,19 @@
 {% endblock css %}
 
 {% block title %}
-    <title>Pagamentos - Registros</title>
+    <title>{% translate 'Payments - Logs' %}</title>
 {% endblock title %}
 
 {% block maincontent %}
     <section id="main-content-logs">
-        <h1 class="main-content-title">Registros</h1>
+        <h1 class="main-content-title">{% translate 'Logs' %}</h1>
         {% if logs %}
             <div id="titles">
-                <div>Antecipação</div>
+                <div>{% translate 'Anticipation' %}</div>
                 <div id="infos-title">
-                    <div class="item-date">Registrado em<span>/</span></div>
-                    <div class="item-user">Usuário<span>/</span></div>
-                    <div class="item-action">Ação</div>
+                    <div class="item-date">{% translate 'Registered in' %}<span>/</span></div>
+                    <div class="item-user">{% translate 'User' %}<span>/</span></div>
+                    <div class="item-action">{% translate 'Action' %}</div>
                 </div>
             </div>
         {% endif %}
@@ -33,7 +34,7 @@
                 </div>
             </div>
         {% empty %}
-            <div>Não há registros.</div>
+            <div>{% translate 'There are no logs.' %}</div>
         {% endfor %}
     </section>
 {% endblock maincontent %}

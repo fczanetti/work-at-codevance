@@ -100,10 +100,11 @@ def test_new_value_titles_pend_conf(resp_filter_pending_conf_user_01):
     Certifies that new value title is present when
     filtering pending confirmation payments.
     """
-    assert_contains(resp_filter_pending_conf_user_01, '<div class="payment-value">Novo valor (R$)</div>')
-    assert_contains(resp_filter_pending_conf_user_01, '<div>Fornecedor - Valor orig.</div>')
-    assert_contains(resp_filter_pending_conf_user_01, '<div class="payment-due-date">Novo '
-                                                      'vencimento<span>/</span></div>')
+    assert_contains(resp_filter_pending_conf_user_01, f'<div class="payment-value">{_("New value (US$)")}</div>')
+    assert_contains(resp_filter_pending_conf_user_01, f'<div>{_("Supplier - Original value")}</div>')
+    assert_contains(resp_filter_pending_conf_user_01, f'<div '
+                                                      f'class="payment-due-date">{_("New due date")}<span>/</span>'
+                                                      f'</div>')
 
 
 def test_new_infos_pend_conf_filter(resp_filter_pending_conf_user_01,
@@ -158,10 +159,11 @@ def test_approval_or_denial_buttons_not_present_for_suppliers(resp_filter_pendin
     """
     assert_not_contains(resp_filter_pending_conf_user_01,
                         f'<a class="approval-anticip-link" '
-                        f'href="{payment_user_01_anticipation_created.anticipation.get_approval_url()}">Aprovar</a>')
+                        f'href="{payment_user_01_anticipation_created.anticipation.get_approval_url()}">{_("Approve")}'
+                        f'</a>')
     assert_not_contains(resp_filter_pending_conf_user_01,
                         f'<a class="denial-anticip-link" '
-                        f'href="{payment_user_01_anticipation_created.anticipation.get_denial_url()}">Negar</a>')
+                        f'href="{payment_user_01_anticipation_created.anticipation.get_denial_url()}">{_("Deny")}</a>')
 
 
 def test_approval_or_denial_buttons_not_present_for_common_user(resp_filter_pending_conf_common_user,
@@ -171,10 +173,11 @@ def test_approval_or_denial_buttons_not_present_for_common_user(resp_filter_pend
     """
     assert_not_contains(resp_filter_pending_conf_common_user,
                         f'<a class="approval-anticip-link" '
-                        f'href="{payment_user_01_anticipation_created.anticipation.get_approval_url()}">Aprovar</a>')
+                        f'href="{payment_user_01_anticipation_created.anticipation.get_approval_url()}">{_("Approve")}'
+                        f'</a>')
     assert_not_contains(resp_filter_pending_conf_common_user,
                         f'<a class="denial-anticip-link" '
-                        f'href="{payment_user_01_anticipation_created.anticipation.get_denial_url()}">Negar</a>')
+                        f'href="{payment_user_01_anticipation_created.anticipation.get_denial_url()}">{_("Deny")}</a>')
 
 
 def test_approval_and_denial_buttons_present_for_operators(resp_filter_pending_conf_operator,
@@ -184,7 +187,7 @@ def test_approval_and_denial_buttons_present_for_operators(resp_filter_pending_c
     """
     assert_contains(resp_filter_pending_conf_operator,
                     f'<a class="approval-anticip-link" '
-                    f'href="{payment_user_02_anticipation_created.anticipation.get_approval_url()}">Aprovar</a>')
+                    f'href="{payment_user_02_anticipation_created.anticipation.get_approval_url()}">{_("Approve")}</a>')
     assert_contains(resp_filter_pending_conf_operator,
                     f'<a class="denial-anticip-link" '
-                    f'href="{payment_user_02_anticipation_created.anticipation.get_denial_url()}">Negar</a>')
+                    f'href="{payment_user_02_anticipation_created.anticipation.get_denial_url()}">{_("Deny")}</a>')

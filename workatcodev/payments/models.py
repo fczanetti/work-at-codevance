@@ -5,6 +5,7 @@ from django.urls import reverse
 from django.contrib.auth.models import Group
 from workatcodev.base.facade import add_payment_permission, add_anticipation_permission
 from workatcodev.utils import format_value, available_anticipation
+from django.utils.translation import gettext_lazy as _
 
 
 class Supplier(models.Model):
@@ -85,7 +86,7 @@ class Anticipation(models.Model):
             self.status = 'A'
             self.save()
         else:
-            raise ValueError('This anticipation can not be approved or does not exist.')
+            raise ValueError(_('This anticipation can not be approved or does not exist.'))
 
 
 class RequestLog(models.Model):

@@ -1,5 +1,6 @@
 {% extends 'base/base.html' %}
 {% load static %}
+{% load i18n %}
 
 {% block css %}
     <link rel="stylesheet" href="{% static 'payments/css/new_payment.css' %}">
@@ -7,12 +8,12 @@
 {% endblock css %}
 
 {% block title %}
-    <title>Pagamentos - Novo pagamento</title>
+    <title>{% translate 'Payments - New payment' %}</title>
 {% endblock title %}
 
 {% block maincontent %}
     <section id="main-content-new-payment">
-        <h1 class="main-content-title">Novo pagamento</h1>
+        <h1 class="main-content-title">{% translate 'New payment' %}</h1>
         <form action="" method="POST">
             {% csrf_token %}
             <div id="form-fields">
@@ -25,8 +26,8 @@
                 {{ form.value.label_tag }} {{ form.value }}
                 <p class="errornote">{{ form.value.errors }}</p>
             </div>
-            <a href="{% url 'payments:home' %}" id="canc-button">Cancelar</a>
-            <button type="submit" id="conf-button">Confirmar</button>
+            <a href="{% url 'payments:home' %}" id="canc-button">{% translate 'Cancel' %}</a>
+            <button type="submit" id="conf-button">{% translate 'Confirm' %}</button>
         </form>
     </section>
 {% endblock maincontent %}

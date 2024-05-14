@@ -1,5 +1,6 @@
 {% extends 'base/base.html' %}
 {% load static %}
+{% load i18n %}
 
 {% block css %}
     <link rel="stylesheet" href="{% static 'payments/css/common_settings.css' %}">
@@ -8,26 +9,26 @@
 
 {% block title %}
     {% if act == 'A' %}
-        <title>Pagamentos - Aprovar</title>
+        <title>{% translate 'Payments - Approve' %}</title>
     {% else %}
-        <title>Pagamentos - Negar</title>
+        <title>{% translate 'Payments - Deny' %}</title>
     {% endif %}
 {% endblock title %}
 
 {% block maincontent %}
     <section id="main-content-approval">
         {% if act == 'A' %}
-            <h1 class="main-content-title">Confirmar aprovação</h1>
+            <h1 class="main-content-title">{% translate 'Confirm approval' %}</h1>
         {% else %}
-            <h1 class="main-content-title">Confirmar negação</h1>
+            <h1 class="main-content-title">{% translate 'Confirm denial' %}</h1>
         {% endif %}
         <h2 id="payment">{{ anticipation.payment }} - {{ anticipation.payment.due_date|date:"d/m/Y" }}</h2>
-        <h3>Novo valor: R${{ anticipation.new_value|floatformat:"2g" }}</h3>
-        <h3>Novo vencimento: {{ anticipation.new_due_date|date:"d/m/Y" }}</h3>
+        <h3>{% translate 'New value (US$):' %}{{ anticipation.new_value|floatformat:"2g" }}</h3>
+        <h3>{% translate 'New due date:' %}{{ anticipation.new_due_date|date:"d/m/Y" }}</h3>
         <form action="" method="POST">
             {% csrf_token %}
-            <a href="{% url 'payments:home' 'PC' %}" id="canc-button" type="submit">Cancelar</a>
-            <button type="submit" id="conf-button">Confirmar</button>
+            <a href="{% url 'payments:home' 'PC' %}" id="canc-button" type="submit">{% translate 'Cancel' %}</a>
+            <button type="submit" id="conf-button">{% translate 'Confirm' %}</button>
         </form>
     </section>
 {% endblock maincontent %}

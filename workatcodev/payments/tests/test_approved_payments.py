@@ -83,10 +83,10 @@ def test_new_value_titles_approved(resp_filter_approved_user_01):
     Certifies that new value title is present when
     filtering approved payments.
     """
-    assert_contains(resp_filter_approved_user_01, '<div class="payment-value">Novo valor (R$)</div>')
-    assert_contains(resp_filter_approved_user_01, '<div>Fornecedor - Valor orig.</div>')
-    assert_contains(resp_filter_approved_user_01, '<div class="payment-due-date">Novo '
-                                                  'vencimento<span>/</span></div>')
+    assert_contains(resp_filter_approved_user_01, f'<div class="payment-value">{_("New value (US$)")}</div>')
+    assert_contains(resp_filter_approved_user_01, f'<div>{_("Supplier - Original value")}</div>')
+    assert_contains(resp_filter_approved_user_01, f'<div '
+                                                  f'class="payment-due-date">{_("New due date")}<span>/</span></div>')
 
 
 def test_logged_common_user_can_see_all_approved_payments(client_logged_common_user,

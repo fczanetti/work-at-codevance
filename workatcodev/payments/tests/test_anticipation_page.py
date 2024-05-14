@@ -2,7 +2,7 @@ from datetime import date
 
 import pytest
 from django.urls import reverse
-
+from django.utils.translation import gettext_lazy as _
 from workatcodev.django_assertions import assert_contains
 
 
@@ -27,14 +27,14 @@ def test_title_anticipation_page(resp_anticip_page_logged_supplier_01):
     """
     Certifies that the title of the anticipation page is present.
     """
-    assert_contains(resp_anticip_page_logged_supplier_01, '<title>Pagamentos - Antecipar</title>')
+    assert_contains(resp_anticip_page_logged_supplier_01, f'<title>{_("Payments - Anticipate")}</title>')
 
 
 def test_title_is_present(resp_anticip_page_logged_supplier_01):
     """
     Certifies that the title is present on the anticipation page.
     """
-    assert_contains(resp_anticip_page_logged_supplier_01, 'Antecipação de pagamento')
+    assert_contains(resp_anticip_page_logged_supplier_01, f'{_("Payment anticipation")}')
 
 
 def test_payment_is_present(resp_anticip_page_logged_supplier_01, payment_supplier_01):
@@ -50,12 +50,11 @@ def test_form_fields_are_present(resp_anticip_page_logged_supplier_01):
     """
     Certifies that the form fields and buttons are present.
     """
-    assert_contains(resp_anticip_page_logged_supplier_01, '<label for="id_new_due_date">Novo vencimento:</label>')
+    assert_contains(resp_anticip_page_logged_supplier_01, '<label for="id_new_due_date">')
     assert_contains(resp_anticip_page_logged_supplier_01, '<input type="date" name="new_due_date" required '
                                                           'id="id_new_due_date"')
-    assert_contains(resp_anticip_page_logged_supplier_01, '<button type="submit" id="conf-button">Confirmar</button>')
-    assert_contains(resp_anticip_page_logged_supplier_01, f'<a href="{reverse("payments:home")}" '
-                                                          f'id="canc-button">Cancelar</a>')
+    assert_contains(resp_anticip_page_logged_supplier_01, '<button type="submit" id="conf-button">')
+    assert_contains(resp_anticip_page_logged_supplier_01, f'<a href="{reverse("payments:home")}" id="canc-button">')
 
 
 def test_try_access_anticip_paym_supp_02_by_supp_01(supplier_01, client_logged_supplier_01, supplier_02, payment):

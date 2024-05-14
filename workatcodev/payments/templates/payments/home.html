@@ -1,12 +1,13 @@
 {% extends 'base/base.html' %}
 {% load static %}
+{% load i18n %}
 
 {% block css %}
     <link rel="stylesheet" href="{% static 'payments/css/home.css' %}">
 {% endblock css %}
 
 {% block title %}
-    <title>Pagamentos - Home</title>
+    <title>{% translate 'Payments - Home' %}</title>
 {% endblock title %}
 
 {% block maincontent %}
@@ -14,22 +15,22 @@
         <h1 class="main-content-title">{{ title }}</h1>
         <form id="filter_form" action="{% url 'payments:home' %}" method="GET">
             {{ form.status.label_tag }} {{ form.status }}
-            <button id="filter_button" type="submit">Filtrar</button>
+            <button id="filter_button" type="submit">{% translate 'Filter' %}</button>
             {{ form.status.errors }}
         </form>
         {% if payments %}
             <div class="payment-titles">
                 {% if status == 'PC' or status == 'AN' or status == 'D' %}
-                    <div>Fornecedor - Valor orig.</div>
+                    <div>{% translate 'Supplier - Original value' %}</div>
                     <div class="payment-infos">
-                        <div class="payment-due-date">Novo vencimento<span>/</span></div>
-                        <div class="payment-value">Novo valor (R$)</div>
+                        <div class="payment-due-date">{% translate 'New due date' %}<span>/</span></div>
+                        <div class="payment-value">{% translate 'New value (US$)' %}</div>
                     </div>
                 {% else %}
-                    <div>Fornecedor</div>
+                    <div>{% translate 'Supplier' %}</div>
                     <div class="payment-infos">
-                        <div class="payment-due-date">Vencimento<span>/</span></div>
-                        <div class="payment-value">Valor (R$)</div>
+                        <div class="payment-due-date">{% translate 'Due date' %}<span>/</span></div>
+                        <div class="payment-value">{% translate 'Value (US$)' %}</div>
                     </div>
                 {% endif %}
             </div>
@@ -42,8 +43,8 @@
                         {% if status == 'PC' %}
                             {% if perms.payments.change_anticipation %}
                                 <div id="buttons">
-                                    <a class="approval-anticip-link" href="{{ payment.anticipation.get_approval_url }}">Aprovar</a>
-                                    <a class="denial-anticip-link" href="{{ payment.anticipation.get_denial_url }}">Negar</a>
+                                    <a class="approval-anticip-link" href="{{ payment.anticipation.get_approval_url }}">{% translate 'Approve' %}</a>
+                                    <a class="denial-anticip-link" href="{{ payment.anticipation.get_denial_url }}">{% translate 'Deny' %}</a>
                                 </div>
                             {% endif %}
                         {% endif %}
@@ -57,7 +58,7 @@
                         <div>{{ payment.supplier }}</div>
                         {% if status == 'A' %}
                             {% if perms.payments.add_anticipation %}
-                                <a class="anticipation-link" href="{{ payment.create_anticipation }}">Antecipar</a>
+                                <a class="anticipation-link" href="{{ payment.create_anticipation }}">{% translate 'Anticipate' %}</a>
                             {% endif %}
                         {% endif %}
                     </div>
@@ -68,7 +69,7 @@
                 {% endif %}
             </div>
         {% empty %}
-            <div>Não há pagamentos cadastrados.</div>
+            <div>{% translate 'No payments registered.' %}</div>
         {% endfor %}
     </section>
 {% endblock maincontent %}

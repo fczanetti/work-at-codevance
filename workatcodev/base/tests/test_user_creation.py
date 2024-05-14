@@ -2,6 +2,7 @@ import pytest
 from model_bakery import baker
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
+from django.utils.translation import gettext_lazy as _
 
 
 @pytest.fixture
@@ -26,21 +27,21 @@ def test_group_creation(user_operator):
     """
     Certifies that a group named Operators is created when creating/saving a user.
     """
-    assert Group.objects.filter(name='Operators').exists()
+    assert Group.objects.filter(name=_('Operators')).exists()
 
 
 def test_user_is_operator(user_operator):
     """
     Certifies that a user created as operator belongs to the Operators group.
     """
-    assert user_operator.groups.filter(name='Operators').exists()
+    assert user_operator.groups.filter(name=_('Operators')).exists()
 
 
 def test_user_is_not_operator(user_not_operator):
     """
     Certifies that a user created as non operator does not belong to the Operators group.
     """
-    assert not user_not_operator.groups.filter(name='Operators').exists()
+    assert not user_not_operator.groups.filter(name=_('Operators')).exists()
 
 
 def test_operator_has_permissions(user_operator):
