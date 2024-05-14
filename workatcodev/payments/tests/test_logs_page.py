@@ -3,6 +3,7 @@ from django.urls import reverse
 from datetime import date
 from workatcodev.django_assertions import assert_contains, assert_not_contains
 from workatcodev.payments.models import RequestLog
+from django.utils.translation import gettext_lazy as _
 
 
 @pytest.fixture
@@ -62,9 +63,9 @@ def test_titles_logs_page_and_message(resp_logs_page):
     Certifies that the titles are present and no logs
     message is not present.
     """
-    assert_contains(resp_logs_page, '<title>Pagamentos - Registros</title>')
-    assert_contains(resp_logs_page, '<h1 class="main-content-title">Registros</h1>')
-    assert_not_contains(resp_logs_page, 'Não há registros.')
+    assert_contains(resp_logs_page, f'<title>{_("Payments - Logs")}</title>')
+    assert_contains(resp_logs_page, f'<h1 class="main-content-title">{_("Logs")}</h1>')
+    assert_not_contains(resp_logs_page, f'{_("There are no logs.")}')
 
 
 def test_no_logs_message(resp_logs_page_no_logs_created):
@@ -72,7 +73,7 @@ def test_no_logs_message(resp_logs_page_no_logs_created):
     Certifies that the message is present if
     there are no logs registered.
     """
-    assert_contains(resp_logs_page_no_logs_created, 'Não há registros.')
+    assert_contains(resp_logs_page_no_logs_created, f'{_("There are no logs.")}')
 
 
 def test_logs_infos_present(resp_logs_page):

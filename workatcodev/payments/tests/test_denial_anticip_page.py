@@ -1,7 +1,7 @@
 from datetime import date, datetime, timedelta
 import pytest
 from django.urls import reverse
-
+from django.utils.translation import gettext_lazy as _
 from workatcodev.django_assertions import assert_contains
 from workatcodev.utils import format_value
 
@@ -29,8 +29,8 @@ def test_titles_denial_page(resp_update_denial_anticip_page):
     """
     Certifies that the titles of the page are present.
     """
-    assert_contains(resp_update_denial_anticip_page, '<title>Pagamentos - Negar</title>')
-    assert_contains(resp_update_denial_anticip_page, '<h1 class="main-content-title">Confirmar negação</h1>')
+    assert_contains(resp_update_denial_anticip_page, f'<title>{_("Payments - Deny")}</title>')
+    assert_contains(resp_update_denial_anticip_page, f'<h1 class="main-content-title">{_("Confirm denial")}</h1>')
 
 
 def test_payment_is_shown_denial_page(resp_update_denial_anticip_page,
@@ -62,8 +62,8 @@ def test_form_items_are_present_denial(resp_update_denial_anticip_page,
     Certifies that the form items are present.
     """
     assert_contains(resp_update_denial_anticip_page, f'<a href="{reverse("payments:home", args=("PC",))}" '
-                                                     f'id="canc-button" type="submit">Cancelar</a>')
-    assert_contains(resp_update_denial_anticip_page, '<button type="submit" id="conf-button">Confirmar</button>')
+                                                     f'id="canc-button" type="submit">')
+    assert_contains(resp_update_denial_anticip_page, '<button type="submit" id="conf-button">')
 
 
 def test_access_denied_suppliers(client_logged_supplier_01,

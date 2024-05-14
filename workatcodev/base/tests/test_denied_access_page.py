@@ -2,7 +2,7 @@ import pytest
 from model_bakery import baker
 from django.contrib.auth import get_user_model
 from django.urls import reverse
-
+from django.utils.translation import gettext_lazy as _
 from workatcodev.django_assertions import assert_contains
 
 
@@ -38,6 +38,6 @@ def test_titles_denied_access_page(resp_denied_access_page):
     """
     Certifies that the title of denied access page is present.
     """
-    assert_contains(resp_denied_access_page, '<title>Pagamentos - Acesso negado</title>')
-    assert_contains(resp_denied_access_page, '<h1 id="main-content-title">Desculpe, mas você não tem acesso a este '
-                                             'conteúdo.</h1>')
+    assert_contains(resp_denied_access_page, f'<title>{_("Payments - Denied access")}</title>')
+    assert_contains(resp_denied_access_page, f'<h1 id="main-content-title">'
+                                             f'{_("Sorry, but you are not allowed to access this page.")}</h1>')

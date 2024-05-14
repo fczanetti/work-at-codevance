@@ -1,6 +1,7 @@
 import pytest
 from django.urls import reverse
 from workatcodev.django_assertions import assert_contains, assert_not_contains
+from django.utils.translation import gettext_lazy as _
 
 
 @pytest.fixture
@@ -65,16 +66,18 @@ def test_title_home_page(resp_home_page_logged_user):
     """
     Certifies that home page title is present.
     """
-    assert_contains(resp_home_page_logged_user, '<title>Pagamentos - Home</title>')
+    assert_contains(resp_home_page_logged_user, f'<title>{_("Payments - Home")}</title>')
 
 
 def test_links_navbar(resp_home_page_logged_user):
     """
-    Certify that navbar links are present.
+    Certify that navbar links and title are present.
     """
-    assert_contains(resp_home_page_logged_user, f'<a class="navbar-link" href="{reverse("payments:home")}">Início</a>')
     assert_contains(resp_home_page_logged_user, f'<a class="navbar-link" '
-                                                f'href="{reverse("payments:logs")}">Registros</a>')
+                                                f'href="{reverse("payments:home")}">{_("Home")}</a>')
+    assert_contains(resp_home_page_logged_user, f'<a class="navbar-link" '
+                                                f'href="{reverse("payments:logs")}">{_("Logs")}</a>')
+    assert_contains(resp_home_page_logged_user, f'<div id="logo">{_("Payments")}</div>')
 
 
 def test_filter_form_home_page_exists(resp_home_page_logged_user):
@@ -84,7 +87,7 @@ def test_filter_form_home_page_exists(resp_home_page_logged_user):
     assert_contains(resp_home_page_logged_user, '<form id="filter_form" action="/" method="GET">')
     assert_contains(resp_home_page_logged_user, '<label for="id_status">Status:</label>')
     assert_contains(resp_home_page_logged_user, '<select name="status" id="id_status">')
-    assert_contains(resp_home_page_logged_user, '<button id="filter_button" type="submit">Filtrar</button>')
+    assert_contains(resp_home_page_logged_user, f'<button id="filter_button" type="submit">{_("Filter")}</button>')
 
 
 def test_title_payment_infos_present(resp_home_page_logged_user):
@@ -92,9 +95,9 @@ def test_title_payment_infos_present(resp_home_page_logged_user):
     Certifies that the titles of payment infos are present
     when there is at least one payment listed.
     """
-    assert_contains(resp_home_page_logged_user, '<div>Fornecedor</div>')
-    assert_contains(resp_home_page_logged_user, '<div class="payment-due-date">Vencimento<span>/</span></div>')
-    assert_contains(resp_home_page_logged_user, '<div class="payment-value">Valor (R$)</div>')
+    assert_contains(resp_home_page_logged_user, f'<div>{_("Supplier")}</div>')
+    assert_contains(resp_home_page_logged_user, f'<div class="payment-due-date">{_("Due date")}<span>/</span></div>')
+    assert_contains(resp_home_page_logged_user, f'<div class="payment-value">{_("Value (US$)")}</div>')
 
 
 def test_title_payment_infos_not_present(resp_home_page_logged_user_no_payments_available):
@@ -102,9 +105,11 @@ def test_title_payment_infos_not_present(resp_home_page_logged_user_no_payments_
     Certifies that the titles of payment infos are not present
     when there are no payments listed.
     """
-    assert_not_contains(resp_home_page_logged_user_no_payments_available, '<div>Fornecedor</div>')
-    assert_not_contains(resp_home_page_logged_user_no_payments_available, '<div class="payment-due-date">Vencimento')
-    assert_not_contains(resp_home_page_logged_user_no_payments_available, '<div class="payment-value">Valor (R$)</div>')
+    assert_not_contains(resp_home_page_logged_user_no_payments_available, f'<div>{_("Supplier")}</div>')
+    assert_not_contains(resp_home_page_logged_user_no_payments_available,
+                        f'<div class="payment-due-date">{_("Due date")}')
+    assert_not_contains(resp_home_page_logged_user_no_payments_available,
+                        f'<div class="payment-value">{_("Value (US$)")}</div>')
 
 
 def test_anticip_button_not_present_for_common_user(resp_home_page_logged_user,
@@ -115,7 +120,7 @@ def test_anticip_button_not_present_for_common_user(resp_home_page_logged_user,
     """
     for payment in available_payments_user_01:
         assert_not_contains(resp_home_page_logged_user, f'<a class="anticipation-link" '
-                                                        f'href="{payment.create_anticipation()}">Antecipar</a>')
+                                                        f'href="{payment.create_anticipation()}">{_("Anticipate")}</a>')
 
 
 def test_anticip_button_present_for_operator(resp_home_page_operator,
@@ -126,7 +131,7 @@ def test_anticip_button_present_for_operator(resp_home_page_operator,
     """
     for payment in available_payments_user_01:
         assert_contains(resp_home_page_operator, f'<a class="anticipation-link" '
-                                                 f'href="{payment.create_anticipation()}">Antecipar</a>')
+                                                 f'href="{payment.create_anticipation()}">{_("Anticipate")}</a>')
 
 
 def test_anticip_button_present_for_supplier(resp_home_page_supplier_01,
@@ -137,7 +142,7 @@ def test_anticip_button_present_for_supplier(resp_home_page_supplier_01,
     """
     for payment in available_payments_user_01:
         assert_contains(resp_home_page_supplier_01, f'<a class="anticipation-link" '
-                                                    f'href="{payment.create_anticipation()}">Antecipar</a>')
+                                                    f'href="{payment.create_anticipation()}">{_("Anticipate")}</a>')
 
 
 def test_new_payment_button_present_for_suppliers(resp_home_page_supplier_01):
@@ -145,7 +150,7 @@ def test_new_payment_button_present_for_suppliers(resp_home_page_supplier_01):
     Certifies that the new payment button is present for suppliers.
     """
     assert_contains(resp_home_page_supplier_01, f'<a class="navbar-link" '
-                                                f'href="{reverse("payments:new_payment")}">Novo pagamento</a>')
+                                                f'href="{reverse("payments:new_payment")}">{_("New payment")}</a>')
 
 
 def test_new_payment_button_present_for_operators(resp_home_page_operator):
@@ -153,7 +158,7 @@ def test_new_payment_button_present_for_operators(resp_home_page_operator):
     Certifies that the new payment button is present for operators.
     """
     assert_contains(resp_home_page_operator, f'<a class="navbar-link" '
-                                             f'href="{reverse("payments:new_payment")}">Novo pagamento</a>')
+                                             f'href="{reverse("payments:new_payment")}">{_("New payment")}</a>')
 
 
 def test_new_payment_button_not_present_for_common_users(resp_home_page_logged_user):
@@ -161,4 +166,4 @@ def test_new_payment_button_not_present_for_common_users(resp_home_page_logged_u
     Certifies that the new payment button is not present for common users.
     """
     assert_not_contains(resp_home_page_logged_user, f'<a class="navbar-link" '
-                                                    f'href="{reverse("payments:new_payment")}">Novo pagamento</a>')
+                                                    f'href="{reverse("payments:new_payment")}">{_("New payment")}</a>')

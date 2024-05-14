@@ -79,8 +79,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     first_name = models.CharField(_("first name"), max_length=150, blank=True)
     email = models.EmailField(_("email address"), unique=True)
-    is_operator = models.BooleanField(verbose_name='Operador', default=False, help_text='Adiciona permissões de '
-                                                                                        'operador ao usuário')
+    is_operator = models.BooleanField(verbose_name=_('Operator'), default=False, help_text=_('Adds operator '
+                                                                                             'permissions to user'))
     is_staff = models.BooleanField(
         _("staff status"),
         default=False,
@@ -134,7 +134,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         """
         super().save(*args, **kwargs)
         obj = self
-        operators_group, created = Group.objects.get_or_create(name='Operators')
+        operators_group, created = Group.objects.get_or_create(name=_('Operators'))
         if created:
             facade.add_payment_permission(operators_group)
             facade.add_anticipation_permission(operators_group)

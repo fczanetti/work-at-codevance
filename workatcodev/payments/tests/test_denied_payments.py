@@ -76,10 +76,10 @@ def test_new_value_titles_denied(resp_filter_denied_user_01):
     Certifies that new value title is present when
     filtering denied payments.
     """
-    assert_contains(resp_filter_denied_user_01, '<div class="payment-value">Novo valor (R$)</div>')
-    assert_contains(resp_filter_denied_user_01, '<div>Fornecedor - Valor orig.</div>')
-    assert_contains(resp_filter_denied_user_01, '<div class="payment-due-date">Novo '
-                                                'vencimento<span>/</span></div>')
+    assert_contains(resp_filter_denied_user_01, f'<div class="payment-value">{_("New value (US$)")}</div>')
+    assert_contains(resp_filter_denied_user_01, f'<div>{_("Supplier - Original value")}</div>')
+    assert_contains(resp_filter_denied_user_01, f'<div '
+                                                f'class="payment-due-date">{_("New due date")}<span>/</span></div>')
 
 
 def test_payments_with_anticip_status_pc_not_shown(resp_filter_denied_user_01,

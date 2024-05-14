@@ -1,5 +1,6 @@
 {% extends 'base/base.html' %}
 {% load static %}
+{% load i18n %}
 
 {% block css %}
     <link rel="stylesheet" href="{% static 'payments/css/anticipation.css' %}">
@@ -7,22 +8,22 @@
 {% endblock css %}
 
 {% block title %}
-    <title>Pagamentos - Antecipar</title>
+    <title>{% translate 'Payments - Anticipate' %}</title>
 {% endblock title %}
 
 {% block maincontent %}
     <section id="main-content-anticipation">
-        <h1 class="main-content-title">Antecipação de pagamento</h1>
+        <h1 class="main-content-title">{% translate 'Payment anticipation' %}</h1>
         <h2>{{ payment }}</h2>
-        <h3>Vencimento: {{ payment.due_date|date:"d/m/Y" }}</h3>
+        <h3>{% translate 'Due date:' %} {{ payment.due_date|date:"d/m/Y" }}</h3>
         <form action="" method="POST">
             {% csrf_token %}
             <div id="form-fields">
                 {{ form.new_due_date.label_tag }} {{ form.new_due_date }}
                 <p class="errornote">{{ form.new_due_date.errors }}</p>
             </div>
-            <a href="{% url 'payments:home' %}" id="canc-button">Cancelar</a>
-            <button type="submit" id="conf-button">Confirmar</button>
+            <a href="{% url 'payments:home' %}" id="canc-button">{% translate 'Cancel' %}</a>
+            <button type="submit" id="conf-button">{% translate 'Confirm' %}</button>
         </form>
     </section>
 {% endblock maincontent %}
