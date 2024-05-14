@@ -20,6 +20,9 @@
             <div id="logo">Pagamentos</div>
             <nav id="nav-links" class="navbar-links">
                 <a class="navbar-link" href="{% url 'payments:home' %}">Início</a>
+                {% if perms.payments.add_payment %}
+                    <a class="navbar-link" href="{% url 'payments:new_payment' %}">Novo pagamento</a>
+                {% endif %}
                 <a class="navbar-link" href="{% url 'payments:logs' %}">Registros</a>
             </nav>
             <div id="toggle-button">
