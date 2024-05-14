@@ -24,6 +24,26 @@ def resp_home_page_logged_user_no_payments_available(client_logged_common_user):
     return resp
 
 
+@pytest.fixture
+def resp_home_page_supplier_01(client_logged_supplier_01,
+                               available_payments_user_01):
+    """
+    Creates a request to home page by supplier 01 and returns a response.
+    """
+    resp = client_logged_supplier_01.get(reverse('payments:home'))
+    return resp
+
+
+@pytest.fixture
+def resp_home_page_operator(client_logged_operator,
+                            available_payments_user_01):
+    """
+    Creates a request to home page by an operator and returns a response.
+    """
+    resp = client_logged_operator.get(reverse('payments:home'))
+    return resp
+
+
 def test_invalid_param_url(client_logged_common_user):
     """
     Certifies that if an invalid parameter is tried in
@@ -98,23 +118,47 @@ def test_anticip_button_not_present_for_common_user(resp_home_page_logged_user,
                                                         f'href="{payment.create_anticipation()}">Antecipar</a>')
 
 
-def test_anticip_button_present_for_operator(client_logged_operator,
+def test_anticip_button_present_for_operator(resp_home_page_operator,
                                              available_payments_user_01):
     """
     Certifies that the button for creating anticipation
     is shown to an operator.
     """
-    resp = client_logged_operator.get(reverse('payments:home'))
     for payment in available_payments_user_01:
-        assert_contains(resp, f'<a class="anticipation-link" href="{payment.create_anticipation()}">Antecipar</a>')
+        assert_contains(resp_home_page_operator, f'<a class="anticipation-link" '
+                                                 f'href="{payment.create_anticipation()}">Antecipar</a>')
 
 
-def test_anticip_button_present_for_supplier(client_logged_supplier_01,
+def test_anticip_button_present_for_supplier(resp_home_page_supplier_01,
                                              available_payments_user_01):
     """
     Certifies that the button for creating anticipation
     is shown to a supplier.
     """
-    resp = client_logged_supplier_01.get(reverse('payments:home'))
     for payment in available_payments_user_01:
-        assert_contains(resp, f'<a class="anticipation-link" href="{payment.create_anticipation()}">Antecipar</a>')
+        assert_contains(resp_home_page_supplier_01, f'<a class="anticipation-link" '
+                                                    f'href="{payment.create_anticipation()}">Antecipar</a>')
+
+
+def test_new_payment_button_present_for_suppliers(resp_home_page_supplier_01):
+    """
+    Certifies that the new payment button is present for suppliers.
+    """
+    assert_contains(resp_home_page_supplier_01, f'<a class="navbar-link" '
+                                                f'href="{reverse("payments:new_payment")}">Novo pagamento</a>')
+
+
+def test_new_payment_button_present_for_operators(resp_home_page_operator):
+    """
+    Certifies that the new payment button is present for operators.
+    """
+    assert_contains(resp_home_page_operator, f'<a class="navbar-link" '
+                                             f'href="{reverse("payments:new_payment")}">Novo pagamento</a>')
+
+
+def test_new_payment_button_not_present_for_common_users(resp_home_page_logged_user):
+    """
+    Certifies that the new payment button is not present for common users.
+    """
+    assert_not_contains(resp_home_page_logged_user, f'<a class="navbar-link" '
+                                                    f'href="{reverse("payments:new_payment")}">Novo pagamento</a>')
