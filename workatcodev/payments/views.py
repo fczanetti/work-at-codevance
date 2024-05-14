@@ -150,5 +150,8 @@ def update_antic(request, act, id):
 
 
 def logs(request):
-    logs = RequestLog.objects.all().order_by('-created_at')
-    return render(request, 'payments/logs.html', {'logs': logs})
+    # get_logs will check if it is a supplier requesting. If so,
+    # only its logs will be brought, otherwise is will bring all
+    # logs registered
+    reg = facade.get_logs(request.user)
+    return render(request, 'payments/logs.html', {'logs': reg})

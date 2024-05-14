@@ -15,8 +15,8 @@ def anticipations(client_logged_operator, payment,
     - denies payment_user_02_anticipation_created anticipation;
     """
     new_date = date.today()
-    a1 = {'act': 'A', 'id': payment_user_01_anticipation_created.pk}
-    a2 = {'act': 'D', 'id': payment_user_02_anticipation_created.pk}
+    a1 = {'act': 'A', 'id': payment_user_01_anticipation_created.anticipation.pk}
+    a2 = {'act': 'D', 'id': payment_user_02_anticipation_created.anticipation.pk}
     client_logged_operator.post(reverse('payments:anticipation', args=(payment.pk,)), {'new_due_date': new_date})
     client_logged_operator.post(reverse('payments:update_antic', kwargs=a1))
     client_logged_operator.post(reverse('payments:update_antic', kwargs=a2))
@@ -38,6 +38,15 @@ def resp_logs_page_no_logs_created(client_logged_operator):
     and returns a response.
     """
     resp = client_logged_operator.get(reverse('payments:logs'))
+    return resp
+
+
+@pytest.fixture
+def resp_logs_page_supplier_01(anticipations, client_logged_supplier_01):
+    """
+    Creates a request to logs page by supplier 01.
+    """
+    resp = client_logged_supplier_01.get(reverse('payments:logs'))
     return resp
 
 
@@ -77,3 +86,19 @@ def test_logs_infos_present(resp_logs_page):
         assert_contains(resp_logs_page, creation_date)
         assert_contains(resp_logs_page, log.user)
         assert_contains(resp_logs_page, log.action)
+
+
+def test_logs_supp_02_not_present_for_supp_01(resp_logs_page_supplier_01,
+                                              payment_user_02_anticipation_created):
+    """
+    Certifies that logs from supplier 02 are not present for supplier 01.
+    """
+    assert_not_contains(resp_logs_page_supplier_01, payment_user_02_anticipation_created.anticipation)
+
+
+def test_logs_supp_01_present_for_supp_01(resp_logs_page_supplier_01,
+                                          payment_user_01_anticipation_created):
+    """
+    Certifies that logs from supplier 01 are present for supplier 01.
+    """
+    assert_contains(resp_logs_page_supplier_01, payment_user_01_anticipation_created.anticipation)

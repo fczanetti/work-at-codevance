@@ -1,7 +1,7 @@
 from datetime import date
 
 from workatcodev import settings
-from workatcodev.payments.models import Payment
+from workatcodev.payments.models import Payment, RequestLog
 
 from workatcodev.utils import get_supplier_or_none
 
@@ -89,3 +89,17 @@ def new_payment_value(payment, new_due_date):
     n_days = (orig_date - new_date).days
     new_value = payment.value - (payment.value * (i_rate / 30) * n_days)
     return new_value
+
+
+def get_logs(user):
+    """
+    Returns all logs registered. If it is a supplier logged
+    and requesting, only logs related to this supplier will
+    be brought.
+    """
+    supplier = get_supplier_or_none(user)
+    if supplier:
+        logs = RequestLog.objects.filter(anticipation__payment__supplier__user=user)
+        return logs
+    logs = RequestLog.objects.all().order_by('-created_at')
+    return logs
