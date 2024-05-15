@@ -20,11 +20,13 @@
         <header id="navbar">
             <div id="logo">{% translate 'Payments' %}</div>
             <nav id="nav-links" class="navbar-links">
-                <a class="navbar-link" href="{% url 'payments:home' %}">{% translate 'Home' %}</a>
-                {% if perms.payments.add_payment %}
-                    <a class="navbar-link" href="{% url 'payments:new_payment' %}">{% translate 'New payment' %}</a>
+                {% if user.is_authenticated %}
+                    <a class="navbar-link" href="{% url 'payments:home' %}">{% translate 'Home' %}</a>
+                    {% if perms.payments.add_payment %}
+                        <a class="navbar-link" href="{% url 'payments:new_payment' %}">{% translate 'New payment' %}</a>
+                    {% endif %}
+                    <a class="navbar-link" href="{% url 'payments:logs' %}">{% translate 'Logs' %}</a>
                 {% endif %}
-                <a class="navbar-link" href="{% url 'payments:logs' %}">{% translate 'Logs' %}</a>
             </nav>
             <div id="toggle-button">
                 <div class="toggle-bar"></div>
