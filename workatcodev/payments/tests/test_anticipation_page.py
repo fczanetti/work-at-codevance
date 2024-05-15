@@ -99,3 +99,13 @@ def test_access_anticip_page_incorrect_id(client_logged_operator):
     """
     resp = client_logged_operator.get(reverse('payments:anticipation', args=(12345,)))
     assert resp.status_code == 404
+
+
+def test_redirect_login_user_not_authenticated(client, db, payment):
+    """
+    Certifies that non authenticated users can not
+    access anticipation page.
+    """
+    resp = client.get(reverse('payments:anticipation', args=(payment.pk,)))
+    assert resp.status_code == 302
+    assert resp.url.startswith('/accounts/login')

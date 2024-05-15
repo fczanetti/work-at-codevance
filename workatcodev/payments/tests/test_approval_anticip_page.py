@@ -133,3 +133,14 @@ def test_approval_page_not_found_for_act_diff_than_a_or_d(client_logged_operator
     d = {'act': 'C', 'id': payment_user_01_anticipation_related_status_d.anticipation.pk}
     resp = client_logged_operator.get(reverse('payments:update_antic', kwargs=d))
     assert resp.status_code == 404
+
+
+def test_redirect_login_user_not_authenticated(client, db, payment_user_01_anticipation_related_status_d):
+    """
+    Certifies that non authenticated users can not
+    access update anticipation page.
+    """
+    d = {'act': 'C', 'id': payment_user_01_anticipation_related_status_d.anticipation.pk}
+    resp = client.get(reverse('payments:update_antic', kwargs=d))
+    assert resp.status_code == 302
+    assert resp.url.startswith('/accounts/login')

@@ -16,6 +16,8 @@ def get_supplier_or_none(user):
     related. If so, the supplier is returned, otherwise
     None is returned.
     """
+    if not user.is_authenticated:
+        return None
     from workatcodev.payments.models import Supplier
     supplier = None
     try:

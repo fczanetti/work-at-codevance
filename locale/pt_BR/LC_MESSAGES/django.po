@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-14 14:31-0300\n"
+"POT-Creation-Date: 2024-05-15 20:36-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -101,16 +101,16 @@ msgstr "Operadores"
 msgid "Payments"
 msgstr "Pagamentos"
 
-#: workatcodev/base/templates/base/base.html:23
+#: workatcodev/base/templates/base/base.html:24
 msgid "Home"
 msgstr "Início"
 
-#: workatcodev/base/templates/base/base.html:25
+#: workatcodev/base/templates/base/base.html:26
 #: workatcodev/payments/templates/payments/new_payment.html:16
 msgid "New payment"
 msgstr "Novo pagamento"
 
-#: workatcodev/base/templates/base/base.html:27
+#: workatcodev/base/templates/base/base.html:28
 #: workatcodev/payments/templates/payments/logs.html:16
 msgid "Logs"
 msgstr "Registros"
@@ -122,6 +122,18 @@ msgstr "Pagamentos - Acesso negado"
 #: workatcodev/base/templates/base/denied_access.html:15
 msgid "Sorry, but you are not allowed to access this page."
 msgstr "Desculpe, mas você não tem permissão para acessar este conteúdo"
+
+#: workatcodev/base/templates/registration/login.html:11
+msgid "Payments - Login"
+msgstr "Pagamentos - Login"
+
+#: workatcodev/base/templates/registration/login.html:18
+msgid "Please, check your email and password and try again."
+msgstr "Por favor, verifique seu email e password e tente novamente."
+
+#: workatcodev/base/templates/registration/login.html:21
+msgid "Please, sign in to access this content."
+msgstr "Por favor, autentique-se para acessar este conteúdo."
 
 #: workatcodev/payments/forms.py:10
 msgid "Available"
@@ -287,40 +299,40 @@ msgid "New due date:"
 msgstr "Novo vencimento:"
 
 #: workatcodev/payments/tests/test_approved_payments.py:78
-#: workatcodev/payments/views.py:18
+#: workatcodev/payments/views.py:19
 msgid "Anticipated payments"
 msgstr "Pagamentos antecipados"
 
 #: workatcodev/payments/tests/test_available_payments.py:98
-#: workatcodev/payments/views.py:15
+#: workatcodev/payments/views.py:16
 msgid "Available for anticipation"
 msgstr "Disponíveis para antecipação"
 
 #: workatcodev/payments/tests/test_denied_payments.py:71
-#: workatcodev/payments/views.py:19
+#: workatcodev/payments/views.py:20
 msgid "Denied anticipation"
 msgstr "Antecipação negada"
 
 #: workatcodev/payments/tests/test_pend_conf_payments.py:95
-#: workatcodev/payments/views.py:17
+#: workatcodev/payments/views.py:18
 msgid "Pending anticipation confirmation"
 msgstr "Confirmação de antecipação pendente"
 
 #: workatcodev/payments/tests/test_unavailable_payments.py:68
-#: workatcodev/payments/views.py:16
+#: workatcodev/payments/views.py:17
 msgid "Unavailable for anticipation"
 msgstr "Indisponíveis para antecipação"
 
-#: workatcodev/payments/views.py:21 workatcodev/payments/views.py:55
-#: workatcodev/payments/views.py:135
+#: workatcodev/payments/views.py:22 workatcodev/payments/views.py:57
+#: workatcodev/payments/views.py:139
 msgid "Page not found. Make sure the URL is correct."
 msgstr "Página não encontrada. Certifique-se de que a URL está correta."
 
-#: workatcodev/payments/views.py:66
+#: workatcodev/payments/views.py:68
 msgid "Unavailable payments can not be anticipated."
 msgstr "Pagamentos indisponíveis não podem ser antecipados."
 
-#: workatcodev/payments/views.py:141
+#: workatcodev/payments/views.py:145
 msgid ""
 "Page not found. Make sure this anticipation exists and is pending "
 "confirmation."

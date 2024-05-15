@@ -4,6 +4,11 @@ form {
     width: 50%;
 }
 
+p {
+    margin: 1rem 0;
+    font-size: 1.1rem;
+}
+
 #id_username,
 #id_password {
     font-size: 1.1rem;

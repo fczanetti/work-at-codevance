@@ -18,14 +18,7 @@
             <p>{% translate 'Please, check your email and password and try again.' %}</p>
         {% endif %}
         {% if next %}
-            {% if user.is_authenticated %}
-            <p>
-                {% translate 'You have no access to this content.' %}
-                {% translate 'To proceed, please, sign in with an authorized account.' %}
-            </p>
-            {% else %}
-                <p>{% translate 'Please, sign in to access this content.' %}</p>
-            {% endif %}
+            <p>{% translate 'Please, sign in to access this content.' %}</p>
         {% endif %}
         <form action="{% url 'base:login' %}" method="POST">
             {% csrf_token %}
