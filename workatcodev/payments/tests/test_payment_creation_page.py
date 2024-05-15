@@ -86,3 +86,13 @@ def test_common_user_can_not_access_paym_creat_page(client_logged_common_user):
     resp = client_logged_common_user.get(reverse('payments:new_payment'))
     assert resp.status_code == 302
     assert resp.url.startswith('/denied_access')
+
+
+def test_redirect_login_user_not_authenticated(client, db):
+    """
+    Certifies that non authenticated users can not
+    access new payments page.
+    """
+    resp = client.get(reverse('payments:new_payment'))
+    assert resp.status_code == 302
+    assert resp.url.startswith('/accounts/login')

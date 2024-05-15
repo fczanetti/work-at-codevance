@@ -167,3 +167,13 @@ def test_new_payment_button_not_present_for_common_users(resp_home_page_logged_u
     """
     assert_not_contains(resp_home_page_logged_user, f'<a class="navbar-link" '
                                                     f'href="{reverse("payments:new_payment")}">{_("New payment")}</a>')
+
+
+def test_redirect_login_user_not_authenticated(client, db):
+    """
+    Certifies that non authenticated users can not
+    access home page.
+    """
+    resp = client.get(reverse('payments:home'))
+    assert resp.status_code == 302
+    assert resp.url.startswith('/accounts/login')

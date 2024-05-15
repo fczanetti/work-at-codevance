@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, reverse
-from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.decorators import permission_required, login_required
 from django.http import HttpResponseNotFound
 from workatcodev.payments import facade
 from workatcodev.payments.forms import FilterStatusForm, AnticipationForm, NewPaymentForm
@@ -9,6 +9,7 @@ from workatcodev.payments.models import Payment, RequestLog
 from django.core.exceptions import ObjectDoesNotExist
 
 
+@login_required
 def home(request, status='A'):
     # The TITLES are the ones to be shown at home page
     # acording to what payments were filtered.
@@ -42,6 +43,7 @@ def home(request, status='A'):
     return render(request, 'payments/home.html', context=context)
 
 
+@login_required
 @permission_required('payments.add_anticipation', login_url='/denied_access/')
 def anticipation(request, id):
     """
@@ -89,6 +91,7 @@ def anticipation(request, id):
                   {'form': form, 'payment': payment})
 
 
+@login_required
 @permission_required('payments.add_payment', login_url='/denied_access/')
 def new_payment(request):
     context = {'form': NewPaymentForm()}
@@ -125,6 +128,7 @@ def new_payment(request):
     return render(request, 'payments/new_payment.html', context=context)
 
 
+@login_required
 @permission_required('payments.change_anticipation', login_url='/denied_access/')
 def update_antic(request, act, id):
     """
@@ -149,6 +153,7 @@ def update_antic(request, act, id):
     return render(request, 'payments/update_antic.html', context=context)
 
 
+@login_required
 def logs(request):
     # get_logs will check if it is a supplier requesting. If so,
     # only its logs will be brought, otherwise is will bring all

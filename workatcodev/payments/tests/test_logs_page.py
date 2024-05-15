@@ -103,3 +103,13 @@ def test_logs_supp_01_present_for_supp_01(resp_logs_page_supplier_01,
     Certifies that logs from supplier 01 are present for supplier 01.
     """
     assert_contains(resp_logs_page_supplier_01, payment_user_01_anticipation_created.anticipation)
+
+
+def test_redirect_login_user_not_authenticated(client, db):
+    """
+    Certifies that non authenticated users can not
+    access logs page.
+    """
+    resp = client.get(reverse('payments:logs'))
+    assert resp.status_code == 302
+    assert resp.url.startswith('/accounts/login')
