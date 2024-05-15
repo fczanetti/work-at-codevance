@@ -1,0 +1,40 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'base/css/login.css' %}">
+    <link rel="stylesheet" href="{% static 'payments/css/common_settings.css' %}">
+{% endblock css %}
+
+{% block title %}
+    <title>{% translate 'Payments - Login' %}</title>
+{% endblock title %}
+
+{% block maincontent %}
+    <section id="main-content-login">
+        <h1 class="main-content-title">Login</h1>
+        {% if form.errors %}
+            <p>{% translate 'Please, check your email and password and try again.' %}</p>
+        {% endif %}
+        {% if next %}
+            {% if user.is_authenticated %}
+            <p>
+                {% translate 'You have no access to this content.' %}
+                {% translate 'To proceed, please, sign in with an authorized account.' %}
+            </p>
+            {% else %}
+                <p>{% translate 'Please, sign in to access this content.' %}</p>
+            {% endif %}
+        {% endif %}
+        <form action="{% url 'base:login' %}" method="POST">
+            {% csrf_token %}
+            {% for field in form %}
+                {{ field.label_tag }} {{ field }}
+                {{ field.errors }}
+            {% endfor %}
+            <button type="submit" id="login-button">Login</button>
+            <input type="hidden" name="next" value="{{ next }}">
+        </form>
+    </section>
+{% endblock maincontent %}
