@@ -1,21 +1,12 @@
-form {
-    display: flex;
-    flex-direction: column;
-    width: 50%;
-}
-
 p {
     margin: 1rem 0;
     font-size: 1.1rem;
 }
 
-#id_username,
-#id_password {
-    font-size: 1.1rem;
-    padding: 0.1rem 0.5rem;
-    border-radius: 5px;
-    text-align: center;
-    margin-bottom: 1rem;
+#div-login-button {
+    width: 50%;
+    display: flex;
+    justify-content: end;
 }
 
 #login-button {
@@ -27,18 +18,17 @@ p {
     cursor: pointer;
     margin-top: 1rem;
     border: none;
-    width: 40%;
-    align-self: end;
+    width: 30%;
 }
 
 @media screen and (max-width: 1000px) {
-    form {
+    #div-login-button {
         width: 70%;
     }
 }
 
 @media screen and (max-width: 550px) {
-        form {
+        #div-login-button {
             width: 100%;
         }
 }

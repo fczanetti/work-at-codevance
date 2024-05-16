@@ -5,25 +5,3 @@ h2 {
 form {
     margin-top: 1rem;
 }
-
-#id_new_due_date {
-    font-size: 1.1rem;
-    padding: 0.1rem 0.5rem;
-    border-radius: 5px;
-    text-align: center;
-    width: 25%;
-    margin-bottom: 1rem;
-}
-
-@media screen and (max-width: 1000px) {
-    #id_new_due_date {
-        width: 30%;
-    }
-
-}
-
-@media screen and (max-width: 550px) {
-        #id_new_due_date {
-            width: 50%;
-        }
-}

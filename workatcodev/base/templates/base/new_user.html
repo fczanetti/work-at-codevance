@@ -1,0 +1,17 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'payments/css/common_settings.css' %}">
+{% endblock css %}
+
+{% block title %}
+    <title>{% translate 'Payments - New user' %}</title>
+{% endblock title %}
+
+{% block maincontent %}
+    <section id="main-content-new-user">
+        <h1 class="main-content-title">{% translate 'New user' %}</h1>
+    </section>
+{% endblock maincontent %}

@@ -22,11 +22,15 @@
         {% endif %}
         <form action="{% url 'base:login' %}" method="POST">
             {% csrf_token %}
-            {% for field in form %}
-                {{ field.label_tag }} {{ field }}
-                {{ field.errors }}
-            {% endfor %}
-            <button type="submit" id="login-button">Login</button>
+            <div id="form-fields">
+                {% for field in form %}
+                    {{ field.label_tag }} {{ field }}
+                    {{ field.errors }}
+                {% endfor %}
+            </div>
+            <div id="div-login-button">
+                <button type="submit" id="login-button">Login</button>
+            </div>
             <input type="hidden" name="next" value="{{ next }}">
         </form>
     </section>

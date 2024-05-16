@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-15 20:36-0300\n"
+"POT-Creation-Date: 2024-05-16 10:05-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -122,6 +122,14 @@ msgstr "Pagamentos - Acesso negado"
 #: workatcodev/base/templates/base/denied_access.html:15
 msgid "Sorry, but you are not allowed to access this page."
 msgstr "Desculpe, mas você não tem permissão para acessar este conteúdo"
+
+#: workatcodev/base/templates/base/new_user.html:10
+msgid "Payments - New user"
+msgstr "Pagamentos - Novo usuário"
+
+#: workatcodev/base/templates/base/new_user.html:15
+msgid "New user"
+msgstr "Novo usuário"
 
 #: workatcodev/base/templates/registration/login.html:11
 msgid "Payments - Login"
