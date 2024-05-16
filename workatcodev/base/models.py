@@ -7,6 +7,7 @@ from django.utils import timezone
 from django.core.mail import send_mail
 from django.contrib.auth.hashers import make_password
 from workatcodev.base import facade
+from django.utils.html import format_html
 
 
 class UserManager(BaseUserManager):
@@ -76,11 +77,12 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     Email and password are required. Other fields are optional.
     """
-
+    is_operator_help_txt = _("Adds operator permissions to user")
     first_name = models.CharField(_("first name"), max_length=150, blank=True)
     email = models.EmailField(_("email address"), unique=True)
-    is_operator = models.BooleanField(verbose_name=_('Operator'), default=False, help_text=_('Adds operator '
-                                                                                             'permissions to user'))
+    is_operator = models.BooleanField(verbose_name=_('Operator'), default=False,
+                                      help_text=format_html('<p id="is-op-help-text">{}</p>',
+                                                            is_operator_help_txt))
     is_staff = models.BooleanField(
         _("staff status"),
         default=False,

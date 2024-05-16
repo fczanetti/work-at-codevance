@@ -53,3 +53,20 @@ def test_titles_new_user_page(resp_new_user_page_operator):
     """
     assert_contains(resp_new_user_page_operator, f'<title>{_("Payments - New user")}</title>')
     assert_contains(resp_new_user_page_operator, f'<h1 class="main-content-title">{_("New user")}</h1>')
+
+
+def test_form_items_new_user_page(resp_new_user_page_operator):
+    """
+    Certifies that the form fields are present.
+    """
+    assert_contains(resp_new_user_page_operator, '<label for="id_first_name">')
+    assert_contains(resp_new_user_page_operator, '<input type="text" name="first_name"')
+    assert_contains(resp_new_user_page_operator, '<label for="id_email">')
+    assert_contains(resp_new_user_page_operator, '<label for="id_is_operator">')
+    assert_contains(resp_new_user_page_operator, '<input type="checkbox" name="is_operator"')
+    assert_contains(resp_new_user_page_operator, '<label for="id_password1">')
+    assert_contains(resp_new_user_page_operator, '<input type="password" name="password1"')
+    assert_contains(resp_new_user_page_operator, '<label for="id_password2">')
+    assert_contains(resp_new_user_page_operator, '<input type="password" name="password2"')
+    assert_contains(resp_new_user_page_operator, '<a href="/" id="canc-button">')
+    assert_contains(resp_new_user_page_operator, '<button type="submit" id="conf-button">')
