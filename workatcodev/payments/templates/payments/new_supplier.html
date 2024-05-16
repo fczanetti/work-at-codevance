@@ -14,6 +14,7 @@
     <section id="main-content-new-payment">
         <h1 class="main-content-title">{% translate 'New supplier' %}</h1>
         <form action="" method="POST">
+            {% csrf_token %}
             <div id="form-fields">
                 {% for field in form %}
                     {{ field.label_tag }} {{ field }}

@@ -36,10 +36,10 @@ class Supplier(models.Model):
 
 
 class Payment(models.Model):
-    supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE, verbose_name='Fornecedor')
-    creation_date = models.DateField(auto_now_add=True, verbose_name='Criação')
-    due_date = models.DateField(verbose_name='Vencimento')
-    value = models.FloatField(verbose_name='Valor')
+    supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE, verbose_name=_('Supplier'))
+    creation_date = models.DateField(auto_now_add=True, verbose_name=_('Registered in'))
+    due_date = models.DateField(verbose_name=_('Due date'))
+    value = models.FloatField(verbose_name=_('Value'))
 
     def __str__(self):
         return f'{self.supplier} - R${format_value(self.value)}'
@@ -62,15 +62,15 @@ class Payment(models.Model):
 
 
 class Anticipation(models.Model):
-    STATUS_CHOICES = {'A': 'Approved',
-                      'PC': 'Pending confirmation',
-                      'D': 'Denied'}
-    payment = models.OneToOneField(Payment, on_delete=models.CASCADE, verbose_name='Pagamento')
-    creation_date = models.DateField(auto_now_add=True, verbose_name='Data da solicitação')
-    new_due_date = models.DateField(verbose_name='Novo vencimento')
-    new_value = models.FloatField(verbose_name='Valor com desconto')
-    update = models.DateField(auto_now=True, verbose_name='Atualização')
-    status = models.CharField(choices=STATUS_CHOICES, verbose_name='Status', default='PC', editable=False)
+    STATUS_CHOICES = {'A': _('Approved'),
+                      'PC': _('Pending confirmation'),
+                      'D': _('Denied')}
+    payment = models.OneToOneField(Payment, on_delete=models.CASCADE, verbose_name=_('Payment'))
+    creation_date = models.DateField(auto_now_add=True, verbose_name=_('Request date'))
+    new_due_date = models.DateField(verbose_name=_('New due date'))
+    new_value = models.FloatField(verbose_name=_('New value'))
+    update = models.DateField(auto_now=True, verbose_name=_('Updated in'))
+    status = models.CharField(choices=STATUS_CHOICES, verbose_name=_('Status'), default='PC', editable=False)
 
     def __str__(self):
         return f'{self.payment}'
@@ -93,11 +93,11 @@ class Anticipation(models.Model):
 
 
 class RequestLog(models.Model):
-    ACTION_CHOICES = {'A': 'Approval', 'D': 'Denial', 'R': 'Request'}
-    anticipation = models.ForeignKey(Anticipation, on_delete=models.CASCADE, verbose_name='Antecipação')
-    created_at = models.DateField(auto_now_add=True, verbose_name='Registrado em')
-    user = models.ForeignKey(get_user_model(), verbose_name='Usuário', on_delete=models.CASCADE)
-    action = models.CharField(choices=ACTION_CHOICES, verbose_name='Ação', max_length=8)
+    ACTION_CHOICES = {'A': _('Approval'), 'D': _('Denial'), 'R': _('Request')}
+    anticipation = models.ForeignKey(Anticipation, on_delete=models.CASCADE, verbose_name=_('Anticipation'))
+    created_at = models.DateField(auto_now_add=True, verbose_name=_('Registered in'))
+    user = models.ForeignKey(get_user_model(), verbose_name=_('User'), on_delete=models.CASCADE)
+    action = models.CharField(choices=ACTION_CHOICES, verbose_name=_('Action'), max_length=8)
 
     def __str__(self):
         return f'{self.anticipation} / {self.action}'

@@ -165,5 +165,12 @@ def logs(request):
 @login_required
 @permission_required('payments.add_supplier', login_url='/denied_access/')
 def new_supplier(request):
+    if request.method == 'POST':
+        form = NewSupplierForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('payments:home'))
+        else:
+            return render(request, 'payments/new_supplier.html', {'form': form})
     form = NewSupplierForm()
     return render(request, 'payments/new_supplier.html', {'form': form})
