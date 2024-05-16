@@ -4,6 +4,7 @@
 
 {% block css %}
     <link rel="stylesheet" href="{% static 'payments/css/common_settings.css' %}">
+    <link rel="stylesheet" href="{% static 'base/css/new_user.css' %}">
 {% endblock css %}
 
 {% block title %}
@@ -13,5 +14,17 @@
 {% block maincontent %}
     <section id="main-content-new-user">
         <h1 class="main-content-title">{% translate 'New user' %}</h1>
+        <form action="" method="POST">
+            <div id="form-fields">
+                {% for field in form %}
+                    {{ field.label_tag }} {{ field }}
+                    {{ field.help_text }}
+                    <p class="errornote">{{ field.errors }}</p>
+                {% endfor %}
+            </div>
+            <a href="{% url 'payments:home' %}" id="canc-button">{% translate 'Cancel' %}</a>
+            <button type="submit" id="conf-button">{% translate 'Confirm' %}</button>
+        </form>
+
     </section>
 {% endblock maincontent %}
