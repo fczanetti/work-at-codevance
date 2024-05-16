@@ -57,3 +57,17 @@ def test_access_denied_for_suppliers(client_logged_supplier_01):
     resp = client_logged_supplier_01.get(reverse('payments:new_supplier'))
     assert resp.status_code == 302
     assert resp.url.startswith('/denied_access/')
+
+
+def test_form_items_new_supplier_page(resp_new_supplier_page_operator):
+    """
+    Certifies that the form items are present.
+    """
+    assert_contains(resp_new_supplier_page_operator, '<label for="id_user">')
+    assert_contains(resp_new_supplier_page_operator, '<select name="user" required id="id_user">')
+    assert_contains(resp_new_supplier_page_operator, '<label for="id_corporate_name">')
+    assert_contains(resp_new_supplier_page_operator, '<input type="text" name="corporate_name" maxlength="128"')
+    assert_contains(resp_new_supplier_page_operator, '<label for="id_cnpj">')
+    assert_contains(resp_new_supplier_page_operator, '<input type="text" name="cnpj" maxlength="14" required')
+    assert_contains(resp_new_supplier_page_operator, '<a href="/" id="canc-button">')
+    assert_contains(resp_new_supplier_page_operator, '<button type="submit" id="conf-button">')

@@ -20,7 +20,7 @@
                 {% for field in form %}
                     {{ field.label_tag }} {{ field }}
                     {{ field.help_text }}
-                    <p class="errornote">{{ field.errors }}</p>
+                    <p class="errorlist">{{ field.errors }}</p>
                 {% endfor %}
             </div>
             <a href="{% url 'payments:home' %}" id="canc-button">{% translate 'Cancel' %}</a>

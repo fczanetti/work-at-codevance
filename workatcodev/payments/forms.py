@@ -2,7 +2,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
-from workatcodev.payments.models import Anticipation, Payment
+from workatcodev.payments.models import Anticipation, Payment, Supplier
 from datetime import date
 
 
@@ -45,3 +45,15 @@ class NewPaymentForm(forms.ModelForm):
         if v <= 0:
             raise ValidationError(_('The value must be bigger than zero.'))
         return v
+
+
+class NewSupplierForm(forms.ModelForm):
+    class Meta:
+        model = Supplier
+        fields = '__all__'
+
+    def clean_cnpj(self):
+        d = self.cleaned_data['cnpj']
+        if not d.isnumeric():
+            raise ValidationError(_("Type only numbers, please."))
+        return d

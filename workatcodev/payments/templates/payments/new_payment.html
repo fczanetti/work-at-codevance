@@ -19,12 +19,12 @@
             <div id="form-fields">
                 {% if not supplier %}
                     {{ form.supplier.label_tag }} {{ form.supplier }}
-                    <p class="errornote">{{ form.supplier.errors }}</p>
+                    <p class="errorlist">{{ form.supplier.errors }}</p>
                 {% endif %}
                 {{ form.due_date.label_tag }} {{ form.due_date }}
-                <p class="errornote">{{ form.due_date.errors }}</p>
+                <p class="errorlist">{{ form.due_date.errors }}</p>
                 {{ form.value.label_tag }} {{ form.value }}
-                <p class="errornote">{{ form.value.errors }}</p>
+                <p class="errorlist">{{ form.value.errors }}</p>
             </div>
             <a href="{% url 'payments:home' %}" id="canc-button">{% translate 'Cancel' %}</a>
             <button type="submit" id="conf-button">{% translate 'Confirm' %}</button>

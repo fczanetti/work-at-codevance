@@ -13,6 +13,16 @@
 {% block maincontent %}
     <section id="main-content-new-payment">
         <h1 class="main-content-title">{% translate 'New supplier' %}</h1>
-
+        <form action="" method="POST">
+            <div id="form-fields">
+                {% for field in form %}
+                    {{ field.label_tag }} {{ field }}
+                    {{ field.help_text }}
+                    <p class="errorlist">{{ field.errors }}</p>
+                {% endfor %}
+            </div>
+            <a href="{% url 'payments:home' %}" id="canc-button">{% translate 'Cancel' %}</a>
+            <button type="submit" id="conf-button">{% translate 'Confirm' %}</button>
+        </form>
     </section>
 {% endblock maincontent %}

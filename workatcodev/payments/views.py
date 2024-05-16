@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, reverse
 from django.contrib.auth.decorators import permission_required, login_required
 from django.http import HttpResponseNotFound
 from workatcodev.payments import facade
-from workatcodev.payments.forms import FilterStatusForm, AnticipationForm, NewPaymentForm
+from workatcodev.payments.forms import FilterStatusForm, AnticipationForm, NewPaymentForm, NewSupplierForm
 from django.utils.translation import gettext_lazy as _
 from workatcodev.utils import get_supplier_or_none, available_anticipation
 from workatcodev.payments.models import Payment, RequestLog
@@ -165,4 +165,5 @@ def logs(request):
 @login_required
 @permission_required('payments.add_supplier', login_url='/denied_access/')
 def new_supplier(request):
-    return render(request, 'payments/new_supplier.html')
+    form = NewSupplierForm()
+    return render(request, 'payments/new_supplier.html', {'form': form})

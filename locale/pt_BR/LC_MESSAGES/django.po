@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-16 10:05-0300\n"
+"POT-Creation-Date: 2024-05-16 14:46-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -45,55 +45,55 @@ msgid "Change password: %s"
 msgstr ""
 
 #: workatcodev/base/models.py:80
-msgid "first name"
-msgstr ""
-
-#: workatcodev/base/models.py:81
-msgid "email address"
-msgstr ""
-
-#: workatcodev/base/models.py:82
-msgid "Operator"
-msgstr "Operador"
-
-#: workatcodev/base/models.py:82
 msgid "Adds operator permissions to user"
 msgstr "Adiciona permissões de operador ao usuário"
 
-#: workatcodev/base/models.py:85
+#: workatcodev/base/models.py:81
+msgid "first name"
+msgstr ""
+
+#: workatcodev/base/models.py:82
+msgid "email address"
+msgstr ""
+
+#: workatcodev/base/models.py:83
+msgid "Operator"
+msgstr "Operador"
+
+#: workatcodev/base/models.py:87
 msgid "staff status"
 msgstr ""
 
-#: workatcodev/base/models.py:87
+#: workatcodev/base/models.py:89
 msgid "Designates whether the user can log into this admin site."
 msgstr ""
 
-#: workatcodev/base/models.py:90
+#: workatcodev/base/models.py:92
 msgid "active"
 msgstr ""
 
-#: workatcodev/base/models.py:93
+#: workatcodev/base/models.py:95
 msgid ""
 "Designates whether this user should be treated as active. Unselect this "
 "instead of deleting accounts."
 msgstr ""
 
-#: workatcodev/base/models.py:97
+#: workatcodev/base/models.py:99
 msgid "date joined"
 msgstr ""
 
-#: workatcodev/base/models.py:106
+#: workatcodev/base/models.py:108
 msgid "user"
-msgstr ""
+msgstr "Usuário"
 
-#: workatcodev/base/models.py:107
+#: workatcodev/base/models.py:109
 msgid "users"
-msgstr ""
+msgstr "Usuários"
 
-#: workatcodev/base/models.py:137
-#: workatcodev/base/tests/test_user_creation.py:30
-#: workatcodev/base/tests/test_user_creation.py:37
-#: workatcodev/base/tests/test_user_creation.py:44
+#: workatcodev/base/models.py:139
+#: workatcodev/base/tests/test_user_creation.py:33
+#: workatcodev/base/tests/test_user_creation.py:40
+#: workatcodev/base/tests/test_user_creation.py:47
 msgid "Operators"
 msgstr "Operadores"
 
@@ -106,11 +106,16 @@ msgid "Home"
 msgstr "Início"
 
 #: workatcodev/base/templates/base/base.html:26
+#: workatcodev/base/templates/base/new_user.html:16
+msgid "New user"
+msgstr "Novo usuário"
+
+#: workatcodev/base/templates/base/base.html:29
 #: workatcodev/payments/templates/payments/new_payment.html:16
 msgid "New payment"
 msgstr "Novo pagamento"
 
-#: workatcodev/base/templates/base/base.html:28
+#: workatcodev/base/templates/base/base.html:31
 #: workatcodev/payments/templates/payments/logs.html:16
 msgid "Logs"
 msgstr "Registros"
@@ -123,13 +128,25 @@ msgstr "Pagamentos - Acesso negado"
 msgid "Sorry, but you are not allowed to access this page."
 msgstr "Desculpe, mas você não tem permissão para acessar este conteúdo"
 
-#: workatcodev/base/templates/base/new_user.html:10
+#: workatcodev/base/templates/base/new_user.html:11
 msgid "Payments - New user"
 msgstr "Pagamentos - Novo usuário"
 
-#: workatcodev/base/templates/base/new_user.html:15
-msgid "New user"
-msgstr "Novo usuário"
+#: workatcodev/base/templates/base/new_user.html:26
+#: workatcodev/payments/templates/payments/anticipation.html:25
+#: workatcodev/payments/templates/payments/new_payment.html:29
+#: workatcodev/payments/templates/payments/new_supplier.html:24
+#: workatcodev/payments/templates/payments/update_antic.html:30
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: workatcodev/base/templates/base/new_user.html:27
+#: workatcodev/payments/templates/payments/anticipation.html:26
+#: workatcodev/payments/templates/payments/new_payment.html:30
+#: workatcodev/payments/templates/payments/new_supplier.html:25
+#: workatcodev/payments/templates/payments/update_antic.html:31
+msgid "Confirm"
+msgstr "Confirmar"
 
 #: workatcodev/base/templates/registration/login.html:11
 msgid "Payments - Login"
@@ -178,7 +195,24 @@ msgstr "A data de vencimento deve ser hoje ou algum dia posterior."
 msgid "The value must be bigger than zero."
 msgstr "O valor deve ser maior que zero."
 
-#: workatcodev/payments/models.py:89
+#: workatcodev/payments/forms.py:58
+msgid "Type only numbers, please."
+msgstr "Digite apenas números, por favor."
+
+#: workatcodev/payments/models.py:13
+msgid "Only numbers"
+msgstr "Apenas números"
+
+#: workatcodev/payments/models.py:14
+#: workatcodev/payments/templates/payments/logs.html:22
+msgid "User"
+msgstr "Usuário"
+
+#: workatcodev/payments/models.py:15
+msgid "Corporate name"
+msgstr "Razão social"
+
+#: workatcodev/payments/models.py:92
 msgid "This anticipation can not be approved or does not exist."
 msgstr "Esta antecipação não pode ser aprovada ou não existe."
 
@@ -193,18 +227,6 @@ msgstr "Antecipação de pagamento"
 #: workatcodev/payments/templates/payments/anticipation.html:18
 msgid "Due date:"
 msgstr "Vencimento:"
-
-#: workatcodev/payments/templates/payments/anticipation.html:25
-#: workatcodev/payments/templates/payments/new_payment.html:29
-#: workatcodev/payments/templates/payments/update_antic.html:30
-msgid "Cancel"
-msgstr "Cancelar"
-
-#: workatcodev/payments/templates/payments/anticipation.html:26
-#: workatcodev/payments/templates/payments/new_payment.html:30
-#: workatcodev/payments/templates/payments/update_antic.html:31
-msgid "Confirm"
-msgstr "Confirmar"
 
 #: workatcodev/payments/templates/payments/home.html:10
 msgid "Payments - Home"
@@ -266,10 +288,6 @@ msgstr "Antecipação"
 msgid "Registered in"
 msgstr "Registrado em"
 
-#: workatcodev/payments/templates/payments/logs.html:22
-msgid "User"
-msgstr "Usuário"
-
 #: workatcodev/payments/templates/payments/logs.html:23
 msgid "Action"
 msgstr "Ação"
@@ -281,6 +299,14 @@ msgstr "Não há registros."
 #: workatcodev/payments/templates/payments/new_payment.html:11
 msgid "Payments - New payment"
 msgstr "Pagamentos - Novo pagamento"
+
+#: workatcodev/payments/templates/payments/new_supplier.html:10
+msgid "Payments - New supplier"
+msgstr "Pagamentos - Novo fornecedor"
+
+#: workatcodev/payments/templates/payments/new_supplier.html:15
+msgid "New supplier"
+msgstr "Novo fornecedor"
 
 #: workatcodev/payments/templates/payments/update_antic.html:12
 msgid "Payments - Approve"
