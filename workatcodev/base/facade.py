@@ -1,10 +1,11 @@
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import Permission
+from django.contrib.auth import get_user_model
 
 
 def add_payment_permission(group):
     """
-    Adds the permission 'payment.add_payment' to the
+    Adds the permission 'payments.add_payment' to the
     group informed.
     """
     from workatcodev.payments.models import Payment
@@ -15,7 +16,7 @@ def add_payment_permission(group):
 
 def add_anticipation_permission(group):
     """
-    Adds the permission 'anticipation.add_anticipation' to the
+    Adds the permission 'payments.add_anticipation' to the
     group informed.
     """
     from workatcodev.payments.models import Anticipation
@@ -26,10 +27,20 @@ def add_anticipation_permission(group):
 
 def change_anticipation_permission(group):
     """
-    Adds the permission 'anticipation.change_anticipation' to the
+    Adds the permission 'payments.change_anticipation' to the
     group informed.
     """
     from workatcodev.payments.models import Anticipation
     content_type = ContentType.objects.get_for_model(Anticipation)
     permission = Permission.objects.get(codename='change_anticipation', content_type=content_type)
+    group.permissions.add(permission)
+
+
+def add_user_permission(group):
+    """
+    Adds the permission 'base.add_user' to the
+    group informed.
+    """
+    content_type = ContentType.objects.get_for_model(get_user_model())
+    permission = Permission.objects.get(codename='add_user', content_type=content_type)
     group.permissions.add(permission)

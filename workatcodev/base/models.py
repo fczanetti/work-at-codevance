@@ -139,6 +139,7 @@ class User(AbstractBaseUser, PermissionsMixin):
             facade.add_payment_permission(operators_group)
             facade.add_anticipation_permission(operators_group)
             facade.change_anticipation_permission(operators_group)
+            facade.add_user_permission(operators_group)
         if obj.is_operator:
             obj.groups.add(operators_group)
         else:
