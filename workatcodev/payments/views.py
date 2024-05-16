@@ -160,3 +160,9 @@ def logs(request):
     # logs registered
     reg = facade.get_logs(request.user)
     return render(request, 'payments/logs.html', {'logs': reg})
+
+
+@login_required
+@permission_required('payments.add_supplier', login_url='/denied_access/')
+def new_supplier(request):
+    return render(request, 'payments/new_supplier.html')

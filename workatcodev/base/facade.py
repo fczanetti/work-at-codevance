@@ -44,3 +44,14 @@ def add_user_permission(group):
     content_type = ContentType.objects.get_for_model(get_user_model())
     permission = Permission.objects.get(codename='add_user', content_type=content_type)
     group.permissions.add(permission)
+
+
+def add_supplier_permission(group):
+    """
+    Adds the permission 'payments.add_supplier' to the
+    group informed.
+    """
+    from workatcodev.payments.models import Supplier
+    content_type = ContentType.objects.get_for_model(Supplier)
+    permission = Permission.objects.get(codename='add_supplier', content_type=content_type)
+    group.permissions.add(permission)
