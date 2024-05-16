@@ -3,6 +3,9 @@ from model_bakery import baker
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.utils.translation import gettext_lazy as _
+from django.urls import reverse
+
+from workatcodev.base.models import User
 
 
 @pytest.fixture
@@ -52,3 +55,19 @@ def test_operator_has_permissions(user_operator):
     assert user_operator.has_perm('payments.add_payment')
     assert user_operator.has_perm('payments.add_anticipation')
     assert user_operator.has_perm('payments.change_anticipation')
+
+
+def test_new_user_via_post_form(client_logged_operator):
+    """
+    Creates a user via post form, certifies the
+    user was saved in database and the redirect
+    was to home page.
+    """
+    resp = client_logged_operator.post(reverse('base:new_user'), {'first_name': 'Primeiro nome',
+                                                                  'email': 'email1213@email.com',
+                                                                  'is_operator': False,
+                                                                  'password1': 'pass123#',
+                                                                  'password2': 'pass123#'})
+    assert User.objects.filter(email='email1213@email.com').exists()
+    assert resp.status_code == 302
+    assert resp.url == reverse('payments:home')

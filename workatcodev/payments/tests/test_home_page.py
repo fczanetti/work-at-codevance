@@ -177,3 +177,25 @@ def test_redirect_login_user_not_authenticated(client, db):
     resp = client.get(reverse('payments:home'))
     assert resp.status_code == 302
     assert resp.url.startswith('/accounts/login')
+
+
+def test_new_user_link_present_for_operator(resp_home_page_operator):
+    """
+    Certifies that new user link is present for operators.
+    """
+    assert_contains(resp_home_page_operator, f'<a class="navbar-link" href="{reverse("base:new_user")}">'
+                                             f'{_("New user")}</a>')
+
+
+def test_new_user_link_not_present_for_suppliers(resp_home_page_supplier_01):
+    """
+    Certifies that new user link is not present for suppliers.
+    """
+    assert_not_contains(resp_home_page_supplier_01, f'{_("New user")}')
+
+
+def test_new_user_link_not_present_for_common_user(resp_home_page_logged_user):
+    """
+    Certifies that new user link is not present for common users.
+    """
+    assert_not_contains(resp_home_page_logged_user, f'{_("New user")}')
