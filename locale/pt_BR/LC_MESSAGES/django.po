@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-16 14:46-0300\n"
+"POT-Creation-Date: 2024-05-16 16:25-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -111,11 +111,16 @@ msgid "New user"
 msgstr "Novo usuário"
 
 #: workatcodev/base/templates/base/base.html:29
+#: workatcodev/payments/templates/payments/new_supplier.html:15
+msgid "New supplier"
+msgstr "Novo fornecedor"
+
+#: workatcodev/base/templates/base/base.html:32
 #: workatcodev/payments/templates/payments/new_payment.html:16
 msgid "New payment"
 msgstr "Novo pagamento"
 
-#: workatcodev/base/templates/base/base.html:31
+#: workatcodev/base/templates/base/base.html:34
 #: workatcodev/payments/templates/payments/logs.html:16
 msgid "Logs"
 msgstr "Registros"
@@ -135,7 +140,7 @@ msgstr "Pagamentos - Novo usuário"
 #: workatcodev/base/templates/base/new_user.html:26
 #: workatcodev/payments/templates/payments/anticipation.html:25
 #: workatcodev/payments/templates/payments/new_payment.html:29
-#: workatcodev/payments/templates/payments/new_supplier.html:24
+#: workatcodev/payments/templates/payments/new_supplier.html:25
 #: workatcodev/payments/templates/payments/update_antic.html:30
 msgid "Cancel"
 msgstr "Cancelar"
@@ -143,7 +148,7 @@ msgstr "Cancelar"
 #: workatcodev/base/templates/base/new_user.html:27
 #: workatcodev/payments/templates/payments/anticipation.html:26
 #: workatcodev/payments/templates/payments/new_payment.html:30
-#: workatcodev/payments/templates/payments/new_supplier.html:25
+#: workatcodev/payments/templates/payments/new_supplier.html:26
 #: workatcodev/payments/templates/payments/update_antic.html:31
 msgid "Confirm"
 msgstr "Confirmar"
@@ -168,7 +173,7 @@ msgstr "Disponível"
 msgid "Unavailable"
 msgstr "Indisponível"
 
-#: workatcodev/payments/forms.py:12
+#: workatcodev/payments/forms.py:12 workatcodev/payments/models.py:66
 msgid "Pending confirmation"
 msgstr "Confirmação pendente"
 
@@ -176,7 +181,7 @@ msgstr "Confirmação pendente"
 msgid "Anticipated"
 msgstr "Antecipado"
 
-#: workatcodev/payments/forms.py:14
+#: workatcodev/payments/forms.py:14 workatcodev/payments/models.py:67
 msgid "Denied"
 msgstr "Negado"
 
@@ -196,6 +201,7 @@ msgid "The value must be bigger than zero."
 msgstr "O valor deve ser maior que zero."
 
 #: workatcodev/payments/forms.py:58
+#: workatcodev/payments/tests/test_supplier_creation.py:55
 msgid "Type only numbers, please."
 msgstr "Digite apenas números, por favor."
 
@@ -203,7 +209,7 @@ msgstr "Digite apenas números, por favor."
 msgid "Only numbers"
 msgstr "Apenas números"
 
-#: workatcodev/payments/models.py:14
+#: workatcodev/payments/models.py:14 workatcodev/payments/models.py:99
 #: workatcodev/payments/templates/payments/logs.html:22
 msgid "User"
 msgstr "Usuário"
@@ -212,9 +218,79 @@ msgstr "Usuário"
 msgid "Corporate name"
 msgstr "Razão social"
 
+#: workatcodev/payments/models.py:39
+#: workatcodev/payments/templates/payments/home.html:30
+msgid "Supplier"
+msgstr "Fornecedor"
+
+#: workatcodev/payments/models.py:40 workatcodev/payments/models.py:98
+#: workatcodev/payments/templates/payments/logs.html:21
+msgid "Registered in"
+msgstr "Registrado em"
+
+#: workatcodev/payments/models.py:41
+#: workatcodev/payments/templates/payments/home.html:32
+msgid "Due date"
+msgstr "Vencimento"
+
+#: workatcodev/payments/models.py:42
+msgid "Value"
+msgstr "Valor"
+
+#: workatcodev/payments/models.py:65
+msgid "Approved"
+msgstr "Aprovado"
+
+#: workatcodev/payments/models.py:68
+msgid "Payment"
+msgstr "Pagamento"
+
+#: workatcodev/payments/models.py:69
+msgid "Request date"
+msgstr "Solicitado em"
+
+#: workatcodev/payments/models.py:70
+#: workatcodev/payments/templates/payments/home.html:26
+msgid "New due date"
+msgstr "Novo vencimento"
+
+#: workatcodev/payments/models.py:71
+msgid "New value"
+msgstr "Novo valor"
+
+#: workatcodev/payments/models.py:72
+msgid "Updated in"
+msgstr "Atualizado em"
+
+#: workatcodev/payments/models.py:73
+msgid "Status"
+msgstr "Status"
+
 #: workatcodev/payments/models.py:92
 msgid "This anticipation can not be approved or does not exist."
 msgstr "Esta antecipação não pode ser aprovada ou não existe."
+
+#: workatcodev/payments/models.py:96
+msgid "Approval"
+msgstr "Aprovação"
+
+#: workatcodev/payments/models.py:96
+msgid "Denial"
+msgstr "Negação"
+
+#: workatcodev/payments/models.py:96
+msgid "Request"
+msgstr "Solicitação"
+
+#: workatcodev/payments/models.py:97
+#: workatcodev/payments/templates/payments/logs.html:19
+msgid "Anticipation"
+msgstr "Antecipação"
+
+#: workatcodev/payments/models.py:100
+#: workatcodev/payments/templates/payments/logs.html:23
+msgid "Action"
+msgstr "Ação"
 
 #: workatcodev/payments/templates/payments/anticipation.html:11
 msgid "Payments - Anticipate"
@@ -240,21 +316,9 @@ msgstr "Filtrar"
 msgid "Supplier - Original value"
 msgstr "Fornecedor - Valor original"
 
-#: workatcodev/payments/templates/payments/home.html:26
-msgid "New due date"
-msgstr "Novo vencimento"
-
 #: workatcodev/payments/templates/payments/home.html:27
 msgid "New value (US$)"
 msgstr "Novo valor (R$)"
-
-#: workatcodev/payments/templates/payments/home.html:30
-msgid "Supplier"
-msgstr "Fornecedor"
-
-#: workatcodev/payments/templates/payments/home.html:32
-msgid "Due date"
-msgstr "Vencimento"
 
 #: workatcodev/payments/templates/payments/home.html:33
 msgid "Value (US$)"
@@ -280,18 +344,6 @@ msgstr "Não há pagamentos registrados"
 msgid "Payments - Logs"
 msgstr "Pagamentos - Registros"
 
-#: workatcodev/payments/templates/payments/logs.html:19
-msgid "Anticipation"
-msgstr "Antecipação"
-
-#: workatcodev/payments/templates/payments/logs.html:21
-msgid "Registered in"
-msgstr "Registrado em"
-
-#: workatcodev/payments/templates/payments/logs.html:23
-msgid "Action"
-msgstr "Ação"
-
 #: workatcodev/payments/templates/payments/logs.html:37
 msgid "There are no logs."
 msgstr "Não há registros."
@@ -303,10 +355,6 @@ msgstr "Pagamentos - Novo pagamento"
 #: workatcodev/payments/templates/payments/new_supplier.html:10
 msgid "Payments - New supplier"
 msgstr "Pagamentos - Novo fornecedor"
-
-#: workatcodev/payments/templates/payments/new_supplier.html:15
-msgid "New supplier"
-msgstr "Novo fornecedor"
 
 #: workatcodev/payments/templates/payments/update_antic.html:12
 msgid "Payments - Approve"

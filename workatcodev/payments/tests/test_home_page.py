@@ -199,3 +199,25 @@ def test_new_user_link_not_present_for_common_user(resp_home_page_logged_user):
     Certifies that new user link is not present for common users.
     """
     assert_not_contains(resp_home_page_logged_user, f'{_("New user")}')
+
+
+def test_new_supplier_link_present_for_operator(resp_home_page_operator):
+    """
+    Certifies that new supplier link is present for operators.
+    """
+    assert_contains(resp_home_page_operator, f'<a class="navbar-link" href="{reverse("payments:new_supplier")}">'
+                                             f'{_("New supplier")}</a>')
+
+
+def test_new_supplier_link_not_present_for_common_user(resp_home_page_logged_user):
+    """
+    Certifies that new supplier link is not present for common users.
+    """
+    assert_not_contains(resp_home_page_logged_user, f'{_("New supplier")}')
+
+
+def test_new_supplier_link_not_present_for_suppliers(resp_home_page_supplier_01):
+    """
+    Certifies that new supplier link is not present for suppliers.
+    """
+    assert_not_contains(resp_home_page_supplier_01, f'{_("New supplier")}')

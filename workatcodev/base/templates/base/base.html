@@ -25,6 +25,9 @@
                     {% if perms.base.add_user %}
                         <a class="navbar-link" href="{% url 'base:new_user' %}">{% translate 'New user' %}</a>
                     {% endif %}
+                    {% if perms.payments.add_supplier %}
+                        <a class="navbar-link" href="{% url 'payments:new_supplier' %}">{% translate 'New supplier' %}</a>
+                    {% endif %}
                     {% if perms.payments.add_payment %}
                         <a class="navbar-link" href="{% url 'payments:new_payment' %}">{% translate 'New payment' %}</a>
                     {% endif %}

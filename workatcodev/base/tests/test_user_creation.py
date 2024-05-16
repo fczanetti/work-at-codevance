@@ -55,6 +55,8 @@ def test_operator_has_permissions(user_operator):
     assert user_operator.has_perm('payments.add_payment')
     assert user_operator.has_perm('payments.add_anticipation')
     assert user_operator.has_perm('payments.change_anticipation')
+    assert user_operator.has_perm('payments.add_supplier')
+    assert user_operator.has_perm('base.add_user')
 
 
 def test_new_user_via_post_form(client_logged_operator):

@@ -23,8 +23,8 @@
             <h1 class="main-content-title">{% translate 'Confirm denial' %}</h1>
         {% endif %}
         <h2 id="payment">{{ anticipation.payment }} - {{ anticipation.payment.due_date|date:"d/m/Y" }}</h2>
-        <h3>{% translate 'New value (US$):' %}{{ anticipation.new_value|floatformat:"2g" }}</h3>
-        <h3>{% translate 'New due date:' %}{{ anticipation.new_due_date|date:"d/m/Y" }}</h3>
+        <h3>{% translate 'New value (US$):' %} {{ anticipation.new_value|floatformat:"2g" }}</h3>
+        <h3>{% translate 'New due date:' %} {{ anticipation.new_due_date|date:"d/m/Y" }}</h3>
         <form action="" method="POST">
             {% csrf_token %}
             <a href="{% url 'payments:home' 'PC' %}" id="canc-button" type="submit">{% translate 'Cancel' %}</a>
