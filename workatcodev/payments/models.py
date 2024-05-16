@@ -6,12 +6,15 @@ from django.contrib.auth.models import Group
 from workatcodev.base.facade import add_payment_permission, add_anticipation_permission
 from workatcodev.utils import format_value, available_anticipation
 from django.utils.translation import gettext_lazy as _
+from django.utils.html import format_html
 
 
 class Supplier(models.Model):
-    user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
-    corporate_name = models.CharField(max_length=128, verbose_name='Razão Social')
-    cnpj = models.CharField(max_length=14, verbose_name='CNPJ', unique=True)
+    cnpj_help_text = _("Only numbers")
+    user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE, verbose_name=_('User'))
+    corporate_name = models.CharField(max_length=128, verbose_name=_('Corporate name'))
+    cnpj = models.CharField(max_length=14, verbose_name='CNPJ', unique=True,
+                            help_text=format_html('<p id="cnpj-help-text">{}</p>', cnpj_help_text))
 
     def __str__(self):
         return self.corporate_name
