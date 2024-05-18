@@ -1,9 +1,5 @@
 from django.core.exceptions import ObjectDoesNotExist
 from datetime import date
-from django.core.mail import send_mail
-from workatcodev.settings import DEFAULT_FROM_EMAIL
-from django.utils.translation import gettext_lazy as _
-from django.template.loader import render_to_string
 
 
 def format_value(v):
@@ -48,20 +44,3 @@ def available_anticipation(antic_id):
     except ObjectDoesNotExist:
         return None
     return anticipation
-
-
-def send_email(sub, recipient, anticipation):
-    """
-    Sends an email to suppliers informing about new
-    anticipations or updates in existing ones.
-    """
-    subjects = {'new_ant': _('New anticipation requested.'),
-                'A': _('Anticipation approved.'),
-                'D': _('Anticipation denied.')}
-    message = render_to_string('payments/email.html',
-                               context={'sub': sub, 'anticipation': anticipation})
-    send_mail(subject=subjects[sub],
-              html_message=message,
-              recipient_list=recipient,
-              from_email=DEFAULT_FROM_EMAIL,
-              message=None)

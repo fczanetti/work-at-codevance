@@ -65,7 +65,7 @@ def test_attempt_creation_antic_for_date_earlier_than_today(db, payment_supplier
     assert_contains(resp, _('The new payment date must be today or some day after.'))
 
 
-@mock.patch('workatcodev.payments.views.send_email')
+@mock.patch('workatcodev.payments.views.send_email.delay_on_commit')
 def test_send_email_called(mock_send_email, payment, client_logged_operator):
     """
     Certifies that send_email() is called when creating an anticipation.
@@ -74,4 +74,4 @@ def test_send_email_called(mock_send_email, payment, client_logged_operator):
     client_logged_operator.post(rev, post_d)
     mock_send_email.assert_called_once_with(sub='new_ant',
                                             recipient=[f'{payment.supplier.user.email}'],
-                                            anticipation=payment.anticipation)
+                                            ant_id=payment.anticipation.pk)
