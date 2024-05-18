@@ -5,6 +5,7 @@ from workatcodev.django_assertions import assert_contains
 from workatcodev.payments.models import Anticipation, Payment
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
+from unittest import mock
 
 
 @pytest.fixture
@@ -62,3 +63,15 @@ def test_attempt_creation_antic_for_date_earlier_than_today(db, payment_supplier
                                                   args=(payment_supplier_01.pk,)),
                                           {'new_due_date': new_due_date})
     assert_contains(resp, _('The new payment date must be today or some day after.'))
+
+
+@mock.patch('workatcodev.payments.views.send_email')
+def test_send_email_called(mock_send_email, payment, client_logged_operator):
+    """
+    Certifies that send_email() is called when creating an anticipation.
+    """
+    rev, post_d = reverse('payments:anticipation', args=(payment.pk,)), {'new_due_date': date.today()}
+    client_logged_operator.post(rev, post_d)
+    mock_send_email.assert_called_once_with(sub='new_ant',
+                                            recipient=[f'{payment.supplier.user.email}'],
+                                            anticipation=payment.anticipation)

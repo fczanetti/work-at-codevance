@@ -1,0 +1,13 @@
+{% load i18n %}
+
+{% if sub == 'new_ant' %}
+    <h2>{% translate 'Check the new anticipation requested' %}</h2>
+{% elif sub == 'A' %}
+    <h2>{% translate 'Anticipation approved' %}</h2>
+{% else %}
+    <h2>{% translate 'Anticipation denied' %}</h2>
+{% endif %}
+
+<h3>{{ anticipation }}</h3>
+<h3>{% translate 'New value (US$)' %}: {{ anticipation.new_value }}</h3>
+<h3>{% translate 'New due date' %}: {{ anticipation.new_due_date }}</h3>

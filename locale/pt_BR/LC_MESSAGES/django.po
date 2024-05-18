@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-16 16:25-0300\n"
+"POT-Creation-Date: 2024-05-17 17:11-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -250,6 +250,7 @@ msgid "Request date"
 msgstr "Solicitado em"
 
 #: workatcodev/payments/models.py:70
+#: workatcodev/payments/templates/payments/email.html:13
 #: workatcodev/payments/templates/payments/home.html:26
 msgid "New due date"
 msgstr "Novo vencimento"
@@ -304,6 +305,23 @@ msgstr "Antecipação de pagamento"
 msgid "Due date:"
 msgstr "Vencimento:"
 
+#: workatcodev/payments/templates/payments/email.html:4
+msgid "Check the new anticipation requested"
+msgstr "Confira a nova antecipação solicitada"
+
+#: workatcodev/payments/templates/payments/email.html:6
+msgid "Anticipation approved"
+msgstr "Antecipação aprovada"
+
+#: workatcodev/payments/templates/payments/email.html:8
+msgid "Anticipation denied"
+msgstr "Antecipação negada"
+
+#: workatcodev/payments/templates/payments/email.html:12
+#: workatcodev/payments/templates/payments/home.html:27
+msgid "New value (US$)"
+msgstr "Novo valor (R$)"
+
 #: workatcodev/payments/templates/payments/home.html:10
 msgid "Payments - Home"
 msgstr "Pagamentos - Home"
@@ -315,10 +333,6 @@ msgstr "Filtrar"
 #: workatcodev/payments/templates/payments/home.html:24
 msgid "Supplier - Original value"
 msgstr "Fornecedor - Valor original"
-
-#: workatcodev/payments/templates/payments/home.html:27
-msgid "New value (US$)"
-msgstr "Novo valor (R$)"
 
 #: workatcodev/payments/templates/payments/home.html:33
 msgid "Value (US$)"
@@ -406,7 +420,7 @@ msgid "Unavailable for anticipation"
 msgstr "Indisponíveis para antecipação"
 
 #: workatcodev/payments/views.py:22 workatcodev/payments/views.py:57
-#: workatcodev/payments/views.py:139
+#: workatcodev/payments/views.py:145
 msgid "Page not found. Make sure the URL is correct."
 msgstr "Página não encontrada. Certifique-se de que a URL está correta."
 
@@ -414,10 +428,22 @@ msgstr "Página não encontrada. Certifique-se de que a URL está correta."
 msgid "Unavailable payments can not be anticipated."
 msgstr "Pagamentos indisponíveis não podem ser antecipados."
 
-#: workatcodev/payments/views.py:145
+#: workatcodev/payments/views.py:151
 msgid ""
 "Page not found. Make sure this anticipation exists and is pending "
 "confirmation."
 msgstr ""
 "Página não encontrada. Certifique-se de que esta antecipação existe e está "
 "com confirmação pendente."
+
+#: workatcodev/utils.py:58
+msgid "New anticipation requested."
+msgstr "Nova antecipação solicitada"
+
+#: workatcodev/utils.py:59
+msgid "Anticipation approved."
+msgstr "Antecipação aprovada."
+
+#: workatcodev/utils.py:60
+msgid "Anticipation denied."
+msgstr "Antecipação negada."
