@@ -9,5 +9,5 @@
 {% endif %}
 
 <h3>{{ anticipation }}</h3>
-<h3>{% translate 'New value (US$)' %}: {{ anticipation.new_value }}</h3>
+<h3>{% translate 'New value (US$)' %}: {{ anticipation.new_value|floatformat:"2g" }}</h3>
 <h3>{% translate 'New due date' %}: {{ anticipation.new_due_date }}</h3>

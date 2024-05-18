@@ -4,7 +4,7 @@ from unittest import mock
 from workatcodev.payments.models import Anticipation
 
 
-@mock.patch('workatcodev.payments.views.send_email')
+@mock.patch('workatcodev.payments.views.send_email.delay_on_commit')
 def test_approval_anticpation(mock_send_email, client_logged_operator,
                               payment):
     """
@@ -18,10 +18,10 @@ def test_approval_anticpation(mock_send_email, client_logged_operator,
     antic.refresh_from_db()
     assert antic.status == 'A'
     mock_send_email.assert_called_once_with(sub='A', recipient=[f'{payment.supplier.user.email}'],
-                                            anticipation=antic)
+                                            ant_id=antic.pk)
 
 
-@mock.patch('workatcodev.payments.views.send_email')
+@mock.patch('workatcodev.payments.views.send_email.delay_on_commit')
 def test_denial_anticpation(mock_send_email, client_logged_operator,
                             payment):
     """
@@ -35,4 +35,4 @@ def test_denial_anticpation(mock_send_email, client_logged_operator,
     antic.refresh_from_db()
     assert antic.status == 'D'
     mock_send_email.assert_called_once_with(sub='D', recipient=[f'{payment.supplier.user.email}'],
-                                            anticipation=antic)
+                                            ant_id=antic.pk)
