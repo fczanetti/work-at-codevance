@@ -11,6 +11,8 @@ dj-database-url = "*"
 psycopg2-binary = "*"
 django-extensions = "*"
 celery = "*"
+django-storages = {extras = ["s3"], version = "*"}
+collectfast = "*"
 
 [dev-packages]
 flake8 = "*"
