@@ -221,3 +221,11 @@ def test_new_supplier_link_not_present_for_suppliers(resp_home_page_supplier_01)
     Certifies that new supplier link is not present for suppliers.
     """
     assert_not_contains(resp_home_page_supplier_01, f'{_("New supplier")}')
+
+
+def test_logout_button_present_for_auth_user(client_logged_operator,
+                                             resp_home_page_operator):
+    """
+    Certifies that a logout button is present for authenticated users.
+    """
+    assert_contains(resp_home_page_operator, _('Logout'))

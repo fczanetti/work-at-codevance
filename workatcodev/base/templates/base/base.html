@@ -40,6 +40,17 @@
                 <div class="toggle-bar"></div>
                 <div class="toggle-bar"></div>
             </div>
+            {% if user.is_authenticated %}
+            <form action="{% url 'logout' %}" method="POST" id="logout-form">
+                {% csrf_token %}
+                <div>
+                    {{ user.first_name }}
+                </div>
+                <button type="submit" id="logout-button">
+                    {% translate 'Logout' %}
+                </button>
+            </form>
+            {% endif %}
         </header>
 
         <section id="main-content">
