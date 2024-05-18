@@ -84,6 +84,26 @@
     border-radius: 2px;
 }
 
+#logout-form {
+    position: absolute;
+    top: 5rem;
+    right: 1rem;
+    font-size: 1.1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#logout-button {
+    background-color: red;
+    padding: 4px;
+    border-radius: 5px;
+    color: white;
+    font-size: 1.1rem;
+    border: none;
+    cursor: pointer;
+}
+
 #main-content {
     width: 100%;
     padding: 2% 20%;
@@ -134,5 +154,11 @@
         display: flex;
         justify-content: center;
         font-size: 1rem;
+    }
+
+    #logout-form {
+        top: unset;
+        bottom: 1rem;
+        color: white;
     }
 }
