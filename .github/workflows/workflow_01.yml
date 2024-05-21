@@ -29,25 +29,36 @@ jobs:
           python-version: '3.11'
           architecture: x64
 
-      - name: Instalar pipenv
+      - name: Install pipenv
         run: pip install pipenv
 
-      - name: Instalar dependências
+      - name: Install libraries
         run: pipenv sync --dev
 
-      - name: Checar vulnerabilidades
+      - name: Check vulnerabilities
         run: pipenv check
 
-      - name: Rodar flake8
+      - name: Run flake8
         run: pipenv run flake8
 
       - name: Setup env
         run: cp contrib/env-sample .env
 
-      - name: Rodar testes automáticos
+      - name: Run tests
         run: pipenv run pytest --cov=workatcodev
 
       - name: Upload coverage reports to Codecov
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         run: pipenv run codecov
+
+  deploy:
+      needs: CI
+      if: github.ref == 'refs/heads/main'  # runs deploy only if the push action is on branch main
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v4
+        - uses: superfly/flyctl-actions/setup-flyctl@master
+        - run: flyctl deploy --remote-only
+          env:
+            FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
