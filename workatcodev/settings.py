@@ -28,6 +28,8 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
+CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', cast=Csv())
+
 AUTH_USER_MODEL = 'base.User'
 
 # Application definition
@@ -161,3 +163,7 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = config('EMAIL_USE_TLS')
 DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL')
 EMAIL_BACKEND = config('EMAIL_BACKEND')
+
+# Celery
+CELERY_BROKER_URL = config('CELERY_BROKER_URL')
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True

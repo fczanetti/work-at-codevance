@@ -13,6 +13,7 @@ django-extensions = "*"
 celery = "*"
 django-storages = {extras = ["s3"], version = "*"}
 collectfast = "*"
+gunicorn = "*"
 
 [dev-packages]
 flake8 = "*"
