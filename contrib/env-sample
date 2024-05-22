@@ -4,8 +4,18 @@ ALLOWED_HOSTS=localhost, 127.0.0.1,
 CSRF_TRUSTED_ORIGINS=
 
 CELERY_BROKER_URL=
+RABBITMQ_NODENAME=
+RABBITMQ_DEFAULT_USER=
+RABBITMQ_DEFAULT_PASS=
+
+# The environment variable DATABASE_URL must be kept with this preset value in this file, because this is the one
+# used to connect the database service from GitHub Actions to the application when pushing. To run the application
+# locally, another value must be set to this variable in a .env file, acording to instructions on README.md file.
 
 DATABASE_URL=postgres://userworkflow:passworkflow@localhost:5432/postgres
+POSTGRES_PASSWORD=
+POSTGRES_USER=
+POSTGRES_DB=
 
 # This is the interest rate to be applied when calculating the discount in an Anticipation. It
 # has to be a float number, for example: 3% / month --> 0.03
@@ -16,7 +26,7 @@ EMAIL_HOST=
 EMAIL_PORT=
 EMAIL_HOST_USER=
 EMAIL_HOST_PASSWORD=
-EMAIL_USE_TLS=True
+EMAIL_USE_TLS=
 DEFAULT_FROM_EMAIL=
 EMAIL_BACKEND=
 
