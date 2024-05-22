@@ -123,10 +123,13 @@ STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
+COLLECTFAST_STRATEGY = "collectfast.strategies.filesystem.FileSystemStrategy"
+COLLECTFAST_ENABLED = False
 
 if AWS_ACCESS_KEY_ID:
     AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
     AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
+    COLLECTFAST_ENABLED = True
     COLLECTFAST_STRATEGY = "collectfast.strategies.boto3.Boto3Strategy"
 
     STORAGES = {
