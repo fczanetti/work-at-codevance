@@ -9,9 +9,12 @@ console_command = '/code/manage.py shell'
 
 [build]
 
-#[processes]
-#  app = 'gunicorn --bind :8000 --workers 2 workatcodev.wsgi'
-#  worker = 'python -m celery -A workatcodev worker -l info'
+[deploy]
+  release_command='./start.sh'
+
+[processes]
+  app = 'gunicorn --bind :8000 --workers 2 workatcodev.wsgi'
+  worker = 'python -m celery -A workatcodev worker -l info'
 
 [env]
   PORT = '8000'

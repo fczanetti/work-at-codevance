@@ -21,5 +21,3 @@ RUN pipenv install --deploy --system
 COPY . /code
 
 EXPOSE 8000
-
-ENTRYPOINT ["./start.sh"]
