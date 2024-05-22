@@ -5,19 +5,13 @@ services:
     restart: no
     volumes:
       - ./.pgdata:/var/lib/postgresql/data
-    environment:
-      POSTGRES_PASSWORD: dbpass
-      POSTGRES_USER: dbuser
-      POSTGRES_DB: codevance_db
+    env_file: .env
     ports:
       - 5437:5432
 
   rbmq:
     image: rabbitmq
     restart: no
-    environment:
-      RABBITMQ_NODENAME: my-rabbit
-      RABBITMQ_DEFAULT_USER: rabbituser
-      RABBITMQ_DEFAULT_PASS: rabbitpass
+    env_file: .env
     ports:
       - 5672:5672

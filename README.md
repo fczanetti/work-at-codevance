@@ -2,7 +2,143 @@
 ![Static Badge](https://img.shields.io/badge/Django-5.0.4-green?link=https%3A%2F%2Fwww.djangoproject.com%2F)
 [![codecov](https://codecov.io/gh/fczanetti/work-at-codevance/graph/badge.svg?token=vffyZTHCt3)](https://codecov.io/gh/fczanetti/work-at-codevance)
 
-## Projeto em desenvolvimento
+## Instalação
+
+Para o funcionamento da aplicação será necessário ter o Docker instalado, já que o banco de dados PostgreSQL e o RabbitMQ
+serão executados em contêineres.
+
+As instruções a seguir serão necessárias para a instalação e execução do projeto localmente.
+
+Clonar repositório através do seguinte comando:
+
+```
+git clone git@github.com:fczanetti/work-at-codevance.git
+```
+
+Criar ambiente virtual para a instalação das dependências:
+
+```
+pipenv shell
+```
+
+Instalar dependências através do seguinte comando:
+
+```
+pipenv sync -d
+```
+
+Copiar o conteúdo do arquivo env-sample que se encontra dentro da pasta contrib, na raiz do projeto, e inserir em um
+novo arquivo chamado .env. O arquivo .env também deve estar na raiz do projeto;
+
+Definir os valores das variáveis de ambiente listadas no arquivo .env da seguinte forma:
+
+- SECRET_KEY=secret
+- DEBUG=True
+- ALLOWED_HOSTS=localhost, 127.0.0.1,
+- CSRF_TRUSTED_ORIGINS=(esta variável pode ficar em branco)
+
+- CELERY_BROKER_URL=pyamqp://rabbituser:rabbitpass@localhost:5672/
+
+O valor da variável DATABASE_URL não deve ser alterado no arquivo env-sample, pois é a variável utilizada no serviço
+de banco de dados configurado para ser executado no GitHub Actions por ocasião do push. No novo arquivo .env esta
+variável deve ser sobrescrita conforme informado abaixo:
+
+- DATABASE_URL=postgres://dbuser:dbpass@localhost:5437/codevance_db
+- POSTGRES_PASSWORD=dbpass
+- POSTGRES_USER=dbuser
+- POSTGRES_DB=codevance_db
+
+Esta próxima variável é a taxa de juros aplicada quando criadas antecipações, que deve ser no seguinte formato
+para uma taxa de 3%:
+
+- INTEREST_RATE=0.03
+
+Para testar o envio de emails localmente pode-se preencher apenas e email backend, e o Django imprimirá o email enviado
+no console, evitando o envio de emails reais neste momento:
+
+- EMAIL_HOST=
+- EMAIL_PORT=
+- EMAIL_HOST_USER=
+- EMAIL_HOST_PASSWORD=
+- EMAIL_USE_TLS=
+- DEFAULT_FROM_EMAIL=
+- EMAIL_BACKEND=django.core.mail.backends.console.EmailBackend
+
+Para a execução do projeto localmente as seguintes variáveis podem permanecer em branco:
+
+- AWS_ACCESS_KEY_ID=
+- AWS_SECRET_ACCESS_KEY=
+- AWS_STORAGE_BUCKET_NAME=
+
+Após definidas as variáveis, rodar o seguinte comando para inicializar o banco de dados PostgreSQL e o broker RabbitMQ.
+Este comando criará uma pasta chamada .pgdata na raiz do projeto, sendo esta responsável pela persistência dos dados
+do banco.
+
+```
+docker compose up -d
+```
+
+Com o banco de dados disponível, aplicar as migrações através do comando:
+
+```
+python manage.py migrate
+```
+
+Em um outro terminal com ambiente virtual ativo, utilize o seguinte comando para iniciar o worker do celery:
+
+```
+celery -A workatcodev worker -l info
+```
+
+Após estas configurações já é possível rodar o comando "pytest" e verificar que os testes estão passando.
+
+Criar um superuser através do comando:
+
+```
+python manage.py createsuperuser
+```
+
+Inicializar o servidor do Django:
+
+```
+python manage.py runserver
+```
+
+Com um superuser criado já é possível logar na plataforma e criar um operador. Para a criação, basta acessar o link
+'Novo usuário' e preencher os dados assinando a opção 'Operador'. Após criado, executar logout e logar novamente,
+agora na conta deste operador para o teste das funcionalidades.
+
+Criação de um fornecedor:
+- clicar em 'Novo usuário' e criar um usuário sem a opção de "Operador" assinalada;
+- clicar em 'Novo fornecedor' e criar um fornecedor selecionando o usuário criado e informando os dados adicionais
+necessários;
+
+Após criados um operador e um fornecedor já podem ser inseridos pagamentos relacionados à este fornecedor. Com os
+pagamentos inseridos, solicitações de antecipação poderão ser criadas, aprovadas ou negadas. Por ocasião da solicitação
+de antecipação, aprovação ou negação registros serão gerados, e estes podem ser consultados através do link 'Registros'.
+Sempre que houver a criação de um registro um email será enviado ao fornecedor, e este poderá ser visualizado no console
+onde o celery foi iniciado.
+
+
+## Tipos de usuário e permissões
+
+### Operador
+- pode adicionar novo usuário;
+- pode adicionar novo fornecedor;
+- pode adicionar pagamentos para qualquer fornecedor;
+- pode solicitar antecipação de pagamentos de qualquer fornecedor;
+- pode visualizar pagamentos, antecipações e histórico de qualquer fornecedor;
+- pode aprovar ou negar antecipações de qualquer fornecedor.
+
+### Fornecedor (Supplier)
+- pode adicionar pagamentos apenas para si;
+- pode solicitar antecipações apenas para seus pagamentos;
+- pode visualizar apenas seus pagamentos/antecipações/histórico.
+
+### Usuário comum
+- Pode visualizar pagamentos, antecipações e histórico de qualquer fornecedor.
+
+
 
 
 # Trabalhe na Codevance
