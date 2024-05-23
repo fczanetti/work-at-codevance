@@ -54,6 +54,12 @@ label {
     margin-right: 1rem;
 }
 
+#exc-date-message {
+    font-weight: bold;
+    margin-right: 1rem;
+    margin-left: 1rem;
+}
+
 .payment-infos {
     display: flex;
 }
@@ -98,7 +104,8 @@ span {
         margin-left: 0;
     }
 
-    #buttons {
+    #buttons,
+    #exc-date-message {
         margin: 0.8rem 0 0 0;
     }
 

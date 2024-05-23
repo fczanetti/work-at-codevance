@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-17 17:11-0300\n"
+"POT-Creation-Date: 2024-05-23 15:57-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -125,6 +125,11 @@ msgstr "Novo pagamento"
 msgid "Logs"
 msgstr "Registros"
 
+#: workatcodev/base/templates/base/base.html:50
+#: workatcodev/payments/tests/test_home_page.py:231
+msgid "Logout"
+msgstr "Sair"
+
 #: workatcodev/base/templates/base/denied_access.html:10
 msgid "Payments - Denied access"
 msgstr "Pagamentos - Acesso negado"
@@ -165,42 +170,42 @@ msgstr "Por favor, verifique seu email e password e tente novamente."
 msgid "Please, sign in to access this content."
 msgstr "Por favor, autentique-se para acessar este conteúdo."
 
-#: workatcodev/payments/forms.py:10
+#: workatcodev/payments/forms.py:11
 msgid "Available"
 msgstr "Disponível"
 
-#: workatcodev/payments/forms.py:11
+#: workatcodev/payments/forms.py:12
 msgid "Unavailable"
 msgstr "Indisponível"
 
-#: workatcodev/payments/forms.py:12 workatcodev/payments/models.py:66
+#: workatcodev/payments/forms.py:13 workatcodev/payments/models.py:66
 msgid "Pending confirmation"
 msgstr "Confirmação pendente"
 
-#: workatcodev/payments/forms.py:13
+#: workatcodev/payments/forms.py:14
 msgid "Anticipated"
 msgstr "Antecipado"
 
-#: workatcodev/payments/forms.py:14 workatcodev/payments/models.py:67
+#: workatcodev/payments/forms.py:15 workatcodev/payments/models.py:67
 msgid "Denied"
 msgstr "Negado"
 
-#: workatcodev/payments/forms.py:27
-#: workatcodev/payments/tests/test_anticipation_creation.py:64
+#: workatcodev/payments/forms.py:28
+#: workatcodev/payments/tests/test_anticipation_creation.py:65
 msgid "The new payment date must be today or some day after."
 msgstr "A nova data do pagamento deve ser hoje ou alguma data posterior."
 
-#: workatcodev/payments/forms.py:40
+#: workatcodev/payments/forms.py:41
 #: workatcodev/payments/tests/test_payment_creation.py:39
 msgid "Due date must be today or some day after."
 msgstr "A data de vencimento deve ser hoje ou algum dia posterior."
 
-#: workatcodev/payments/forms.py:46
+#: workatcodev/payments/forms.py:47
 #: workatcodev/payments/tests/test_payment_creation.py:63
 msgid "The value must be bigger than zero."
 msgstr "O valor deve ser maior que zero."
 
-#: workatcodev/payments/forms.py:58
+#: workatcodev/payments/forms.py:66
 #: workatcodev/payments/tests/test_supplier_creation.py:55
 msgid "Type only numbers, please."
 msgstr "Digite apenas números, por favor."
@@ -293,6 +298,18 @@ msgstr "Antecipação"
 msgid "Action"
 msgstr "Ação"
 
+#: workatcodev/payments/tasks.py:17
+msgid "New anticipation requested."
+msgstr "Nova antecipação solicitada"
+
+#: workatcodev/payments/tasks.py:18
+msgid "Anticipation approved."
+msgstr "Antecipação aprovada."
+
+#: workatcodev/payments/tasks.py:19
+msgid "Anticipation denied."
+msgstr "Antecipação negada."
+
 #: workatcodev/payments/templates/payments/anticipation.html:11
 msgid "Payments - Anticipate"
 msgstr "Pagamentos - Antecipar"
@@ -338,19 +355,24 @@ msgstr "Fornecedor - Valor original"
 msgid "Value (US$)"
 msgstr "Valor (R$)"
 
-#: workatcodev/payments/templates/payments/home.html:46
+#: workatcodev/payments/templates/payments/home.html:47
 msgid "Approve"
 msgstr "Aprovar"
 
-#: workatcodev/payments/templates/payments/home.html:47
+#: workatcodev/payments/templates/payments/home.html:48
 msgid "Deny"
 msgstr "Negar"
 
-#: workatcodev/payments/templates/payments/home.html:61
+#: workatcodev/payments/templates/payments/home.html:52
+#: workatcodev/payments/tests/test_pend_conf_payments.py:208
+msgid "Date exceeded"
+msgstr "Data ultrapassada"
+
+#: workatcodev/payments/templates/payments/home.html:67
 msgid "Anticipate"
 msgstr "Antecipar"
 
-#: workatcodev/payments/templates/payments/home.html:72
+#: workatcodev/payments/templates/payments/home.html:78
 msgid "No payments registered."
 msgstr "Não há pagamentos registrados"
 
@@ -395,55 +417,43 @@ msgid "New due date:"
 msgstr "Novo vencimento:"
 
 #: workatcodev/payments/tests/test_approved_payments.py:78
-#: workatcodev/payments/views.py:19
+#: workatcodev/payments/views.py:22
 msgid "Anticipated payments"
 msgstr "Pagamentos antecipados"
 
 #: workatcodev/payments/tests/test_available_payments.py:98
-#: workatcodev/payments/views.py:16
+#: workatcodev/payments/views.py:19
 msgid "Available for anticipation"
 msgstr "Disponíveis para antecipação"
 
 #: workatcodev/payments/tests/test_denied_payments.py:71
-#: workatcodev/payments/views.py:20
+#: workatcodev/payments/views.py:23
 msgid "Denied anticipation"
 msgstr "Antecipação negada"
 
 #: workatcodev/payments/tests/test_pend_conf_payments.py:95
-#: workatcodev/payments/views.py:18
+#: workatcodev/payments/views.py:21
 msgid "Pending anticipation confirmation"
 msgstr "Confirmação de antecipação pendente"
 
 #: workatcodev/payments/tests/test_unavailable_payments.py:68
-#: workatcodev/payments/views.py:17
+#: workatcodev/payments/views.py:20
 msgid "Unavailable for anticipation"
 msgstr "Indisponíveis para antecipação"
 
-#: workatcodev/payments/views.py:22 workatcodev/payments/views.py:57
-#: workatcodev/payments/views.py:145
+#: workatcodev/payments/views.py:25 workatcodev/payments/views.py:60
+#: workatcodev/payments/views.py:148
 msgid "Page not found. Make sure the URL is correct."
 msgstr "Página não encontrada. Certifique-se de que a URL está correta."
 
-#: workatcodev/payments/views.py:68
+#: workatcodev/payments/views.py:71
 msgid "Unavailable payments can not be anticipated."
 msgstr "Pagamentos indisponíveis não podem ser antecipados."
 
-#: workatcodev/payments/views.py:151
+#: workatcodev/payments/views.py:154
 msgid ""
 "Page not found. Make sure this anticipation exists and is pending "
 "confirmation."
 msgstr ""
 "Página não encontrada. Certifique-se de que esta antecipação existe e está "
 "com confirmação pendente."
-
-#: workatcodev/utils.py:58
-msgid "New anticipation requested."
-msgstr "Nova antecipação solicitada"
-
-#: workatcodev/utils.py:59
-msgid "Anticipation approved."
-msgstr "Antecipação aprovada."
-
-#: workatcodev/utils.py:60
-msgid "Anticipation denied."
-msgstr "Antecipação negada."

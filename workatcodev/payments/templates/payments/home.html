@@ -42,10 +42,16 @@
                         <div>{{ payment }}</div>
                         {% if status == 'PC' %}
                             {% if perms.payments.change_anticipation %}
-                                <div id="buttons">
-                                    <a class="approval-anticip-link" href="{{ payment.anticipation.get_approval_url }}">{% translate 'Approve' %}</a>
-                                    <a class="denial-anticip-link" href="{{ payment.anticipation.get_denial_url }}">{% translate 'Deny' %}</a>
-                                </div>
+                                {% if payment.anticipation.new_due_date >= today %}
+                                    <div id="buttons">
+                                        <a class="approval-anticip-link" href="{{ payment.anticipation.get_approval_url }}">{% translate 'Approve' %}</a>
+                                        <a class="denial-anticip-link" href="{{ payment.anticipation.get_denial_url }}">{% translate 'Deny' %}</a>
+                                    </div>
+                                {% else %}
+                                    <div id="exc-date-message">
+                                        {% translate 'Date exceeded' %}
+                                    </div>
+                                {% endif %}
                             {% endif %}
                         {% endif %}
                     </div>

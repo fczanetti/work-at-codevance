@@ -1,4 +1,4 @@
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 
 import pytest
 from django.urls import reverse
@@ -191,3 +191,18 @@ def test_approval_and_denial_buttons_present_for_operators(resp_filter_pending_c
     assert_contains(resp_filter_pending_conf_operator,
                     f'<a class="denial-anticip-link" '
                     f'href="{payment_user_02_anticipation_created.anticipation.get_denial_url()}">{_("Deny")}</a>')
+
+
+def test_outdated_anticipation_not_shown(payment, client_logged_operator):
+    """
+    Certifies that approve or deny buttons are not shown
+    for a payment that has an anticipation with new due
+    date before today. This is because these anticipations
+    are not available to approve or deny anymore.
+    """
+    d = date.today() - timedelta(days=1)
+    ant = baker.make(Anticipation, payment=payment, new_due_date=d)
+    resp = client_logged_operator.get(reverse('payments:home'), {'status': 'PC'})
+    assert_not_contains(resp, ant.get_approval_url())
+    assert_not_contains(resp, ant.get_denial_url())
+    assert_contains(resp, _('Date exceeded'))
