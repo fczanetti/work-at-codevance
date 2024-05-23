@@ -1,4 +1,4 @@
-# fly.toml app configuration file generated for work-at-codevance on 2024-05-21T08:43:02-03:00
+# fly.toml app configuration file generated for work-at-codevance on 2024-05-23T10:57:40-03:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
@@ -10,14 +10,14 @@ console_command = '/code/manage.py shell'
 [build]
 
 [deploy]
-  release_command='./start.sh'
+  release_command = './start.sh'
+
+[env]
+  PORT = '8000'
 
 [processes]
   app = 'gunicorn --bind :8000 --workers 2 workatcodev.wsgi'
   worker = 'python -m celery -A workatcodev worker -l info'
-
-[env]
-  PORT = '8000'
 
 [http_service]
   internal_port = 8000
