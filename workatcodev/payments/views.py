@@ -1,3 +1,5 @@
+from datetime import date
+
 from django.shortcuts import render, redirect, reverse
 from django.contrib.auth.decorators import permission_required, login_required
 from django.http import HttpResponseNotFound
@@ -40,7 +42,7 @@ def home(request, status='A'):
     function = GET_PAYM_FUNC[status]
     payments = function(request.user)
     form = FilterStatusForm(initial={'status': status})
-    context = {'payments': payments, 'form': form, 'title': TITLES[status], 'status': status}
+    context = {'payments': payments, 'form': form, 'title': TITLES[status], 'status': status, 'today': date.today()}
     return render(request, 'payments/home.html', context=context)
 
 
