@@ -2,6 +2,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
+from workatcodev.base.models import User
 from workatcodev.payments.models import Anticipation, Payment, Supplier
 from datetime import date
 
@@ -48,6 +49,13 @@ class NewPaymentForm(forms.ModelForm):
 
 
 class NewSupplierForm(forms.ModelForm):
+    """
+    This custom user field guarantees that operators or users
+    that already have a supplier related are not shown as
+    options for creating new suppliers.
+    """
+    user = forms.ModelChoiceField(queryset=User.objects.filter(is_operator=False, supplier=None))
+
     class Meta:
         model = Supplier
         fields = '__all__'

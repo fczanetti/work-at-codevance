@@ -2,6 +2,7 @@ import pytest
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from workatcodev.django_assertions import assert_contains
+from workatcodev.payments.forms import NewSupplierForm
 
 
 @pytest.fixture
@@ -71,3 +72,15 @@ def test_form_items_new_supplier_page(resp_new_supplier_page_operator):
     assert_contains(resp_new_supplier_page_operator, '<input type="text" name="cnpj" maxlength="14" required')
     assert_contains(resp_new_supplier_page_operator, '<a href="/" id="canc-button">')
     assert_contains(resp_new_supplier_page_operator, '<button type="submit" id="conf-button">')
+
+
+def test_user_options_new_supplier_form(operator, user_02, supplier_01,
+                                        resp_new_supplier_page_operator):
+    """
+    Certifies that operators or users that already have
+    a supplier related are not shown in the form.
+    """
+    form = NewSupplierForm()
+    assert operator not in form.fields['user'].queryset
+    assert supplier_01.user not in form.fields['user'].queryset
+    assert user_02 in form.fields['user'].queryset
