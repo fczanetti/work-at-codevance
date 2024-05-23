@@ -2,6 +2,14 @@
 ![Static Badge](https://img.shields.io/badge/Django-5.0.4-green?link=https%3A%2F%2Fwww.djangoproject.com%2F)
 [![codecov](https://codecov.io/gh/fczanetti/work-at-codevance/graph/badge.svg?token=vffyZTHCt3)](https://codecov.io/gh/fczanetti/work-at-codevance)
 
+# Conteúdo
+
+- [Instalação](https://github.com/fczanetti/work-at-codevance?tab=readme-ov-file#instala%C3%A7%C3%A3o)
+- [Tipos de usuário e permissões](https://github.com/fczanetti/work-at-codevance?tab=readme-ov-file#tipos-de-usu%C3%A1rio-e-permiss%C3%B5es)
+- [Deploy no Fly.io](https://github.com/fczanetti/work-at-codevance?tab=readme-ov-file#deploy-no-flyio)
+- [Pé requisitos - Trabalhe na Codevance](https://github.com/fczanetti/work-at-codevance?tab=readme-ov-file#trabalhe-na-codevance)
+
+
 ## Instalação
 
 Para o funcionamento da aplicação será necessário ter o Docker instalado, já que o banco de dados PostgreSQL e o RabbitMQ
