@@ -8,8 +8,7 @@ from workatcodev.payments.forms import FilterStatusForm, AnticipationForm, NewPa
 from django.utils.translation import gettext_lazy as _
 from workatcodev.utils import get_supplier_or_none, available_anticipation
 from workatcodev.payments.tasks import send_email
-from workatcodev.payments.models import Payment, RequestLog
-from django.core.exceptions import ObjectDoesNotExist
+from workatcodev.payments.models import RequestLog
 
 
 @login_required
@@ -52,23 +51,18 @@ def anticipation(request, id):
     """
     :param id: A payment ID.
     """
-    # If the ID informed does not belong to any
-    # payment the page is not loaded.
-    try:
-        payment = Payment.objects.get(id=id)
-    except ObjectDoesNotExist:
-        return HttpResponseNotFound(_('Page not found. Make sure the URL is correct.'))
+    payment = facade.check_payment_availability(id)
 
     # If there is a supplier related to current user
     # it will be brought, otherwise None will return
     if get_supplier_or_none(request.user):
+
+        # Checks if a user is trying to anticipate a payment
+        # that does not belong to him. If so, he is redirected
+        # to denied page
         if payment.supplier.user.id != request.user.id:
             return redirect(reverse('base:denied_access'))
 
-    # If payment is not available (due_date reached) an error will
-    # be raised, because no anticipations can be created from it
-    if not payment.is_available():
-        raise ValueError(_('Unavailable payments can not be anticipated.'))
     if request.method == 'POST':
         new_due_date = request.POST['new_due_date']
 

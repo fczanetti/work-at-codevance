@@ -97,8 +97,8 @@ def test_access_anticip_page_incorrect_id(client_logged_operator):
     use an incorrect ID in the URL (an ID that does not belong
     to any payment).
     """
-    resp = client_logged_operator.get(reverse('payments:anticipation', args=(12345,)))
-    assert resp.status_code == 404
+    with pytest.raises(ValueError):
+        client_logged_operator.get(reverse('payments:anticipation', args=(12345,)))
 
 
 def test_redirect_login_user_not_authenticated(client, db, payment):
@@ -109,3 +109,14 @@ def test_redirect_login_user_not_authenticated(client, db, payment):
     resp = client.get(reverse('payments:anticipation', args=(payment.pk,)))
     assert resp.status_code == 302
     assert resp.url.startswith('/accounts/login')
+
+
+# def test_anticip_page_not_loaded_for_payments_with_anticip_related(payment_user_01_anticipation_created,
+#                                                                    client_logged_operator):
+#     """
+#     Certifies that anticipation page is not loaded if tried with
+#     a payment for which an anticipation was already created.
+#     """
+#     with pytest.raises(ValueError):
+#         client_logged_operator.get(reverse('payments:anticipation',
+#                                            args=(payment_user_01_anticipation_created.pk,)))

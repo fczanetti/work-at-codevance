@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-23 15:57-0300\n"
+"POT-Creation-Date: 2024-05-24 10:27-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -169,6 +169,14 @@ msgstr "Por favor, verifique seu email e password e tente novamente."
 #: workatcodev/base/templates/registration/login.html:21
 msgid "Please, sign in to access this content."
 msgstr "Por favor, autentique-se para acessar este conteúdo."
+
+#: workatcodev/payments/facade.py:118
+msgid "This ID does not belong to a payment."
+msgstr "Este ID não pertence a nenhum pagamento."
+
+#: workatcodev/payments/facade.py:123
+msgid "Unavailable payments can not be anticipated."
+msgstr "Pagamentos indisponíveis não podem ser antecipados."
 
 #: workatcodev/payments/forms.py:11
 msgid "Available"
@@ -417,40 +425,35 @@ msgid "New due date:"
 msgstr "Novo vencimento:"
 
 #: workatcodev/payments/tests/test_approved_payments.py:78
-#: workatcodev/payments/views.py:22
+#: workatcodev/payments/views.py:21
 msgid "Anticipated payments"
 msgstr "Pagamentos antecipados"
 
 #: workatcodev/payments/tests/test_available_payments.py:98
-#: workatcodev/payments/views.py:19
+#: workatcodev/payments/views.py:18
 msgid "Available for anticipation"
 msgstr "Disponíveis para antecipação"
 
 #: workatcodev/payments/tests/test_denied_payments.py:71
-#: workatcodev/payments/views.py:23
+#: workatcodev/payments/views.py:22
 msgid "Denied anticipation"
 msgstr "Antecipação negada"
 
 #: workatcodev/payments/tests/test_pend_conf_payments.py:95
-#: workatcodev/payments/views.py:21
+#: workatcodev/payments/views.py:20
 msgid "Pending anticipation confirmation"
 msgstr "Confirmação de antecipação pendente"
 
 #: workatcodev/payments/tests/test_unavailable_payments.py:68
-#: workatcodev/payments/views.py:20
+#: workatcodev/payments/views.py:19
 msgid "Unavailable for anticipation"
 msgstr "Indisponíveis para antecipação"
 
-#: workatcodev/payments/views.py:25 workatcodev/payments/views.py:60
-#: workatcodev/payments/views.py:148
+#: workatcodev/payments/views.py:24 workatcodev/payments/views.py:142
 msgid "Page not found. Make sure the URL is correct."
 msgstr "Página não encontrada. Certifique-se de que a URL está correta."
 
-#: workatcodev/payments/views.py:71
-msgid "Unavailable payments can not be anticipated."
-msgstr "Pagamentos indisponíveis não podem ser antecipados."
-
-#: workatcodev/payments/views.py:154
+#: workatcodev/payments/views.py:148
 msgid ""
 "Page not found. Make sure this anticipation exists and is pending "
 "confirmation."
