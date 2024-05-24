@@ -2,7 +2,8 @@ from datetime import date
 
 from workatcodev import settings
 from workatcodev.payments.models import Payment, RequestLog
-
+from django.core.exceptions import ObjectDoesNotExist
+from django.utils.translation import gettext_lazy as _
 from workatcodev.utils import get_supplier_or_none
 
 
@@ -103,3 +104,26 @@ def get_logs(user):
         return logs
     logs = RequestLog.objects.all().order_by('-created_at')
     return logs
+
+
+def check_payment_availability(id):
+    """
+    Checks if a payment exists and can be anticipated.
+    """
+    # If the ID informed does not belong to any
+    # payment the page is not loaded.
+    try:
+        payment = Payment.objects.get(id=id)
+    except ObjectDoesNotExist:
+        raise ValueError(_('This ID does not belong to a payment.'))
+
+    # If payment is not available (due_date reached) an error will
+    # be raised, because no anticipations can be created from it
+    if not payment.is_available():
+        raise ValueError(_('Unavailable payments can not be anticipated.'))
+
+    # Checks if the payment already has an anticipation related
+    # if hasattr(payment, 'anticipation'):
+    #     raise ValueError(_('This payment already has an anticipation related.'))
+
+    return payment
