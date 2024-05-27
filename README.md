@@ -2,67 +2,71 @@
 ![Static Badge](https://img.shields.io/badge/Django-5.0.4-green?link=https%3A%2F%2Fwww.djangoproject.com%2F)
 [![codecov](https://codecov.io/gh/fczanetti/work-at-codevance/graph/badge.svg?token=vffyZTHCt3)](https://codecov.io/gh/fczanetti/work-at-codevance)
 
-# Conteúdo
+This project is hosted on Fly.io, you can visit [via this link](https://work-at-codevance.fly.dev/) and test the
+functionalities using the following operator account:
 
-- [Instalação](https://github.com/fczanetti/work-at-codevance?tab=readme-ov-file#instala%C3%A7%C3%A3o)
-- [Tipos de usuário e permissões](https://github.com/fczanetti/work-at-codevance?tab=readme-ov-file#tipos-de-usu%C3%A1rio-e-permiss%C3%B5es)
-- [Deploy no Fly.io](https://github.com/fczanetti/work-at-codevance?tab=readme-ov-file#deploy-no-flyio)
-- [Pé requisitos - Trabalhe na Codevance](https://github.com/fczanetti/work-at-codevance?tab=readme-ov-file#trabalhe-na-codevance)
+- user: operator@email.com
+- password: operatorpass123#
+
+# Content
+
+- [Instalation](https://github.com/fczanetti/work-at-codevance?tab=readme-ov-file#instala%C3%A7%C3%A3o)
+- [Users and permissions](https://github.com/fczanetti/work-at-codevance?tab=readme-ov-file#tipos-de-usu%C3%A1rio-e-permiss%C3%B5es)
+- [Deploy on Fly.io](https://github.com/fczanetti/work-at-codevance?tab=readme-ov-file#deploy-no-flyio)
+- [Requirements - Work at Codevance](https://github.com/fczanetti/work-at-codevance?tab=readme-ov-file#trabalhe-na-codevance)
 
 
-## Instalação
+## Instalation
 
-Para o funcionamento da aplicação será necessário ter o Docker instalado, já que o banco de dados PostgreSQL e o RabbitMQ
-serão executados em contêineres.
+For local instalation Docker will be required, since PostgreSQL database and RabbitMQ will be executed in containers.
 
-As instruções a seguir serão necessárias para a instalação e execução do projeto localmente.
+The folowing instructions are required to execute this application locally.
 
-Clonar repositório através do seguinte comando:
+Clone this repository using the command:
 
 ```
 git clone git@github.com:fczanetti/work-at-codevance.git
 ```
 
-Criar ambiente virtual para a instalação das dependências:
+Create a virtual environment to install the required libraries:
 
 ```
 pipenv shell
 ```
 
-Instalar dependências através do seguinte comando:
+Install libraries running the following command:
 
 ```
 pipenv sync -d
 ```
 
-Copiar o conteúdo do arquivo env-sample que se encontra dentro da pasta contrib, na raiz do projeto, e inserir em um
-novo arquivo chamado .env. O arquivo .env também deve estar na raiz do projeto;
+Copy the content from env-sample file located inside 'contrib' folder, in project's root, and paste the content
+in a new file called .env, also in project's root.
 
-Definir os valores das variáveis de ambiente listadas no arquivo .env da seguinte forma:
+Set the following environment variables in .env as listed below:
 
 - SECRET_KEY=secret
 - DEBUG=True
 - ALLOWED_HOSTS=localhost, 127.0.0.1,
-- CSRF_TRUSTED_ORIGINS=(esta variável pode ficar em branco)
+- CSRF_TRUSTED_ORIGINS= // this one can have no value for now
 
 - CELERY_BROKER_URL=pyamqp://rabbituser:rabbitpass@localhost:5672/
 
-O valor da variável DATABASE_URL não deve ser alterado no arquivo env-sample, pois é a variável utilizada no serviço
-de banco de dados configurado para ser executado no GitHub Actions por ocasião do push. No novo arquivo .env esta
-variável deve ser sobrescrita conforme informado abaixo:
+The value of DATABASE_URL should not be changed in env-sample file, since it is the one used by GitHub Actions when
+pushing. In the new file called .env, you have to override the variable as follows:
 
 - DATABASE_URL=postgres://dbuser:dbpass@localhost:5437/codevance_db
 - POSTGRES_PASSWORD=dbpass
 - POSTGRES_USER=dbuser
 - POSTGRES_DB=codevance_db
 
-Esta próxima variável é a taxa de juros aplicada quando criadas antecipações, que deve ser no seguinte formato
-para uma taxa de 3%:
+The next variable is the rate applied when creating anticipations and, for a 3%/month rate, the value should be as
+follows:
 
 - INTEREST_RATE=0.03
 
-Para testar o envio de emails localmente pode-se preencher apenas e email backend, e o Django imprimirá o email enviado
-no console, evitando o envio de emails reais neste momento:
+To test sending emails locally we can just fill EMAIL_BACKEND, and Django will print the email in the console instead
+of sending real emails at this moment:
 
 - EMAIL_HOST=
 - EMAIL_PORT=
@@ -72,92 +76,94 @@ no console, evitando o envio de emails reais neste momento:
 - DEFAULT_FROM_EMAIL=
 - EMAIL_BACKEND=django.core.mail.backends.console.EmailBackend
 
-Para a execução do projeto localmente as seguintes variáveis podem permanecer em branco:
+To execute the project locally the follwoing ones can be blank:
 
 - AWS_ACCESS_KEY_ID=
 - AWS_SECRET_ACCESS_KEY=
 - AWS_STORAGE_BUCKET_NAME=
 
-Após definidas as variáveis, rodar o seguinte comando para inicializar o banco de dados PostgreSQL e o broker RabbitMQ.
-Este comando criará uma pasta chamada .pgdata na raiz do projeto, sendo esta responsável pela persistência dos dados
-do banco.
+After setting the variables in .env, run the following command to start PostgreSQL and RabbitMQ services in Docker
+containers. This command will create a '.pgdata' folder in project's root, and it will be responsible for persisting
+data from our PostgreSQL database.
 
 ```
 docker compose up -d
 ```
 
-Com o banco de dados disponível, aplicar as migrações através do comando:
+Having a running database available, apply the migrations:
 
 ```
 python manage.py migrate
 ```
 
-Em um outro terminal com ambiente virtual ativo, utilize o seguinte comando para iniciar o worker do celery:
+In another terminal, activate the virtual environment and use the following command to start a Celery's worker:
 
 ```
 celery -A workatcodev worker -l info
 ```
 
-Após estas configurações já é possível rodar o comando "pytest" e verificar que os testes estão passando.
+After these first settings, we can run 'pytest' in our terminal to make sure all tests are passing.
 
-Criar um superuser através do comando:
+Create a superuser through the command:
 
 ```
 python manage.py createsuperuser
 ```
 
-Inicializar o servidor do Django:
+Start Django server:
 
 ```
 python manage.py runserver
 ```
 
-Com um superuser criado já é possível logar na plataforma e criar um operador. Para a criação, basta acessar o link
-'Novo usuário' e preencher os dados assinando a opção 'Operador'. Após criado, executar logout e logar novamente,
-agora na conta deste operador para o teste das funcionalidades.
-
-Criação de um fornecedor:
-- clicar em 'Novo usuário' e criar um usuário sem a opção de "Operador" assinalada;
-- clicar em 'Novo fornecedor' e criar um fornecedor selecionando o usuário criado e informando os dados adicionais
-necessários;
-
-Após criados um operador e um fornecedor já podem ser inseridos pagamentos relacionados à este fornecedor. Com os
-pagamentos inseridos, solicitações de antecipação poderão ser criadas, aprovadas ou negadas. Por ocasião da solicitação
-de antecipação, aprovação ou negação registros serão gerados, e estes podem ser consultados através do link 'Registros'.
-Sempre que houver a criação de um registro um email será enviado ao fornecedor, e este poderá ser visualizado no console
-onde o celery foi iniciado.
+With a superuser created it is possible to login in our application and create a new operator. To create, you just have
+to click in 'New User' link and fill the required data, and remember to mark the 'Is Operator' option. With a new
+operator, you can logout from your superuser account and login using your new operator one, and then you will be able
+to test the application.
+You can also create a supplier to see how it works. First, it's necessary to create a common user (the same process
+of creating an operator, but this time do not mark the 'Is Operator' option). Having a common user you can click on
+'New Supplier', select the user you have just created and fill some other required information.
+Remember that, when logging using your supplier account, you will be restricted to supplier permissions, and some
+resources won't be available. Follow this tutorial for more information about it.
 
 
-## Tipos de usuário e permissões
-
-### Operador
-- pode adicionar novo usuário;
-- pode adicionar novo fornecedor;
-- pode adicionar pagamentos para qualquer fornecedor;
-- pode solicitar antecipação de pagamentos de qualquer fornecedor;
-- pode visualizar pagamentos, antecipações e histórico de qualquer fornecedor;
-- pode aprovar ou negar antecipações de qualquer fornecedor.
-
-### Fornecedor (Supplier)
-- pode adicionar pagamentos apenas para si;
-- pode solicitar antecipações apenas para seus pagamentos;
-- pode visualizar apenas seus pagamentos/antecipações/histórico.
-
-### Usuário comum
-- Pode visualizar pagamentos, antecipações e histórico de qualquer fornecedor.
+After creating an operator and a supplier it is possible to create some payments related to this supplier on the link
+'New Payment'. With a payment available you can request an anticipation for it, and it will be approved or denied by
+an operator. Requesting anticipations, approving or denying creates a log, and these logs can be checked using the 'Logs'
+link. Every time a log is created, an email will be sent to the supplier (in the email used when registering). This email
+can also be checked in the console, the one we used to start Celery's worker.
 
 
-## Deploy no Fly.io
+## Users and permissions
 
-Para o deploy, como sugestão, a plataforma Fly.io pode ser utilizada. Além do Fly.io, algumas outras integrações serão
-necessárias para o completo funcionamento do aplicativo.
+### Operator
+- can add a new user;
+- can add a new supplier;
+- can add payments for any supplier;
+- can request anticipations for any supplier's payments;
+- can see any supplier's payments, anticipations and logs;
+- can approve or deny any supplier's anticipation.
 
-### Integração com Sendgrid
+### Supplier
+- can add payments only for himself;
+- can request anticipations only for his own payments;
+- can see only his own payments, anticipations and logs.
 
-Como sugestão para o envio de emails a plataforma SendGrid pode ser utilizada. Siga o passo a passo para ter os valores
-necessários para configuração do Fly no momento do deploy.
+### Common user
+- can see any supplier's payments, anticipations and logs.
 
-- criar conta na plataforma SendGrid;
+
+## Deploy on Fly.io
+
+To deploy, as a suggestion, Fly.io can be used. Besides Fly.io, some other integrations will be necessary for the
+application to work as a whole.
+
+### Sendgrid integration
+
+To send emails, SendGrid platform can be used. Follow this step by step to have the necessary values to set Fly.io
+when deploying:
+
+- create an account on SendGrid website;
 - na seção 'Marketing', criar um 'Sender' que servirá para o envio de emails. O email também deverá ser verificado;
 - na seção 'Email API, clique no link 'Integration Guide' e em seguida escolha a opção 'SMTP Relay';
 - crie uma API key informando um nome, e em seguida salve os valores exibidos na tela (Server, Ports, Username, Password).
