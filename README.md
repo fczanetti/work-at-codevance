@@ -164,130 +164,132 @@ To send emails, SendGrid platform can be used. Follow this step by step to have 
 when deploying:
 
 - create an account on SendGrid website;
-- na seção 'Marketing', criar um 'Sender' que servirá para o envio de emails. O email também deverá ser verificado;
-- na seção 'Email API, clique no link 'Integration Guide' e em seguida escolha a opção 'SMTP Relay';
-- crie uma API key informando um nome, e em seguida salve os valores exibidos na tela (Server, Ports, Username, Password).
-Usaremos esses dados para configurar a plataforma Fly.io.
+- in 'Marketing', create a new 'Sender' to be used to send emails. You'll have to verify the email used to create the
+Sender;
+- in 'Email API', click on the 'Integration Guide' link and choose the option 'SMTP Relay';
+- create an API key filling a name, and then save the values shown: Server, Ports, Username, Password. These will be
+used to set Fly.io secrets.
 
-### Serviço RabbitMQ
+### RabbitMQ service
 
-Para que tenhamos um serviço de RabbitMQ, necessário para o envio de emails em conjunto com o Celery, uma sugestão é
-utilizar a plataforma CloudAMQP. No website do CloudAMQP, siga estes passos:
+In order to have a RabbitMQ service running, required to send emails, a suggestion is CloudAMQP platform. On their
+website, follow these steps:
 
-- acesse criando uma conta ou fazendo login com GitHub, por exemplo;
-- crie uma instância gratuita do RabbitMQ e acesse sua página principal;
-- na seção 'AMQP details', copie e salve o valor da URL para ser usado posteriormente.
+- access creating a new account or logging in with GitHub, for instance;
+- create a RabbitMQ free instance and access its main page;
+- in 'AMQP details', sopy and save the URL shown to be used later.
 
-### Conta AWS para arquivos estáticos
+### AWS account for static files
 
-Este projeto foi pré configurado para enviar os arquivos estáticos para um Buckets S3 da AWS. Para utilizar este
-recurso os seguintes passos devem ser seguidos:
+This project was pre-set to send static files to an AWS S3 Bucket. To use this resource, follow the next steps:
 
-- criar um usuário IAM na plataforma AWS e anexar a este uma política de permissão chamada AmazonS3FullAccess;
-- criar uma access key para este usuário. A access key terá um ID e seu real valor, ambos serão utilizados;
-- criar um bucket S3 para arquivos estáticos e anexar uma política de permissão que permita ao usuário IAM a ação
-'PutObject' no bucket e em todas as suas pastas;
+- create en IAM user on AWS platform and attach to it a policy called AmazonS3FullAccess;
+- create an access key for this user. This key has an ID and a value, both will be used;
+- create a bucket for the static files. On this bucket, attach a policy that allows the IAM user created to 'PutObject'
+in all its folders.
 
 ### Deploy
 
-- instale o flyctl executando o seguinte comando no terminal, pode ser na pasta do projeto:
+- install flyctl executing the following command on your terminal:
 
-Este comando é para usuários Linux. Para outras opções, [acesse este link](https://fly.io/docs/hands-on/install-flyctl/);
+This command is for Linux users. For other options, [access this link](https://fly.io/docs/hands-on/install-flyctl/);
+
 ```
 curl -L https://fly.io/install.sh | sh
 ```
 
-- crie uma conta através do seguinte comando. Você deve ser direcionado para o site da plataforma para concluir a conta.
+- create an account using the following. You might be redirected to Fly.io platform to finish this new account.
 
 ```
 fly auth signup
 ```
 
-- após a criação, novamente no terminal, utilize o seguinte comando para login:
+- after creation, again on terminal, use this command to login:
 
 ```
 fly auth login
 ```
 
-- execute este comando de dentro da pasta raiz do projeto para criar um novo aplicativo na plataforma:
+- use this command from inside your project's root to create a new app on Fly.io:
 
 ```
 fly launch --no-deploy
 ```
 
-- o Fly identificará que já existe um arquivo fly.toml criado, e ao perguntar se deseja copiar as configurações deste
-arquivo para o novo aplicativo responda com a opção 'y' (yes);
-- as configurações iniciais serão exibidas, e não será necessário alterá-las caso seja questionado novamente pelo Fly;
-- o Fly deve questionar também se deseja substituir o arquivo .dockerignore e o Dockerfile, o que também não será
-necessário;
-- pode ser que o Fly altere a configuração 'release_command' do arquivo fly.toml existente e, caso isso aconteça, corrija
-esta com o valor './start.sh' que estava configurado anteriormente;
-- criar um cluster do PostgreSQL no Fly.io através do comando:
+- Fly will identify that a fly.toml file already exists and, if you are asked to copy its settings to the new app,
+choose 'Y' (yes);
+- the initial settings will be displayed, and it won't be necessary to change them in case you are again asked by Fly;
+- Fly may also ask you if you want to replace the .dockerignore file and Dockerfile, and this won't be necessary either;
+- Fly may change the 'release_command' setting from our existing fly.toml and, if that happens, correct with the value
+'./start/sh' that was previously set;
+
+- create a PostgreSQL cluster on Fly.io with this command:
 
 ```
 fly postgres create
 ```
 
-- escolha um nome para o banco de dados;
-- selecione uma região;
-- selecione a configuração Development pois já é suficiente;
-- por último escolha a opção 'scale node pg to zero after one hour', que desligará a VM após uma hora se o banco de dados
-não estiver sendo utilizado;
-- após o cluster ser criado, utilize o seguinte comando para vincular o bando de dados ao applicativo no Fly.io:
+- choose a name for the database;
+- choose a region;
+- select the Development setting, this is enough for us;
+- choose the option 'scale node pg to zero after one hour'. This setting will turn off our cluster after some time
+if it is not being requested;
+
+- after creating the cluster, use the following command to attach the database to our app on Fly.io:
 
 ```
-fly postgres attach NOME_DO_BANCO_CRIADO -a work-at-codevance (este último é o nome do aplicativo)
+fly postgres attach <NAME_OF_DATABASE> -a <NAME_OF_THE_APPLICATION>
 ```
 
-Neste momento já temos um aplicativo no Fly.io, que podemos acessar para configurar as variáveis de ambiente. Estas
-podem ser configuradas diretamente pela plataforma clicando na aplicação e acessando o link 'Secrets'. Caso opte por
-configurar pelo terminal, é possível através do seguinte comando:
+At this moment we already have an application on Fly where we can set our environment variables (or secrets).
+You can set them directly on the platform, on the 'Secrets' link. If you prefer to use the terminal, you can execute
+the following command:
 
 ```
-fly secrets set NOME_DA_VARIAVEL=valor_da_variavel
+fly secrets set <VARIABLE_NAME>=<VARIABLE_VALUE>
 ```
 
-- configure as variáveis de ambiente na plataforma com os seguintes valores:
+- use the given values to set the new secrets on Fly:
 
-- SECRET_KEY= (configurada automaticamente pelo Fly, não alterar)
-- ALLOWED_HOSTS=work-at-codevance.fly.dev (nome_do_aplicativo.fly.dev)
-- CSRF_TRUSTED_ORIGINS=https://work-at-codevance.fly.dev (https://nome_do_aplicativo.fly.dev)
+- SECRET_KEY=  //(automatically set by Fly, do not change this one)
+- ALLOWED_HOSTS=work-at-codevance.fly.dev  // (app_name.fly.dev)
+- CSRF_TRUSTED_ORIGINS=https://work-at-codevance.fly.dev  // (https://app_name.fly.dev)
 
-- CELERY_BROKER_URL= (valor da URL da instância do RabbitMQ criada no site CloudAMQP)
+- CELERY_BROKER_URL=  // (RabbitMQ URL copied from CloudAMQP)
 
 - INTEREST_RATE=0.03
 
-- EMAIL_HOST=(valor do 'Server' salvo no site SendGrid)
+- EMAIL_HOST=  // ('Server' value saved from SendGrid)
 - EMAIL_PORT=587
-- EMAIL_HOST_USER=(valor do 'Username' salvo no site SendGrid)
-- EMAIL_HOST_PASSWORD=(valor do 'Password' salvo no site SendGrid)
+- EMAIL_HOST_USER=  // ('Username' value saved from SendGrid)
+- EMAIL_HOST_PASSWORD=  // ('Password' value saved from SendGrid)
 - EMAIL_USE_TLS=True
-- DEFAULT_FROM_EMAIL=(email utilizado na criação do 'Sender' no site SendGrid)
+- DEFAULT_FROM_EMAIL=  // (email used to create the 'Sender' on SendGrid website)
 - EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
 
-- AWS_ACCESS_KEY_ID=(ID da access key criada na plataforma AWS)
-- AWS_SECRET_ACCESS_KEY=(valor da access key criada na plataforma AWS)
-- AWS_STORAGE_BUCKET_NAME=(nome do bucket criado na plataforma AWS)
+- AWS_ACCESS_KEY_ID=  // (AWS access key ID)
+- AWS_SECRET_ACCESS_KEY=  // (AWS access key value)
+- AWS_STORAGE_BUCKET_NAME=  // (AWS bucket name)
 
-- após todas as variáveis configuradas, utilizar o seguinte comando para deploy:
+- after setting all the required secrets, use the following command to deploy:
 
 ```
 fly deploy
 ```
 
-- assim que finalizado, utilizar o comando a seguir para acessar o console do aplicativo já em execução:
+- as soon as finished, use the following command to access the app console (the app should be already running):
 
 ```
 fly ssh console
 ```
 
-- feito o acesso, podemos criar um superuser e iniciar o uso do aplicativo hospedado no Fly.io:
+- if successfully accessed, we can create a superuser to start using our app hosted on Fly.io:
 
 ```
 python manage.py createsuperuser
 ```
 
-Com um superuser criado já é possível logar no aplicativo e iniciar o uso.
+With a new superuser we can log in the app and start using it.
 
 
 # Trabalhe na Codevance
