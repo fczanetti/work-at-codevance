@@ -111,12 +111,12 @@ def test_redirect_login_user_not_authenticated(client, db, payment):
     assert resp.url.startswith('/accounts/login')
 
 
-# def test_anticip_page_not_loaded_for_payments_with_anticip_related(payment_user_01_anticipation_created,
-#                                                                    client_logged_operator):
-#     """
-#     Certifies that anticipation page is not loaded if tried with
-#     a payment for which an anticipation was already created.
-#     """
-#     with pytest.raises(ValueError):
-#         client_logged_operator.get(reverse('payments:anticipation',
-#                                            args=(payment_user_01_anticipation_created.pk,)))
+def test_anticip_page_not_loaded_for_payments_with_anticip_related(payment_user_01_anticipation_created,
+                                                                   client_logged_operator):
+    """
+    Certifies that anticipation page is not loaded if tried with
+    a payment for which an anticipation was already created.
+    """
+    with pytest.raises(ValueError):
+        client_logged_operator.get(reverse('payments:anticipation',
+                                           args=(payment_user_01_anticipation_created.pk,)))
