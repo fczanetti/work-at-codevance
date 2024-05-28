@@ -289,7 +289,7 @@ fly ssh console
 python manage.py createsuperuser
 ```
 
-With a new superuser we can log in the app and start using it.
+With a new superuser we can sign in the app and start using it.
 
 
 # Trabalhe na Codevance
