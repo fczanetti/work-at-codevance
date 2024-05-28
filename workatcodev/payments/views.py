@@ -8,7 +8,7 @@ from workatcodev.payments.forms import FilterStatusForm, AnticipationForm, NewPa
 from django.utils.translation import gettext_lazy as _
 from workatcodev.utils import get_supplier_or_none, available_anticipation
 from workatcodev.payments.tasks import send_email
-from workatcodev.payments.models import RequestLog
+from workatcodev.payments.models import RequestLog, Anticipation
 
 
 @login_required
@@ -78,13 +78,14 @@ def anticipation(request, id):
         form = AnticipationForm(data)
         if form.is_valid():
             form.save()
-            RequestLog.objects.create(anticipation=payment.anticipation,
+            ant = Anticipation.objects.get(payment=payment)
+            RequestLog.objects.create(anticipation=ant,
                                       user=request.user, action='R')
 
             # Sending email informing about the new anticipation
             send_email.delay_on_commit(sub='new_ant',
                                        recipient=[f'{payment.supplier.user.email}'],
-                                       ant_id=payment.anticipation.pk)
+                                       ant_id=ant.pk)
             return redirect(reverse('payments:home'))
         else:
             return render(request, 'payments/anticipation.html',
@@ -138,7 +139,7 @@ def update_antic(request, act, id):
     :param act: The action to execute in the anticipation, Approve or Deny
     :param id: The anticipation ID
     """
-    if act not in 'AD':
+    if act not in ['A', 'D']:
         return HttpResponseNotFound(_('Page not found. Make sure the URL is correct.'))
 
     # If there is no anticipation available,

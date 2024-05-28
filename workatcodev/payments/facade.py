@@ -123,7 +123,7 @@ def check_payment_availability(id):
         raise ValueError(_('Unavailable payments can not be anticipated.'))
 
     # Checks if the payment already has an anticipation related
-    # if hasattr(payment, 'anticipation'):
-    #     raise ValueError(_('This payment already has an anticipation related.'))
+    if hasattr(payment, 'anticipation'):
+        raise ValueError(_('This payment already has an anticipation related.'))
 
     return payment
