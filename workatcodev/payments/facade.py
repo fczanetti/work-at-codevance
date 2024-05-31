@@ -15,9 +15,11 @@ def get_available_payments(user):
     supplier = get_supplier_or_none(user)
     today_date = date.today()
     if supplier:
-        payments = Payment.objects.filter(due_date__gt=today_date, anticipation=None, supplier=supplier.id)
+        payments = (Payment.objects.select_related('supplier')
+                    .filter(due_date__gt=today_date, anticipation=None, supplier=supplier.id))
         return list(payments)
-    payments = Payment.objects.filter(due_date__gt=today_date, anticipation=None)
+    payments = (Payment.objects.select_related('supplier')
+                .filter(due_date__gt=today_date, anticipation=None))
     return list(payments)
 
 
@@ -30,7 +32,7 @@ def get_unavailable_payments(user):
     """
     supplier = get_supplier_or_none(user)
     today = date.today()
-    q1 = Payment.objects.prefetch_related('anticipation').filter(due_date__lte=today)
+    q1 = Payment.objects.select_related('supplier').filter(due_date__lte=today)
     payments = q1.exclude(anticipation__status='A').exclude(anticipation__status='D')
     if supplier:
         payments = payments.filter(supplier=supplier.id)
@@ -47,7 +49,7 @@ def get_pend_conf_payments(user):
     """
     supplier = get_supplier_or_none(user)
     today = date.today()
-    q1 = Payment.objects.prefetch_related('anticipation').exclude(anticipation=None)
+    q1 = Payment.objects.select_related('supplier').prefetch_related('anticipation')
     payments = q1.filter(anticipation__status='PC').filter(due_date__gt=today)
     if supplier:
         payments = payments.filter(supplier=supplier.id)
@@ -60,7 +62,7 @@ def get_approved_payments(user):
     created and approved.
     """
     supplier = get_supplier_or_none(user)
-    q1 = Payment.objects.prefetch_related('anticipation').exclude(anticipation=None)
+    q1 = Payment.objects.select_related('supplier').prefetch_related('anticipation')
     payments = q1.filter(anticipation__status='A')
     if supplier:
         payments = payments.filter(supplier=supplier.id)
@@ -73,7 +75,7 @@ def get_denied_payments(user):
     created but denied.
     """
     supplier = get_supplier_or_none(user)
-    q1 = Payment.objects.prefetch_related('anticipation').exclude(anticipation=None)
+    q1 = Payment.objects.select_related('supplier').prefetch_related('anticipation')
     payments = q1.filter(anticipation__status='D')
     if supplier:
         payments = payments.filter(supplier=supplier.id)
@@ -100,9 +102,18 @@ def get_logs(user):
     """
     supplier = get_supplier_or_none(user)
     if supplier:
-        logs = RequestLog.objects.filter(anticipation__payment__supplier__user=user)
+
+        # the select_related('user') is necessary here because, in the template,
+        # the user field from RequestLog model is requested. If we do not user,
+        # each log shown in the template will cause a new database query
+        logs = (RequestLog.objects.select_related('anticipation__payment__supplier__user')
+                .filter(anticipation__payment__supplier__user=user)
+                .select_related('user'))
         return logs
-    logs = RequestLog.objects.all().order_by('-created_at')
+    logs = (RequestLog.objects.select_related('anticipation__payment__supplier')
+            .select_related('user')
+            .order_by('-created_at'))
+
     return logs
 
 
