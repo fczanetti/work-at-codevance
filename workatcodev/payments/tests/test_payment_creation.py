@@ -62,3 +62,18 @@ def test_payment_not_created_with_value_smaller_than_or_equal_zero(client_logged
                                                                          'value': 0})
     assert_contains(resp, _('The value must be bigger than zero.'))
     assert Payment.objects.filter(value=0).filter(due_date=d).exists() is False
+
+
+def test_payment_not_created_with_due_date_earlier_than_today_admin(client_logged_operator, supplier_01, operator):
+    """
+    Certifies that no payments are created with due_date
+    earlier than today in the admin site.
+    """
+    operator.is_staff = True
+    operator.save()
+    bef_today = date.today() - timedelta(days=1)
+    resp = client_logged_operator.post('/admin/payments/payment/add/', {'supplier': supplier_01.pk,
+                                                                        'due_date': bef_today,
+                                                                        'value': 1000})
+    assert_contains(resp, _('Due date must be today or some day after.'))
+    assert Payment.objects.filter(value=1000).filter(due_date=bef_today).exists() is False
