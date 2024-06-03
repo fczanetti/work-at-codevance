@@ -75,3 +75,18 @@ def test_send_email_called(mock_send_email, payment, client_logged_operator):
     mock_send_email.assert_called_once_with(sub='new_ant',
                                             recipient=[f'{payment.supplier.user.email}'],
                                             ant_id=payment.anticipation.pk)
+
+
+def test_attempt_creation_antic_for_date_earlier_than_today_admin(payment_supplier_01,
+                                                                  client_logged_operator, operator):
+    """
+    Certifies that an anticipation is not created with a new due date earlier than the
+    day of creation, and the user is informed via error message in the admin site.
+    """
+    operator.is_staff = True
+    operator.save()
+    new_due_date = str(date.today() - timedelta(days=1))
+    resp = client_logged_operator.post('/admin/payments/anticipation/add/',
+                                       {'payment': payment_supplier_01.pk,
+                                        'new_due_date': new_due_date})
+    assert_contains(resp, _('The new payment date must be today or some day after.'))
