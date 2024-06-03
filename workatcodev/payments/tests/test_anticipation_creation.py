@@ -2,6 +2,7 @@ import pytest
 from datetime import date, timedelta
 
 from workatcodev.django_assertions import assert_contains
+from workatcodev.payments.forms import AnticipationForm
 from workatcodev.payments.models import Anticipation, Payment
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
@@ -90,3 +91,25 @@ def test_attempt_creation_antic_for_date_earlier_than_today_admin(payment_suppli
                                        {'payment': payment_supplier_01.pk,
                                         'new_due_date': new_due_date})
     assert_contains(resp, _('The new payment date must be today or some day after.'))
+
+
+def test_unavailable_payments_not_shown_anticip_form(unavailable_payments_user_01_due_date,
+                                                     payment_user_01_anticipation_created):
+    """
+    Certifies that payments that can not be anticipated
+    are not shown in anticipation form.
+    """
+    form = AnticipationForm()
+    for payment in unavailable_payments_user_01_due_date:
+        assert payment not in form.fields['payment'].queryset
+    assert payment_user_01_anticipation_created not in form.fields['payment'].queryset
+
+
+def test_available_payments_shown_anticip_form(available_payments_user_01):
+    """
+    Certifies that available payments
+    are shown in anticipation form.
+    """
+    form = AnticipationForm()
+    for payment in available_payments_user_01:
+        assert payment in form.fields['payment'].queryset
