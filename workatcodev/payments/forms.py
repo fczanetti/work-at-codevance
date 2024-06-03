@@ -17,6 +17,10 @@ class FilterStatusForm(forms.Form):
 
 
 class AnticipationForm(forms.ModelForm):
+    today = date.today()
+    payment = forms.ModelChoiceField(queryset=Payment.objects.select_related('supplier')
+                                     .filter(due_date__gt=today, anticipation=None))
+
     class Meta:
         model = Anticipation
         fields = ['payment', 'new_due_date', 'new_value']
