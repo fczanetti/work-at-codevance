@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from workatcodev.payments import facade
-from workatcodev.payments.forms import NewPaymentForm
+from workatcodev.payments.forms import NewPaymentForm, AnticipationForm
 from workatcodev.payments.models import Supplier, Payment, Anticipation, RequestLog
 
 
@@ -27,6 +27,7 @@ class PaymentAdmin(admin.ModelAdmin):
 @admin.register(Anticipation)
 class AnticipationAdmin(admin.ModelAdmin):
     list_display = ['payment', 'creation_date', 'new_due_date', 'new_value', 'update', 'status']
+    form = AnticipationForm
     fieldsets = (
         (None, {"fields": ("payment", "new_due_date")}),
     )
