@@ -1,13 +1,13 @@
 from django.urls import reverse
 from model_bakery import baker
-# from unittest import mock
+from unittest import mock
 from workatcodev.payments.models import Anticipation
 
 
-# (This test was commented because sending email was deactivated)
+# This mock was commented because sending emails with Celery was deactivated
 # @mock.patch('workatcodev.payments.views.send_email.delay_on_commit')
-# def test_approval_anticpation(mock_send_email, client_logged_operator, payment):
-def test_approval_anticpation(client_logged_operator, payment):
+@mock.patch('workatcodev.payments.views.send_email')
+def test_approval_anticpation(mock_send_email, client_logged_operator, payment):
     """
     Approves an anticipation and certifies:
     - anticipation status changed;
@@ -18,14 +18,14 @@ def test_approval_anticpation(client_logged_operator, payment):
                                         kwargs={'act': 'A', 'id': antic.pk}))
     antic.refresh_from_db()
     assert antic.status == 'A'
-    # mock_send_email.assert_called_once_with(sub='A', recipient=[f'{payment.supplier.user.email}'],
-    #                                         ant_id=antic.pk)
+    mock_send_email.assert_called_once_with(sub='A', recipient=[f'{payment.supplier.user.email}'],
+                                            ant_id=antic.pk)
 
 
-# (This test was commented because sending email was deactivated)
+# This mock was commented because sending emails with Celery was deactivated
 # @mock.patch('workatcodev.payments.views.send_email.delay_on_commit')
-# def test_denial_anticpation(mock_send_email, client_logged_operator, payment):
-def test_denial_anticpation(client_logged_operator, payment):
+@mock.patch('workatcodev.payments.views.send_email')
+def test_denial_anticpation(mock_send_email, client_logged_operator, payment):
     """
     Denies an anticipation and certifies:
     - anticipation status changed;
@@ -36,5 +36,5 @@ def test_denial_anticpation(client_logged_operator, payment):
                                         kwargs={'act': 'D', 'id': antic.pk}))
     antic.refresh_from_db()
     assert antic.status == 'D'
-    # mock_send_email.assert_called_once_with(sub='D', recipient=[f'{payment.supplier.user.email}'],
-    #                                         ant_id=antic.pk)
+    mock_send_email.assert_called_once_with(sub='D', recipient=[f'{payment.supplier.user.email}'],
+                                            ant_id=antic.pk)
