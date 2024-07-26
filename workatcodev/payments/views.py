@@ -7,7 +7,7 @@ from workatcodev.payments import facade
 from workatcodev.payments.forms import FilterStatusForm, AnticipationForm, NewPaymentForm, NewSupplierForm
 from django.utils.translation import gettext_lazy as _
 from workatcodev.utils import get_supplier_or_none, available_anticipation
-# from workatcodev.payments.tasks import send_email
+from workatcodev.payments.tasks import send_email
 from workatcodev.payments.models import RequestLog, Anticipation
 
 
@@ -82,10 +82,13 @@ def anticipation(request, id):
             RequestLog.objects.create(anticipation=ant,
                                       user=request.user, action='R')
 
-            # Sending email informing about the new anticipation (deactivated)
+            # Sending email informing about the new anticipation (Celery deactivated)
             # send_email.delay_on_commit(sub='new_ant',
             #                            recipient=[f'{payment.supplier.user.email}'],
             #                            ant_id=ant.pk)
+            send_email(sub='new_ant',
+                       recipient=[f'{payment.supplier.user.email}'],
+                       ant_id=ant.pk)
             return redirect(reverse('payments:home'))
         else:
             return render(request, 'payments/anticipation.html',
@@ -154,9 +157,11 @@ def update_antic(request, act, id):
         RequestLog.objects.create(anticipation=anticipation,
                                   user=request.user, action=act)
 
-        # Sending email informing about the status update (deactivated)
+        # Sending email informing about the status update (Celery deactivated)
         # send_email.delay_on_commit(sub=act, ant_id=id,
         #                            recipient=[f'{anticipation.payment.supplier.user.email}'])
+        send_email(sub=act, ant_id=id,
+                   recipient=[f'{anticipation.payment.supplier.user.email}'])
         return redirect(reverse('payments:home', args=('PC',)))
     context = {'anticipation': anticipation, 'act': act}
     return render(request, 'payments/update_antic.html', context=context)

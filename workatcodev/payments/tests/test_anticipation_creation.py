@@ -6,7 +6,7 @@ from workatcodev.payments.forms import AnticipationForm
 from workatcodev.payments.models import Anticipation, Payment
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
-# from unittest import mock
+from unittest import mock
 
 
 @pytest.fixture
@@ -66,18 +66,18 @@ def test_attempt_creation_antic_for_date_earlier_than_today(db, payment_supplier
     assert_contains(resp, _('The new payment date must be today or some day after.'))
 
 
-# (This test was commented because sending email was deactivated)
-
+# (This test was commented because sending email with Celery was deactivated)
 # @mock.patch('workatcodev.payments.views.send_email.delay_on_commit')
-# def test_send_email_called(mock_send_email, payment, client_logged_operator):
-#     """
-#     Certifies that send_email() is called when creating an anticipation.
-#     """
-#     rev, post_d = reverse('payments:anticipation', args=(payment.pk,)), {'new_due_date': date.today()}
-#     client_logged_operator.post(rev, post_d)
-#     mock_send_email.assert_called_once_with(sub='new_ant',
-#                                             recipient=[f'{payment.supplier.user.email}'],
-#                                             ant_id=payment.anticipation.pk)
+@mock.patch('workatcodev.payments.views.send_email')
+def test_send_email_called(mock_send_email, payment, client_logged_operator):
+    """
+    Certifies that send_email() is called when creating an anticipation.
+    """
+    rev, post_d = reverse('payments:anticipation', args=(payment.pk,)), {'new_due_date': date.today()}
+    client_logged_operator.post(rev, post_d)
+    mock_send_email.assert_called_once_with(sub='new_ant',
+                                            recipient=[f'{payment.supplier.user.email}'],
+                                            ant_id=payment.anticipation.pk)
 
 
 def test_attempt_creation_antic_for_date_earlier_than_today_admin(payment_supplier_01,
