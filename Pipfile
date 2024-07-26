@@ -16,6 +16,7 @@ collectfast = "*"
 gunicorn = "*"
 sentry-sdk = {extras = ["django"], version = "*"}
 django-debug-toolbar = "*"
+urllib3 = "*"
 
 [dev-packages]
 flake8 = "*"
